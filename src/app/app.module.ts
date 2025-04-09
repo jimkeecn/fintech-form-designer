@@ -6,6 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { ButtonModule } from 'primeng/button';
+import { FormlyModule } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,6 +17,9 @@ import { ButtonModule } from 'primeng/button';
     AppRoutingModule,
     BrowserAnimationsModule,
     ButtonModule,
+    FormlyModule.forRoot(),
+    ReactiveFormsModule,
+    FormlyPrimeNGModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
