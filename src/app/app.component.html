@@ -1,4 +1,51 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit(model)">
-  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-  <p-button label="Submit" type="submit" />
-</form>
+<div class="tw-grid tw-grid-cols-[300px_1fr_300px] tw-h-screen tw-overflow-hidden tw-bg-gray-100 tw-gap-4">
+    <!-- Left Panel: Toolbox -->
+    <div
+        class="tw-p-4 tw-bg-white tw-h-full"
+        id="ff-report-builder-components"
+        cdkDropList
+        cdkDropListSortingDisabled
+        (cdkDropListExited)="test()"
+        (cdkDropListEntered)="test()"
+        (cdkDropListDropped)="drop($event)"
+    >
+        <div class="tw-mb-6">
+            @for(category of DRAGABLE_LIST; track category;){
+            <h5 class="tw-text-lg tw-mb-2">
+                {{ category.title }}
+            </h5>
+
+            <div class="tw-grid tw-grid-cols-2 tw-gap-4 tw-mb-4">
+                <div
+                    *ngFor="let item of category.child"
+                    cdkDrag
+                    [cdkDragData]="item"
+                    class="tw-flex tw-items-center tw-gap-2 tw-border tw-bg-gray-100 tw-p-3 tw-rounded tw-cursor-move tw-h-20"
+                >
+                    <i [class]="item.icon"></i>
+                    <span>{{ item.title }}</span>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    <!-- Middle Panel: Designer -->
+    <div
+        class="tw-p-4 tw-bg-white tw-h-full"
+        [ngClass]="{ 'tw-border-red-500': isDraggingOver, 'tw-border-[#ddd]': !isDraggingOver }"
+        cdkDropList
+        [cdkDropListConnectedTo]="['ff-report-builder-components']"
+        (cdkDropListEntered)="isDraggingOver = true"
+        (cdkDropListExited)="isDraggingOver = false"
+        (cdkDropListDropped)="drop2($event)"
+    >
+        <div class="tw-w-full tw-h-[50px] tw-border-[2px] tw-border-[#ddd] tw-border-solid">
+            <!-- @if(isDraggingOver){
+            <div class="tw-w-full tw-h-full tw-bg-[#ddd]"></div>
+            } -->
+        </div>
+    </div>
+
+    <!-- Right Panel: Optional -->
+    <div id="option" class="tw-p-4 tw-bg-white"></div>
+</div>

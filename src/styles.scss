@@ -1,25 +1,39 @@
+@import './assets/styles/variables/common';
+@import './assets/styles/variables/_light';
+@import './assets/styles/variables/_dark';
+@import './assets/styles/mixin';
+@import './assets/styles/typography';
 /* You can add global styles to this file, and also import other style files */
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+@import 'primeng/resources/themes/lara-light-blue/theme.css';
+@import 'primeng/resources/primeng.css';
 
 @layer tailwind-base, primeng, tailwind-utilities;
 
 @layer tailwind-base {
-  @tailwind base;
+    @tailwind base;
 }
 
 @layer tailwind-utilities {
-  @tailwind components;
-  @tailwind utilities;
+    @tailwind components;
+    @tailwind utilities;
 }
 
+body {
+    padding: 0;
+    margin: 0;
+}
 .p-field {
-  display: flex;
-  flex-direction: column;
-  @apply tw-gap-3;
+    display: flex;
+    flex-direction: column;
+    @apply tw-gap-3;
 
-  .p-component.p-element {
-    width: 100%;
-    box-sizing: border-box;
-  }
+    .p-component.p-element {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+[cdkDropList] {
+    outline: 2px dashed red;
+    background-color: rgba(255, 0, 0, 0.05);
 }
