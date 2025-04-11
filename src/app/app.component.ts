@@ -11,19 +11,21 @@ import { DRAGABLE_LIST, DragableItem } from './models/dragable-list';
 export class AppComponent {
     title = 'fintech-form-buidler';
     isDraggingOver: boolean = false;
+    options: any[] = [];
+    designer: any[] = [];
     readonly DRAGABLE_LIST = DRAGABLE_LIST;
 
     droppedItems: DragableItem[] = [];
 
     drop($event: any): void {
-        console.log('drop');
+        console.log('drop', $event);
     }
 
-    drop2($event: any): void {
-        console.log('drop2');
+    forbidToEnter(): boolean {
+        return false;
     }
 
-    test(): void {
-        console.log('test');
+    test() {
+        console.log('enter');
     }
 }

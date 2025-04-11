@@ -5,9 +5,8 @@
         id="ff-report-builder-components"
         cdkDropList
         cdkDropListSortingDisabled
-        (cdkDropListExited)="test()"
-        (cdkDropListEntered)="test()"
-        (cdkDropListDropped)="drop($event)"
+        [cdkDropListConnectedTo]="['ff-report-builder-designer']"
+        [cdkDropListEnterPredicate]="forbidToEnter"
     >
         <div class="tw-mb-6">
             @for(category of DRAGABLE_LIST; track category;){
@@ -31,19 +30,13 @@
     </div>
     <!-- Middle Panel: Designer -->
     <div
-        class="tw-p-4 tw-bg-white tw-h-full"
-        [ngClass]="{ 'tw-border-red-500': isDraggingOver, 'tw-border-[#ddd]': !isDraggingOver }"
+        class="tw-p-4 tw-bg-white tw-h-full tw-z-[999]"
         cdkDropList
-        [cdkDropListConnectedTo]="['ff-report-builder-components']"
-        (cdkDropListEntered)="isDraggingOver = true"
-        (cdkDropListExited)="isDraggingOver = false"
-        (cdkDropListDropped)="drop2($event)"
+        id="ff-report-builder-designer"
+        (cdkDropListDropped)="drop($event)"
+        (cdkDropListEntered)="test()"
     >
-        <div class="tw-w-full tw-h-[50px] tw-border-[2px] tw-border-[#ddd] tw-border-solid">
-            <!-- @if(isDraggingOver){
-            <div class="tw-w-full tw-h-full tw-bg-[#ddd]"></div>
-            } -->
-        </div>
+        <span>23</span>
     </div>
 
     <!-- Right Panel: Optional -->

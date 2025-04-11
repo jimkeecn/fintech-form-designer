@@ -13,7 +13,16 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
     declarations: [AppComponent],
-    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, ButtonModule, FormlyModule.forRoot(), ReactiveFormsModule, FormlyPrimeNGModule, DragDropModule],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ButtonModule,
+        FormlyModule.forRoot(),
+        ReactiveFormsModule,
+        FormlyPrimeNGModule,
+        DragDropModule
+    ],
     providers: [],
     bootstrap: [AppComponent]
 })
