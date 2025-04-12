@@ -1,1 +1,17 @@
-<ffb-section-drop-area (dropped)="sectionEmit($event)"></ffb-section-drop-area>
+<div class="tw-flex tw-flex-col tw-gap-4">
+    @for(section of (formService.form$ | async)?.sections;track section.key) {
+    <p-panel [toggleable]="true" [header]="section.title">
+        <ng-template pTemplate="icons">
+            <button class="p-panel-header-icon p-link mr-2 tw-text-red-700">
+                <span class="pi pi-trash"></span>
+            </button>
+            <button class="p-panel-header-icon p-link mr-2">
+                <span class="pi pi-cog"></span>
+            </button>
+        </ng-template>
+        <p class="tw-text-xs" [innerHTML]="section.description"></p>
+        <div></div>
+    </p-panel>
+    }
+    <ffb-section-drop-area (dropped)="sectionEmit()"></ffb-section-drop-area>
+</div>

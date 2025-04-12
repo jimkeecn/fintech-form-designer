@@ -7,9 +7,9 @@
     [cdkDropListEnterPredicate]="forbidToEnter"
 >
     @for(category of reportOptions; track category.title;){
-    <h5 class="tw-text-lg tw-mb-2">
+    <p class="tw-text-lg tw-mb-2">
         {{ category.title }}
-    </h5>
+    </p>
 
     <div class="tw-grid tw-grid-cols-2 tw-gap-4 tw-mb-4">
         @for(item of category.child;track item.title){

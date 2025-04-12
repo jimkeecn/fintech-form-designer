@@ -21,6 +21,6 @@ export class DropAreaComponent {
 
     drop($event: any) {
         this.isDraggingOver = false;
-        this.dropped.emit(createNewFormSection('0'));
+        this.dropped.emit();
     }
 }

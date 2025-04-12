@@ -12,11 +12,4 @@ export class AppComponent {
     title = 'fintech-form-buidler';
     form!: FormConfig;
     readonly DRAGABLE_LIST = DRAGABLE_LIST;
-
-    initForm() {
-        this.form = {
-            key: 'abc',
-            sections: []
-        } as FormConfig;
-    }
 }
