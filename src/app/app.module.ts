@@ -14,9 +14,18 @@ import { DropAreaComponent } from './form-designer/section/drop-area/drop-area.c
 import { FormlyComponentModule } from './shared-modules/formly-component.module';
 import { FormRootService } from './root-services/form-root-service.service';
 import { ConfigPanelComponent } from './form-designer/section/config-panel/config-panel.component';
+import { SectionConfigDialogComponent } from './form-designer/section/section-config-dialog/section-config-dialog.component';
+import { DialogService } from 'primeng/dynamicdialog/dialogservice';
 
 @NgModule({
-    declarations: [AppComponent, FormOptionsComponent, FormDesignerComponent, DropAreaComponent, ConfigPanelComponent],
+    declarations: [
+        AppComponent,
+        FormOptionsComponent,
+        FormDesignerComponent,
+        DropAreaComponent,
+        ConfigPanelComponent,
+        SectionConfigDialogComponent
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
