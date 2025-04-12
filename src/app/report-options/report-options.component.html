@@ -1,0 +1,27 @@
+<div
+    id="ffb-report-builder-components"
+    class="tw-mb-6"
+    cdkDropList
+    cdkDropListSortingDisabled
+    [cdkDropListConnectedTo]="['ffb-report-builder-designer']"
+    [cdkDropListEnterPredicate]="forbidToEnter"
+>
+    @for(category of reportOptions; track category.title;){
+    <h5 class="tw-text-lg tw-mb-2">
+        {{ category.title }}
+    </h5>
+
+    <div class="tw-grid tw-grid-cols-2 tw-gap-4 tw-mb-4">
+        @for(item of category.child;track item.title){
+        <div
+            cdkDrag
+            [cdkDragData]="item"
+            class="tw-flex tw-items-center tw-gap-2 tw-border tw-bg-gray-100 tw-p-3 tw-rounded tw-cursor-move tw-h-20"
+        >
+            <i [class]="item.icon"></i>
+            <span>{{ item.title }}</span>
+        </div>
+        }
+    </div>
+    }
+</div>

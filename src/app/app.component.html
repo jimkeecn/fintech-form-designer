@@ -1,41 +1,10 @@
 <div class="tw-grid tw-grid-cols-[300px_1fr_300px] tw-h-screen tw-overflow-hidden tw-bg-gray-100 tw-gap-4">
     <!-- Left Panel: Toolbox -->
-    <div
-        class="tw-p-4 tw-bg-white tw-h-full"
-        id="ff-report-builder-components"
-        cdkDropList
-        cdkDropListSortingDisabled
-        [cdkDropListConnectedTo]="['ff-report-builder-designer']"
-        [cdkDropListEnterPredicate]="forbidToEnter"
-    >
-        <div class="tw-mb-6">
-            @for(category of DRAGABLE_LIST; track category;){
-            <h5 class="tw-text-lg tw-mb-2">
-                {{ category.title }}
-            </h5>
-
-            <div class="tw-grid tw-grid-cols-2 tw-gap-4 tw-mb-4">
-                <div
-                    *ngFor="let item of category.child"
-                    cdkDrag
-                    [cdkDragData]="item"
-                    class="tw-flex tw-items-center tw-gap-2 tw-border tw-bg-gray-100 tw-p-3 tw-rounded tw-cursor-move tw-h-20"
-                >
-                    <i [class]="item.icon"></i>
-                    <span>{{ item.title }}</span>
-                </div>
-            </div>
-            }
-        </div>
+    <div class="tw-p-4 tw-bg-white tw-h-full tw-overflow-auto">
+        <ffb-report-options [reportOptions]="DRAGABLE_LIST"></ffb-report-options>
     </div>
     <!-- Middle Panel: Designer -->
-    <div
-        class="tw-p-4 tw-bg-white tw-h-full tw-z-[999]"
-        cdkDropList
-        id="ff-report-builder-designer"
-        (cdkDropListDropped)="drop($event)"
-        (cdkDropListEntered)="test()"
-    >
+    <div class="tw-p-4 tw-bg-white tw-h-full tw-z-[999]" cdkDropList id="ffb-report-builder-designer">
         <span>23</span>
     </div>
 
