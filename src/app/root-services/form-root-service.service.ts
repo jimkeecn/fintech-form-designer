@@ -17,7 +17,7 @@ export class FormRootService {
 
     initForm() {
         return {
-            key: uuidv4(),
+            ffw_key: uuidv4(),
             sections: []
         } as FormConfig;
     }
@@ -27,7 +27,7 @@ export class FormRootService {
         const newSection = createNewFormSection(form.sections.length);
         form.sections?.push(newSection);
         this._form.next(form);
-        if (newSection.key) this.addOptionConenctTo(newSection.key);
+        if (newSection.ffw_key) this.addOptionConenctTo(newSection.ffw_key);
     }
 
     swapSection(sections: any[]) {
@@ -47,13 +47,39 @@ export class FormRootService {
         this._optionConnectTo.next(values);
     }
 
-    updateSection(section: FormSection) {
+    removeOptionConnectTo(id: string) {
+        if (!id) return;
+
+        const values = [...this._optionConnectTo.value];
+        const index = values.findIndex((v) => v === id);
+
+        if (index > -1) {
+            values.splice(index, 1);
+            this._optionConnectTo.next(values);
+        }
+    }
+
+    private addOptionConenctToAsGroup(ids: string[]) {}
+
+    /**
+     *
+     * @param section
+     * first update section,
+     * second update the connectTo id list so fields can be drag and drop
+     * @returns
+     */
+    updateSection(section: FormSection): void {
         if (!section) return;
         const form = { ...this._form.value };
         form.sections.forEach((sec, i) => {
-            if (sec.key == section.ffw_key) sec = section;
+            if (sec.ffw_key == section.ffw_key) sec = section;
         });
         this._form.next(form);
+        const ids: string[] = [];
+        section.rows.forEach((sec) => {
+            if (sec.ffw_key && sec.ffw_key.length > 0) ids.push(sec.ffw_key);
+        });
+        if (ids.length > 0) this.addOptionConenctToAsGroup(ids);
     }
 
     get form$(): Observable<FormConfig> {

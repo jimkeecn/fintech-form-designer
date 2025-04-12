@@ -5,39 +5,39 @@ import { ExternalExpr } from '@angular/compiler';
 export interface DragableCategory {
     title: string;
     child: DragableItem[];
-    key: string;
+    ffw_key: string;
 }
 
 export interface DragableItem {
     title: string;
     icon: string;
-    key: string;
+    ffw_key: string;
     properties?: any;
 }
 
 export const DRAGABLE_LIST: DragableCategory[] = [
     {
-        key: 'section',
+        ffw_key: 'section',
         title: 'Layout',
         child: [
-            { title: 'Section', icon: 'pi pi-th-large', key: 'section' },
-            { title: 'Row', icon: 'pi pi-minus', key: 'row' }
+            { title: 'Section', icon: 'pi pi-th-large', ffw_key: 'section' },
+            { title: 'Row', icon: 'pi pi-minus', ffw_key: 'row' }
         ]
     },
     {
-        key: 'basic',
+        ffw_key: 'basic',
         title: 'Basic Fields',
         child: [
-            { title: 'Text Input', icon: 'pi pi-pencil', key: 'text-input' },
-            { title: 'Textarea', icon: 'pi pi-align-left', key: 'textarea' },
-            { title: 'Checkbox', icon: 'pi pi-check-square', key: 'checkbox' },
-            { title: 'Dropdown', icon: 'pi pi-chevron-down', key: 'dropdown' },
-            { title: 'Date Picker', icon: 'pi pi-calendar', key: 'date-picker' },
-            { title: 'File Upload', icon: 'pi pi-upload', key: 'file-upload' }
+            { title: 'Text Input', icon: 'pi pi-pencil', ffw_key: 'text-input' },
+            { title: 'Textarea', icon: 'pi pi-align-left', ffw_key: 'textarea' },
+            { title: 'Checkbox', icon: 'pi pi-check-square', ffw_key: 'checkbox' },
+            { title: 'Dropdown', icon: 'pi pi-chevron-down', ffw_key: 'dropdown' },
+            { title: 'Date Picker', icon: 'pi pi-calendar', ffw_key: 'date-picker' },
+            { title: 'File Upload', icon: 'pi pi-upload', ffw_key: 'file-upload' }
         ]
     },
     {
-        key: 'advanced',
+        ffw_key: 'advanced',
         title: 'Advanced Fields',
         child: []
     }
@@ -55,12 +55,11 @@ export interface BaseConfig {
 }
 
 export interface FormConfig {
-    key?: string;
+    ffw_key?: string;
     sections: FormSection[];
 }
 
 export interface FormSection extends BaseConfig {
-    key?: string;
     index: number;
     title: string;
     description: string;
@@ -71,7 +70,7 @@ export interface FormRow extends FormlyFieldConfig, BaseConfig {}
 
 export function createNewFormSection(index: number): FormSection {
     return {
-        key: uuidv4(),
+        ffw_key: uuidv4(),
         index: index,
         title: `Please add a title + ${index.toString()}`,
         description: `<p class="tw-text-gray-700 tw-text-sm">

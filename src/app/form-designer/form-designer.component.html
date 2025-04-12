@@ -4,7 +4,7 @@
     [cdkDropListData]="sectionList"
     (cdkDropListDropped)="swapSection($event)"
 >
-    @for(section of sectionList;track section.key) {
+    @for(section of sectionList;track section.ffw_key) {
     <ffb-config-panel
         [section]="section"
         [sectionList]="sectionList"

@@ -16,7 +16,7 @@ export class DropAreaComponent {
     isDraggingOver = false;
     sectionPredict = (drag: CdkDrag, drop: CdkDropList): boolean => {
         const data = drag.data as DragableItem;
-        return data.key === DragTitleEnum.Section;
+        return data.ffw_key === DragTitleEnum.Section;
     };
 
     drop($event: any) {

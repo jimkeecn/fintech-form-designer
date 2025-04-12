@@ -17,6 +17,12 @@
     </ng-template>
     <p class="tw-text-xs" [innerHTML]="section.description"></p>
     <p-divider />
+    @for(row of section.rows; track row.ffw_key){
+    <div class="tw-w-full tw-h-[60px] tw-box-border tw-border tw-border-dotted tw-mb-4" [id]="row.ffw_key">
+        Place fields here
+    </div>
+    }
+
     <div
         class="tw-w-full tw-p-4 tw-box-border"
         [ngClass]="{
@@ -28,8 +34,8 @@
         [cdkDropListConnectedTo]="['ffb-report-builder-components']"
         (cdkDropListEntered)="section.ffw_isDraggingOver = true"
         (cdkDropListExited)="section.ffw_isDraggingOver = false"
-        (cdkDropListDropped)="rowDropped(section, section.key)"
-        [id]="section.key ?? 'ffb-default-section-row-droparea'"
+        (cdkDropListDropped)="rowDropped(section, section.ffw_key)"
+        [id]="section.ffw_key ?? 'ffb-default-section-row-droparea'"
     >
         {{ !section.ffw_isDraggingOver ? 'Place new row here' : 'Please release to create a new row' }}
     </div>

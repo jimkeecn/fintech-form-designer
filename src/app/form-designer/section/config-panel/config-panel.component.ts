@@ -8,7 +8,7 @@ import {
     Output
 } from '@angular/core';
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { createNewRow, DragableItem, DragTitleEnum, FormSection } from '../../../models/dragable-list';
+import { createNewRow, DragableItem, DragTitleEnum, FormRow, FormSection } from '../../../models/dragable-list';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SectionConfigDialogComponent } from '../section-config-dialog/section-config-dialog.component';
 
@@ -30,14 +30,25 @@ export class ConfigPanelComponent implements OnInit {
 
     rowEnterPredict = (drag: CdkDrag): boolean => {
         const data = drag.data as DragableItem;
-        return data.key === DragTitleEnum.Row;
+        return data.ffw_key === DragTitleEnum.Row;
     };
 
+    /*** When row dropped at [place new row here]
+     * conditional check if there is no row, add a new row
+     * if there are rows, check the previous row has fieldGroup or not
+     * if no field group, refuse to add new row.
+     */
     rowDropped(section: FormSection, id?: string): void {
         section.ffw_isDraggingOver = false;
         const row = createNewRow(section.rows.length);
+        if (!this.checkPreviousRow(section.rows[section.rows.length]) && section.rows.length > 0) return;
         section.rows.push(row);
         this.updateSection.emit(section);
+    }
+
+    private checkPreviousRow(row: FormRow) {
+        if (row && row.fieldGroup && row.fieldGroup?.length > 0) return true;
+        return false;
     }
 
     openSetting(section: FormSection) {
