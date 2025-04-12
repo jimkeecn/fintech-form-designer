@@ -13,9 +13,10 @@ import { FormDesignerComponent } from './form-designer/form-designer.component';
 import { DropAreaComponent } from './form-designer/section/drop-area/drop-area.component';
 import { FormlyComponentModule } from './shared-modules/formly-component.module';
 import { FormRootService } from './root-services/form-root-service.service';
+import { ConfigPanelComponent } from './form-designer/section/config-panel/config-panel.component';
 
 @NgModule({
-    declarations: [AppComponent, FormOptionsComponent, FormDesignerComponent, DropAreaComponent],
+    declarations: [AppComponent, FormOptionsComponent, FormDesignerComponent, DropAreaComponent, ConfigPanelComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

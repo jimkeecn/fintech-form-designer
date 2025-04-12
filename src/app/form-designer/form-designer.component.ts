@@ -24,18 +24,7 @@ export class FormDesignerComponent implements OnInit {
         });
     }
 
-    rowEnterPredict = (drag: CdkDrag): boolean => {
-        const data = drag.data as DragableItem;
-        return data.key === DragTitleEnum.Row;
-    };
-
-    rowDropped(section: any, id?: string): void {
-        section.isDraggingOver = false;
-
-        console.log('row dropped', id);
-    }
-
-    sectionDrop(event: CdkDragDrop<any[]>) {
+    swapSection(event: CdkDragDrop<any[]>) {
         moveItemInArray(this.sectionList, event.previousIndex, event.currentIndex);
         this.formService.swapSection(this.sectionList);
     }
