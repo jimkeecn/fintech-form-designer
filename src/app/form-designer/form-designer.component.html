@@ -1,9 +1,28 @@
-<div class="tw-flex tw-flex-col tw-gap-4">
-    @for(section of (formService.form$ | async)?.sections;track section.key) {
-    <p-panel [toggleable]="true" [header]="section.title">
+<div
+    class="tw-flex tw-flex-col tw-gap-4"
+    cdkDropList
+    [cdkDropListData]="sectionList"
+    (cdkDropListDropped)="sectionDrop($event)"
+>
+    @for(section of sectionList;track section.key) {
+    <p-panel [toggleable]="true" [header]="section.title" cdkDrag cdkDragLockAxis="y">
         <ng-template pTemplate="icons">
             <button class="p-panel-header-icon p-link mr-2 tw-text-red-700">
                 <span class="pi pi-trash"></span>
+            </button>
+            @if(sectionList.length > 1){
+            <button class="p-panel-header-icon p-link mr-2">
+                <span class="pi pi-arrow-up"></span>
+            </button>
+            <button class="p-panel-header-icon p-link mr-2">
+                <span class="pi pi-arrow-down"></span>
+            </button>
+            <button class="p-panel-header-icon p-link mr-2" cdkDragHandle>
+                <span class="pi pi-arrows-v"></span>
+            </button>
+            }
+            <button class="p-panel-header-icon p-link mr-2">
+                <span class="pi pi-clone"></span>
             </button>
             <button class="p-panel-header-icon p-link mr-2">
                 <span class="pi pi-cog"></span>
@@ -13,18 +32,18 @@
         <div
             class="tw-w-full tw-p-4 tw-box-border"
             [ngClass]="{
-                'tw-border-blue-400 tw-border-solid': section.isDraggingOver,
-                'tw-border-dotted': !section.isDraggingOver
+                'tw-border-blue-400 tw-border-solid': section.ffw_isDraggingOver,
+                'tw-border-dotted': !section.ffw_isDraggingOver
             }"
             cdkDropList
             [cdkDropListEnterPredicate]="rowEnterPredict"
             [cdkDropListConnectedTo]="['ffb-report-builder-components']"
-            (cdkDropListEntered)="section.isDraggingOver = true"
-            (cdkDropListExited)="section.isDraggingOver = false"
+            (cdkDropListEntered)="section.ffw_isDraggingOver = true"
+            (cdkDropListExited)="section.ffw_isDraggingOver = false"
             (cdkDropListDropped)="rowDropped(section, section.key)"
             [id]="section.key ?? 'ffb-default-section-row-droparea'"
         >
-            {{ !section.isDraggingOver ? 'Place new row here' : 'Please release to create a new row' }}
+            {{ !section.ffw_isDraggingOver ? 'Place new row here' : 'Please release to create a new row' }}
         </div>
     </p-panel>
     }

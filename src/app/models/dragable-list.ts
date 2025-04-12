@@ -49,7 +49,7 @@ export enum DragTitleEnum {
 }
 
 export interface BaseConfig {
-    isDraggingOver?: boolean;
+    ffw_isDraggingOver?: boolean;
 }
 
 export interface FormConfig {
@@ -65,16 +65,13 @@ export interface FormSection extends BaseConfig {
     row: FormRow[];
 }
 
-export interface FormRow extends FormlyFieldConfig {
-    ffb_isDraggingOver: boolean;
-    ffb_index: number;
-}
+export interface FormRow extends FormlyFieldConfig, BaseConfig {}
 
 export function createNewFormSection(index: number): FormSection {
     return {
         key: uuidv4(),
         index: index,
-        title: 'Please add a title',
+        title: `Please add a title + ${index.toString()}`,
         description: `<p class="tw-text-gray-700 tw-text-sm">
                     <strong>Tip:</strong> Add a brief description of this section to help users understand its purpose. You can include instructions, context, or any notes that clarify what information should be provided here.
                     </p>`,

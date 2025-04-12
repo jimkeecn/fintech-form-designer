@@ -30,6 +30,16 @@ export class FormRootService {
         if (newSection.key) this.addOptionConenctTo(newSection.key);
     }
 
+    swapSection(sections: any[]) {
+        if (sections.length == 0) return;
+        const form = { ...this._form.value };
+        sections.forEach((section, index) => {
+            section.index = index;
+        });
+        form.sections = sections;
+        this._form.next(form);
+    }
+
     addOptionConenctTo(id: string) {
         if (!id) return;
         const values = [...this._optionConnectTo.value];
