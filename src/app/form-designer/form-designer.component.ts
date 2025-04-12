@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormRootService } from '../root-services/form-root-service.service';
-import { DragableItem, DragTitleEnum } from '../models/dragable-list';
+import { DragableItem, DragTitleEnum, FormSection } from '../models/dragable-list';
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
@@ -28,6 +28,10 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
     swapSection(event: CdkDragDrop<any[]>) {
         moveItemInArray(this.sectionList, event.previousIndex, event.currentIndex);
         this.formService.swapSection(this.sectionList);
+    }
+
+    updateSection(section: FormSection): void {
+        this.formService.updateSection(section);
     }
 
     ngOnDestroy(): void {

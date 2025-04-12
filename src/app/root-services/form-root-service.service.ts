@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createNewFormSection, FormConfig } from '../models/dragable-list';
+import { createNewFormSection, FormConfig, FormSection } from '../models/dragable-list';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -45,6 +45,15 @@ export class FormRootService {
         const values = [...this._optionConnectTo.value];
         values.push(id);
         this._optionConnectTo.next(values);
+    }
+
+    updateSection(section: FormSection) {
+        if (!section) return;
+        const form = { ...this._form.value };
+        form.sections.forEach((sec, i) => {
+            if (sec.key == section.ffw_key) sec = section;
+        });
+        this._form.next(form);
     }
 
     get form$(): Observable<FormConfig> {

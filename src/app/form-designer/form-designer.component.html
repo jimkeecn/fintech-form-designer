@@ -5,7 +5,11 @@
     (cdkDropListDropped)="swapSection($event)"
 >
     @for(section of sectionList;track section.key) {
-    <ffb-config-panel [section]="section" [sectionList]="sectionList"></ffb-config-panel>
+    <ffb-config-panel
+        [section]="section"
+        [sectionList]="sectionList"
+        (updateSection)="updateSection($event)"
+    ></ffb-config-panel>
     }
     <ffb-section-drop-area (dropped)="sectionEmit()"></ffb-section-drop-area>
 </div>

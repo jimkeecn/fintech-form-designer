@@ -49,6 +49,8 @@ export enum DragTitleEnum {
 }
 
 export interface BaseConfig {
+    ffw_key?: string;
+    ffw_index?: number;
     ffw_isDraggingOver?: boolean;
 }
 
@@ -62,7 +64,7 @@ export interface FormSection extends BaseConfig {
     index: number;
     title: string;
     description: string;
-    row: FormRow[];
+    rows: FormRow[];
 }
 
 export interface FormRow extends FormlyFieldConfig, BaseConfig {}
@@ -75,6 +77,16 @@ export function createNewFormSection(index: number): FormSection {
         description: `<p class="tw-text-gray-700 tw-text-sm">
                     <strong>Tip:</strong> Add a brief description of this section to help users understand its purpose. You can include instructions, context, or any notes that clarify what information should be provided here.
                     </p>`,
-        row: []
+        rows: []
     } as FormSection;
+}
+
+export function createNewRow(index: number): Partial<FormRow> {
+    return {
+        ffw_key: uuidv4(),
+        ffw_index: index,
+        ffw_isDraggingOver: false,
+        fieldGroupClassName: 'row',
+        fieldGroup: []
+    };
 }

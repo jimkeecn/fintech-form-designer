@@ -1,6 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output
+} from '@angular/core';
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { DragableItem, DragTitleEnum, FormSection } from '../../../models/dragable-list';
+import { createNewRow, DragableItem, DragTitleEnum, FormSection } from '../../../models/dragable-list';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SectionConfigDialogComponent } from '../section-config-dialog/section-config-dialog.component';
 
@@ -14,6 +22,7 @@ import { SectionConfigDialogComponent } from '../section-config-dialog/section-c
 export class ConfigPanelComponent implements OnInit {
     @Input() section!: FormSection;
     @Input() sectionList: any[] = [];
+    @Output() updateSection = new EventEmitter();
     ref: DynamicDialogRef | undefined;
     constructor(public dialogService: DialogService, private cRef: ChangeDetectorRef) {}
 
@@ -26,8 +35,9 @@ export class ConfigPanelComponent implements OnInit {
 
     rowDropped(section: FormSection, id?: string): void {
         section.ffw_isDraggingOver = false;
-
-        console.log('row dropped', id);
+        const row = createNewRow(section.rows.length);
+        section.rows.push(row);
+        this.updateSection.emit(section);
     }
 
     openSetting(section: FormSection) {
