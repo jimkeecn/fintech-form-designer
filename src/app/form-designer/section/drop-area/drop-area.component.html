@@ -1,9 +1,9 @@
 <div
-    class="tw-w-full tw-p-4 tw-box-border"
+    class="tw-w-full tw-p-4 tw-box-border tw-rounded-lg tw-bg-white tw-transition-all tw-duration-300 tw-ease-in-out"
     id="ffb-default-section-drop-area"
     [ngClass]="{
-        'tw-border-blue-400 tw-border-solid': isDraggingOver,
-        'tw-border-dotted': !isDraggingOver
+        'tw-shadow-lg': isDraggingOver,
+        'tw-shadow-none': !isDraggingOver
     }"
     cdkDropList
     [cdkDropListConnectedTo]="['ffb-report-builder-components']"
