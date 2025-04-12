@@ -1,3 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+
 export interface DragableCategory {
     title: string;
     child: DragableItem[];
@@ -15,7 +18,10 @@ export const DRAGABLE_LIST: DragableCategory[] = [
     {
         key: 'section',
         title: 'Layout',
-        child: [{ title: 'Section', icon: 'pi pi-th-large', key: 'section' }]
+        child: [
+            { title: 'Section', icon: 'pi pi-th-large', key: 'section' },
+            { title: 'Row', icon: 'pi pi-minus', key: 'row' }
+        ]
     },
     {
         key: 'basic',
@@ -35,3 +41,31 @@ export const DRAGABLE_LIST: DragableCategory[] = [
         child: []
     }
 ];
+
+export enum DragTitleEnum {
+    Section = 'section',
+    Row = 'row'
+}
+
+export interface FormConfig {
+    key?: string;
+    sections: FormSection[];
+}
+
+export interface FormSection {
+    key?: string;
+    index: string;
+    title: string;
+    description: string;
+    row: FormlyFieldConfig[];
+}
+
+export function createNewFormSection(index: string): FormSection {
+    return {
+        key: uuidv4(),
+        index: index,
+        title: '',
+        description: '',
+        row: []
+    } as FormSection;
+}

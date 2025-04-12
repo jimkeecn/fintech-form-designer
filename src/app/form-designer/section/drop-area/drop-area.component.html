@@ -1,0 +1,16 @@
+<div
+    class="tw-w-full tw-p-4 tw-box-border"
+    id="ffb-default-section-drop-area"
+    [ngClass]="{
+        'tw-border-blue-400 tw-border-solid': isDraggingOver,
+        'tw-border-dotted': !isDraggingOver
+    }"
+    cdkDropList
+    [cdkDropListConnectedTo]="['ffb-report-builder-components']"
+    [cdkDropListEnterPredicate]="sectionPredict"
+    (cdkDropListDropped)="drop($event)"
+    (cdkDropListEntered)="isDraggingOver = true"
+    (cdkDropListExited)="isDraggingOver = false"
+>
+    {{ !isDraggingOver ? 'Place new section here' : 'Please release to create a new section' }}
+</div>
