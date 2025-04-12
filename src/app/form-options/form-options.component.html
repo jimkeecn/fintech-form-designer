@@ -3,7 +3,7 @@
     class="tw-mb-6"
     cdkDropList
     cdkDropListSortingDisabled
-    [cdkDropListConnectedTo]="['ffb-default-section-drop-area']"
+    [cdkDropListConnectedTo]="(formService.optionConnectTo | async) || []"
     [cdkDropListEnterPredicate]="forbidToEnter"
 >
     @for(category of reportOptions; track category.title;){

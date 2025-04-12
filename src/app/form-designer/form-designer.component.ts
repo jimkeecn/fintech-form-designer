@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormRootService } from '../root-services/form-root-service.service';
+import { DragableItem, DragTitleEnum } from '../models/dragable-list';
+import { CdkDrag } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'ffb-form-designer',
@@ -17,5 +19,15 @@ export class FormDesignerComponent implements OnInit {
         this.formService.form$.subscribe((x) => {
             console.log(x);
         });
+    }
+
+    rowEnterPredict = (drag: CdkDrag): boolean => {
+        const data = drag.data as DragableItem;
+        return data.key === DragTitleEnum.Row;
+    };
+
+    rowDropped(section: any, id?: string): void {
+        section.isDraggingOver = false;
+        console.log('row dropped', id);
     }
 }

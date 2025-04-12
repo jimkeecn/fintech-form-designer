@@ -8,6 +8,10 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class FormRootService {
     private _form = new BehaviorSubject<FormConfig>(this.initForm());
+    private _optionConnectTo = new BehaviorSubject<string[]>([
+        'ffb-default-section-drop-area',
+        'ffb-default-section-row-drop-area'
+    ]);
 
     constructor() {}
 
@@ -20,14 +24,24 @@ export class FormRootService {
 
     addNewSection() {
         const form = { ...this._form.value };
+        const newSection = createNewFormSection(form.sections.length);
+        form.sections?.push(newSection);
+        this._form.next(form);
+        if (newSection.key) this.addOptionConenctTo(newSection.key);
+    }
 
-        form.sections?.push(createNewFormSection(form.sections.length));
-        if (form.sections?.length > 0) {
-            this._form.next(form);
-        }
+    addOptionConenctTo(id: string) {
+        if (!id) return;
+        const values = [...this._optionConnectTo.value];
+        values.push(id);
+        this._optionConnectTo.next(values);
     }
 
     get form$(): Observable<FormConfig> {
         return this._form.asObservable();
+    }
+
+    get optionConnectTo(): Observable<string[]> {
+        return this._optionConnectTo.asObservable();
     }
 }

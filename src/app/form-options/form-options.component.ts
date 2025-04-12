@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DragableCategory } from '../models/dragable-list';
+import { FormRootService } from '../root-services/form-root-service.service';
 
 @Component({
     selector: 'ffb-form-options',
@@ -12,4 +13,6 @@ export class FormOptionsComponent {
     forbidToEnter(): boolean {
         return false;
     }
+
+    constructor(public formService: FormRootService) {}
 }

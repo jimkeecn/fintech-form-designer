@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { ExternalExpr } from '@angular/compiler';
 
 export interface DragableCategory {
     title: string;
@@ -47,17 +48,26 @@ export enum DragTitleEnum {
     Row = 'row'
 }
 
+export interface BaseConfig {
+    isDraggingOver?: boolean;
+}
+
 export interface FormConfig {
     key?: string;
     sections: FormSection[];
 }
 
-export interface FormSection {
+export interface FormSection extends BaseConfig {
     key?: string;
     index: number;
     title: string;
     description: string;
-    row: FormlyFieldConfig[];
+    row: FormRow[];
+}
+
+export interface FormRow extends FormlyFieldConfig {
+    ffb_isDraggingOver: boolean;
+    ffb_index: number;
 }
 
 export function createNewFormSection(index: number): FormSection {

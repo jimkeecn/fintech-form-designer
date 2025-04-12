@@ -10,7 +10,22 @@
             </button>
         </ng-template>
         <p class="tw-text-xs" [innerHTML]="section.description"></p>
-        <div></div>
+        <div
+            class="tw-w-full tw-p-4 tw-box-border"
+            [ngClass]="{
+                'tw-border-blue-400 tw-border-solid': section.isDraggingOver,
+                'tw-border-dotted': !section.isDraggingOver
+            }"
+            cdkDropList
+            [cdkDropListEnterPredicate]="rowEnterPredict"
+            [cdkDropListConnectedTo]="['ffb-report-builder-components']"
+            (cdkDropListEntered)="section.isDraggingOver = true"
+            (cdkDropListExited)="section.isDraggingOver = false"
+            (cdkDropListDropped)="rowDropped(section, section.key)"
+            [id]="section.key ?? 'ffb-default-section-row-droparea'"
+        >
+            {{ !section.isDraggingOver ? 'Place new row here' : 'Please release to create a new row' }}
+        </div>
     </p-panel>
     }
     <ffb-section-drop-area (dropped)="sectionEmit()"></ffb-section-drop-area>
