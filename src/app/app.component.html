@@ -1,12 +1,10 @@
 <div class="tw-grid tw-grid-cols-[300px_1fr_300px] tw-h-screen tw-overflow-hidden tw-bg-gray-100 tw-gap-4">
     <!-- Left Panel: Toolbox -->
     <div class="tw-p-4 tw-bg-white tw-h-full tw-overflow-auto">
-        <ffb-report-options [reportOptions]="DRAGABLE_LIST"></ffb-report-options>
+        <ffb-form-options [reportOptions]="DRAGABLE_LIST"></ffb-form-options>
     </div>
     <!-- Middle Panel: Designer -->
-    <div class="tw-p-4 tw-bg-white tw-h-full tw-z-[999]" cdkDropList id="ffb-report-builder-designer">
-        <span>23</span>
-    </div>
+    <div class="tw-p-4 tw-bg-white tw-h-full" cdkDropList id="ffb-report-builder-designer"></div>
 
     <!-- Right Panel: Optional -->
     <div id="option" class="tw-p-4 tw-bg-white"></div>

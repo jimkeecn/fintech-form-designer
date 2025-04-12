@@ -10,10 +10,10 @@ import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { ReportOptionsComponent } from './report-options/report-options.component';
+import { FormOptionsComponent } from './form-options/form-options.component';
 
 @NgModule({
-    declarations: [AppComponent, ReportOptionsComponent],
+    declarations: [AppComponent, FormOptionsComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
