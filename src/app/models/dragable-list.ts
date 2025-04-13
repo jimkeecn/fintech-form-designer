@@ -62,7 +62,7 @@ export enum DragTitleEnum {
 }
 
 export interface BaseConfig {
-    ffw_key?: string;
+    ffw_key: string;
     ffw_index?: number;
     ffw_isDraggingOver?: boolean;
 }
@@ -85,7 +85,9 @@ export interface FormRow extends BaseConfig {
     fieldGroupClassName: string;
 }
 
-export interface FormField extends BaseConfig {}
+export interface FormField extends BaseConfig {
+    option: FormlyFieldConfig;
+}
 
 export function createNewFormSection(index: number): FormSection {
     return {
