@@ -39,7 +39,10 @@ export const DRAGABLE_LIST: DragableCategory[] = [
     {
         ffw_key: 'advanced',
         title: 'Advanced Fields',
-        child: []
+        child: [
+            { title: 'Name Row', icon: 'pi pi-users', ffw_key: 'ffb-name' },
+            { title: 'Date Row', icon: 'pi pi-calendar', ffw_key: 'ffb-date' }
+        ]
     }
 ];
 
@@ -51,6 +54,35 @@ export const FIELD_OPTION_LIST: FormlyFieldConfig[] = [
             label: 'Input',
             placeholder: 'Placeholder',
             description: 'Description'
+        }
+    },
+    {
+        key: 'ffb-name',
+        type: 'input',
+        props: {
+            label: 'First Name',
+            placeholder: 'First Name',
+            description: 'Person first name',
+            required: true
+        }
+    },
+    {
+        key: 'ffb-name',
+        type: 'input',
+        props: {
+            label: 'Middle Name',
+            placeholder: 'Middle Name',
+            description: 'Person middle name'
+        }
+    },
+    {
+        key: 'ffb-name',
+        type: 'input',
+        props: {
+            label: 'Last Name',
+            placeholder: 'Last Name',
+            description: 'Person last name',
+            required: true
         }
     }
 ];

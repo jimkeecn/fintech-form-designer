@@ -11,7 +11,7 @@
         <button class="p-panel-header-icon p-link mr-2">
             <span class="pi pi-clone"></span>
         </button>
-        <button class="p-panel-header-icon p-link mr-2" (click)="openSetting(section)">
+        <button class="p-panel-header-icon p-link mr-2" (click)="openSectionSetting(section)">
             <span class="pi pi-cog"></span>
         </button>
     </ng-template>
@@ -19,7 +19,7 @@
     <p-divider />
     @for(row of section.rows; track row.ffw_key){
     <div
-        class="tw-w-full tw-box-border tw-border tw-mb-4 tw-py-3 tw-text-center"
+        class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center"
         [id]="row.ffw_key"
         cdkDropList
         [cdkDropListEnterPredicate]="fieldEnterPredict"
@@ -29,12 +29,12 @@
         (cdkDropListDropped)="fieldDropped($event, section, row.ffw_key)"
     >
         @if(row.hasConfig){
-        <form>
+        <div>
             <formly-form [fields]="formlyFieldsMap.get(row.ffw_key) || []"></formly-form>
-        </form>
+        </div>
         }@else {
 
-        {{ !row.ffw_isDraggingOver ? 'Place new fields here' : 'Please release to create a new field' }}
+        {{ !row.ffw_isDraggingOver ? 'Place new fields here' : 'Please release to create new field' }}
         }
     </div>
     }
@@ -51,7 +51,7 @@
         (cdkDropListEntered)="section.ffw_isDraggingOver = true"
         (cdkDropListExited)="section.ffw_isDraggingOver = false"
         (cdkDropListDropped)="rowDropped(section, section.ffw_key)"
-        [id]="section.ffw_key ?? 'ffb-default-section-row-droparea'"
+        [id]="section.ffw_key"
     >
         {{ !section.ffw_isDraggingOver ? 'Place new row here' : 'Please release to create a new row' }}
     </div>

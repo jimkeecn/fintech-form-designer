@@ -24,16 +24,20 @@ body {
     padding: 0;
     margin: 0;
 }
-// .p-field {
-//     display: flex;
-//     flex-direction: column;
-//     @apply tw-gap-3;
+.p-field {
+    display: flex;
+    flex-direction: column;
+    @apply tw-gap-3;
 
-//     .p-component.p-element {
-//         width: 100%;
-//         box-sizing: border-box;
-//     }
-// }
+    .p-component.p-element {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    label {
+        text-align: left;
+    }
+}
 
 .ffb-section-row {
     @apply tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4;

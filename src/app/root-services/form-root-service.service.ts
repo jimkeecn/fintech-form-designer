@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { createNewFormSection, FormConfig, FormSection } from '../models/dragable-list';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import { cloneDeep } from 'lodash';
 
 @Injectable({
     providedIn: 'root'
@@ -23,7 +24,7 @@ export class FormRootService {
     }
 
     addNewSection() {
-        const form = { ...this._form.value };
+        const form = cloneDeep(this._form.value);
         const newSection = createNewFormSection(form.sections.length);
         form.sections?.push(newSection);
         this._form.next(form);
@@ -32,7 +33,7 @@ export class FormRootService {
 
     swapSection(sections: any[]) {
         if (sections.length == 0) return;
-        const form = { ...this._form.value };
+        const form = cloneDeep(this._form.value);
         sections.forEach((section, index) => {
             section.index = index;
         });
@@ -78,7 +79,7 @@ export class FormRootService {
      */
     updateSection(section: FormSection): void {
         if (!section) return;
-        const form = { ...this._form.value };
+        const form = cloneDeep(this._form.value);
         form.sections.forEach((sec, i) => {
             if (sec.ffw_key == section.ffw_key) sec = section;
         });

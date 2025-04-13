@@ -22,6 +22,7 @@ import { SectionConfigDialogComponent } from '../section-config-dialog/section-c
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
+import { cloneDeep } from 'lodash';
 
 @Component({
     selector: 'ffb-config-panel',
@@ -53,19 +54,20 @@ export class ConfigPanelComponent implements OnInit {
     rowDropped(section: FormSection, id?: string): void {
         section.ffw_isDraggingOver = false;
         const row = createNewRow(section.rows.length);
-        if (!this.checkPreviousRow(section.rows[section.rows.length]) && section.rows.length > 0) return;
+        if (!this.checkPreviousRow(section.rows)) return;
         section.rows.push(row);
         this.updateSection.emit(section);
     }
 
-    private checkPreviousRow(row: FormRow) {
-        if (row && row.fieldGroup && row.fieldGroup?.length > 0) return true;
-        return false;
+    private checkPreviousRow(rows: FormRow[]): boolean {
+        if (rows.length === 0) return true;
+        if (rows[rows.length - 1].fieldGroup.length === 0) return false;
+        return true;
     }
 
-    openSetting(section: FormSection) {
+    openSectionSetting(section: FormSection) {
         this.ref = this.dialogService.open(SectionConfigDialogComponent, {
-            header: 'Select a Product',
+            header: 'Section Setting',
             data: section,
             width: '50vw',
             modal: true,
@@ -77,7 +79,6 @@ export class ConfigPanelComponent implements OnInit {
 
         this.ref.onClose.subscribe((data) => {
             if (data) {
-                console.log(data);
                 section.description = data.description;
                 section.title = data.title;
                 this.cRef.markForCheck();
@@ -98,28 +99,29 @@ export class ConfigPanelComponent implements OnInit {
         const item = $event.item.data;
         const row = section?.rows.find((x) => x.ffw_key === rowId);
         if (row?.fieldGroup && row?.fieldGroup?.length > 2) return;
-        const option = this.getFieldConfiguration(item.ffw_key);
-        console.log('found option', option);
-        if (option) {
-            option.key = uuidv4();
-            console.log('found option 2', option);
-            row?.fieldGroup?.push({
-                ffw_key: item.ffw_key,
-                option
+        console.log('original list', FIELD_OPTION_LIST);
+        const options = this.getFieldConfiguration(item.ffw_key);
+        if (options && options.length > 0) {
+            options.forEach((option) => {
+                option.key = uuidv4();
+                row?.fieldGroup?.push({
+                    ffw_key: item.ffw_key,
+                    option
+                });
             });
             if (row) {
                 row.hasConfig = true;
                 this.getFormlyFields(row);
             }
-            console.log('field dropped', item, section, rowId);
             this.updateSection.emit(section);
         }
     }
 
-    private getFieldConfiguration(key: string): FormlyFieldConfig | null {
-        const option = FIELD_OPTION_LIST.find((x) => x.key === key);
-        if (!option) return null;
-        return { ...option };
+    /** per option from left panel can sometime contains multiple fields. */
+    private getFieldConfiguration(key: string): FormlyFieldConfig[] {
+        const options = FIELD_OPTION_LIST.filter((x) => x.key === key);
+        if (!options) return [];
+        return cloneDeep(options);
     }
 
     formlyFieldsMap = new Map<string, FormlyFieldConfig[]>();
