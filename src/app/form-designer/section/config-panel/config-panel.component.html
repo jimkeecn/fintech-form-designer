@@ -19,7 +19,7 @@
     <p-divider />
     @for(row of section.rows; track row.ffw_key){
     <div
-        class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center"
+        class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center tw-relative"
         [id]="row.ffw_key"
         cdkDropList
         [cdkDropListEnterPredicate]="fieldEnterPredict"
@@ -29,6 +29,14 @@
         (cdkDropListDropped)="fieldDropped($event, section, row.ffw_key)"
     >
         @if(row.hasConfig){
+        <span class="tw-absolute tw-top-0 tw-right-3 tw-flex tw-gap-3 tw-text-sm">
+            <button class="p-panel-header-icon p-link">
+                <span class="pi pi-cog"></span>
+            </button>
+            <button class="p-panel-header-icon p-link tw-text-red-700" (click)="deleteRow(section, row.ffw_key)">
+                <span class="pi pi-trash"></span>
+            </button>
+        </span>
         <div>
             <formly-form [fields]="formlyFieldsMap.get(row.ffw_key) || []"></formly-form>
         </div>

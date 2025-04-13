@@ -23,6 +23,7 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { cloneDeep } from 'lodash';
+import { MenuItem } from 'primeng/api';
 
 @Component({
     selector: 'ffb-config-panel',
@@ -35,6 +36,8 @@ export class ConfigPanelComponent implements OnInit {
     @Input() section!: FormSection;
     @Input() sectionList: any[] = [];
     @Output() updateSection = new EventEmitter();
+
+    formlyFieldsMap = new Map<string, FormlyFieldConfig[]>();
     ref: DynamicDialogRef | undefined;
 
     constructor(public dialogService: DialogService, private cRef: ChangeDetectorRef) {}
@@ -56,6 +59,15 @@ export class ConfigPanelComponent implements OnInit {
         const row = createNewRow(section.rows.length);
         if (!this.checkPreviousRow(section.rows)) return;
         section.rows.push(row);
+        this.updateSection.emit(section);
+    }
+
+    deleteRow(section: FormSection, rowId: string) {
+        section.rows.splice(
+            section.rows.findIndex((x) => x.ffw_key === rowId),
+            1
+        );
+        this.formlyFieldsMap.delete(rowId);
         this.updateSection.emit(section);
     }
 
@@ -93,14 +105,15 @@ export class ConfigPanelComponent implements OnInit {
 
     /*** When a new field dropped
      * conditional check if there is matching option
-     * if the group contains less than 3
+     * if the fieldGroup contains origin + dropped group more than 3, abort
+     * each row can only have maximum of 3 fields
      */
     fieldDropped($event: any, section?: FormSection, rowId?: string): void {
         const item = $event.item.data;
         const row = section?.rows.find((x) => x.ffw_key === rowId);
-        if (row?.fieldGroup && row?.fieldGroup?.length > 2) return;
-        console.log('original list', FIELD_OPTION_LIST);
         const options = this.getFieldConfiguration(item.ffw_key);
+        if (row?.fieldGroup && row?.fieldGroup?.length + options.length > 3) return;
+
         if (options && options.length > 0) {
             options.forEach((option) => {
                 option.key = uuidv4();
@@ -123,8 +136,6 @@ export class ConfigPanelComponent implements OnInit {
         if (!options) return [];
         return cloneDeep(options);
     }
-
-    formlyFieldsMap = new Map<string, FormlyFieldConfig[]>();
 
     private getFormlyFields(row: FormRow) {
         if (!row.ffw_key) return;

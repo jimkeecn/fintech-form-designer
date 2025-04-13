@@ -21,7 +21,6 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.formService.form$.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe((x) => {
             this.sectionList = x.sections;
-            console.log('value changed', x);
         });
     }
 
