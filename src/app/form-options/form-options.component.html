@@ -11,12 +11,12 @@
         {{ category.title }}
     </p>
 
-    <div class="tw-grid tw-grid-cols-2 tw-gap-4 tw-mb-4">
+    <div class="tw-grid tw-grid-cols-1 tw-gap-4 tw-mb-4">
         @for(item of category.child;track item.title){
         <div
             cdkDrag
             [cdkDragData]="item"
-            class="tw-flex tw-items-center tw-gap-2 tw-border tw-bg-gray-100 tw-p-3 tw-rounded tw-cursor-move tw-h-20"
+            class="tw-flex tw-items-center tw-gap-2 tw-border tw-bg-gray-100 tw-p-2 tw-rounded tw-cursor-move tw-h-[40px]"
         >
             <i [class]="item.icon"></i>
             <span>{{ item.title }}</span>
