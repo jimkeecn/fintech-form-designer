@@ -59,7 +59,15 @@ export class FormRootService {
         }
     }
 
-    private addOptionConenctToAsGroup(ids: string[]) {}
+    private addOptionConenctToAsGroup(ids: string[]) {
+        if (!ids?.length) return;
+
+        const currentIds = new Set(this._optionConnectTo.value);
+
+        ids.forEach((id) => currentIds.add(id));
+
+        this._optionConnectTo.next(Array.from(currentIds));
+    }
 
     /**
      *
@@ -80,6 +88,7 @@ export class FormRootService {
             if (sec.ffw_key && sec.ffw_key.length > 0) ids.push(sec.ffw_key);
         });
         if (ids.length > 0) this.addOptionConenctToAsGroup(ids);
+        console.log('section updated', this._form.value, this._optionConnectTo.value);
     }
 
     get form$(): Observable<FormConfig> {

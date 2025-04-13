@@ -8,7 +8,15 @@ import {
     Output
 } from '@angular/core';
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { createNewRow, DragableItem, DragTitleEnum, FormRow, FormSection } from '../../../models/dragable-list';
+import {
+    createNewRow,
+    DragableItem,
+    DragTitleEnum,
+    FIELD_OPTION_LIST,
+    FormField,
+    FormRow,
+    FormSection
+} from '../../../models/dragable-list';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SectionConfigDialogComponent } from '../section-config-dialog/section-config-dialog.component';
 
@@ -71,5 +79,32 @@ export class ConfigPanelComponent implements OnInit {
                 this.cRef.markForCheck();
             }
         });
+    }
+
+    fieldEnterPredict = (drag: CdkDrag): boolean => {
+        const data = drag.data as DragableItem;
+        return data.ffw_key !== DragTitleEnum.Row && data.ffw_key !== DragTitleEnum.Section;
+    };
+
+    /*** When a new field dropped
+     * conditional check if there is matching option
+     * if the group contains less than 3
+     */
+    fieldDropped($event: any, section?: FormSection, rowId?: string): void {
+        const item = $event.item.data;
+        console.log('field dropped', item, section, rowId);
+        const option = this.getFieldConfiguration(item.ffw_key);
+        if (!option) return;
+        const row = section?.rows.find((x) => x.ffw_key === rowId);
+        if (row?.fieldGroup && row?.fieldGroup?.length > 2) return;
+        row?.fieldGroup?.push(option);
+        if (row && row.hasConfig) row.hasConfig = true;
+        this.updateSection.emit(section);
+    }
+
+    private getFieldConfiguration(key: string): FormField | null {
+        const option = FIELD_OPTION_LIST.find((x) => x.ffw_key === key);
+        if (!option) return null;
+        return option;
     }
 }

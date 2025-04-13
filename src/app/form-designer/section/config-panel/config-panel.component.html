@@ -18,8 +18,19 @@
     <p class="tw-text-xs" [innerHTML]="section.description"></p>
     <p-divider />
     @for(row of section.rows; track row.ffw_key){
-    <div class="tw-w-full tw-h-[60px] tw-box-border tw-border tw-border-dotted tw-mb-4" [id]="row.ffw_key">
-        Place fields here
+    <div
+        class="tw-w-full tw-box-border tw-border tw-border-dotted tw-mb-4 tw-py-3 tw-text-center"
+        [id]="row.ffw_key ?? 'ffb-default-section-row-field-droparea'"
+        cdkDropList
+        [cdkDropListEnterPredicate]="fieldEnterPredict"
+        [cdkDropListConnectedTo]="['ffb-report-builder-components']"
+        (cdkDropListEntered)="row.ffw_isDraggingOver = true"
+        (cdkDropListExited)="row.ffw_isDraggingOver = false"
+        (cdkDropListDropped)="fieldDropped($event, section, row.ffw_key)"
+    >
+        @if(row.hasConfig){ }@else {
+        {{ !row.ffw_isDraggingOver ? 'Place new fields here' : 'Please release to create a new field' }}
+        }
     </div>
     }
 

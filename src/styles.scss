@@ -35,6 +35,10 @@ body {
     }
 }
 
+.ffb-section-row {
+    @apply tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4;
+}
+
 // [cdkDropList] {
 //     outline: 2px dashed red;
 // }

@@ -43,9 +43,23 @@ export const DRAGABLE_LIST: DragableCategory[] = [
     }
 ];
 
+export const FIELD_OPTION_LIST: FormField[] = [
+    {
+        ffw_key: 'text-input',
+        key: 'Input',
+        type: 'input',
+        props: {
+            label: 'Input',
+            placeholder: 'Placeholder',
+            description: 'Description'
+        }
+    }
+];
+
 export enum DragTitleEnum {
     Section = 'section',
-    Row = 'row'
+    Row = 'row',
+    TEXT_INPUT = 'text-input'
 }
 
 export interface BaseConfig {
@@ -66,7 +80,11 @@ export interface FormSection extends BaseConfig {
     rows: FormRow[];
 }
 
-export interface FormRow extends FormlyFieldConfig, BaseConfig {}
+export interface FormRow extends FormlyFieldConfig, BaseConfig {
+    hasConfig?: boolean;
+}
+
+export interface FormField extends BaseConfig, FormlyFieldConfig {}
 
 export function createNewFormSection(index: number): FormSection {
     return {
@@ -85,7 +103,8 @@ export function createNewRow(index: number): Partial<FormRow> {
         ffw_key: uuidv4(),
         ffw_index: index,
         ffw_isDraggingOver: false,
-        fieldGroupClassName: 'row',
-        fieldGroup: []
+        fieldGroupClassName: 'ffb-section-row',
+        fieldGroup: [],
+        hasConfig: false
     };
 }
