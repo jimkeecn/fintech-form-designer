@@ -43,10 +43,9 @@ export const DRAGABLE_LIST: DragableCategory[] = [
     }
 ];
 
-export const FIELD_OPTION_LIST: FormField[] = [
+export const FIELD_OPTION_LIST: FormlyFieldConfig[] = [
     {
-        ffw_key: 'text-input',
-        key: 'Input',
+        key: 'text-input',
         type: 'input',
         props: {
             label: 'Input',
@@ -80,11 +79,13 @@ export interface FormSection extends BaseConfig {
     rows: FormRow[];
 }
 
-export interface FormRow extends FormlyFieldConfig, BaseConfig {
+export interface FormRow extends BaseConfig {
     hasConfig?: boolean;
+    fieldGroup: FormField[];
+    fieldGroupClassName: string;
 }
 
-export interface FormField extends BaseConfig, FormlyFieldConfig {}
+export interface FormField extends BaseConfig {}
 
 export function createNewFormSection(index: number): FormSection {
     return {
@@ -98,7 +99,7 @@ export function createNewFormSection(index: number): FormSection {
     } as FormSection;
 }
 
-export function createNewRow(index: number): Partial<FormRow> {
+export function createNewRow(index: number): FormRow {
     return {
         ffw_key: uuidv4(),
         ffw_index: index,

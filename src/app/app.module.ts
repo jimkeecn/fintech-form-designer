@@ -30,9 +30,9 @@ import { DialogService } from 'primeng/dynamicdialog/dialogservice';
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
+        FormlyPrimeNGModule,
         FormlyModule.forRoot(),
         ReactiveFormsModule,
-        FormlyPrimeNGModule,
         DragDropModule,
         FormlyComponentModule
     ],

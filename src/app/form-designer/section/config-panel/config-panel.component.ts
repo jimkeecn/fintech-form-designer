@@ -19,6 +19,8 @@ import {
 } from '../../../models/dragable-list';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SectionConfigDialogComponent } from '../section-config-dialog/section-config-dialog.component';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'ffb-config-panel',
@@ -32,6 +34,7 @@ export class ConfigPanelComponent implements OnInit {
     @Input() sectionList: any[] = [];
     @Output() updateSection = new EventEmitter();
     ref: DynamicDialogRef | undefined;
+
     constructor(public dialogService: DialogService, private cRef: ChangeDetectorRef) {}
 
     ngOnInit(): void {}
@@ -93,18 +96,32 @@ export class ConfigPanelComponent implements OnInit {
     fieldDropped($event: any, section?: FormSection, rowId?: string): void {
         const item = $event.item.data;
         console.log('field dropped', item, section, rowId);
-        const option = this.getFieldConfiguration(item.ffw_key);
-        if (!option) return;
         const row = section?.rows.find((x) => x.ffw_key === rowId);
         if (row?.fieldGroup && row?.fieldGroup?.length > 2) return;
-        row?.fieldGroup?.push(option);
-        if (row && row.hasConfig) row.hasConfig = true;
+        row?.fieldGroup?.push({
+            ffw_key: item.ffw_key
+        });
+        if (row) row.hasConfig = true;
         this.updateSection.emit(section);
     }
 
-    private getFieldConfiguration(key: string): FormField | null {
-        const option = FIELD_OPTION_LIST.find((x) => x.ffw_key === key);
+    private getFieldConfiguration(key: string): FormlyFieldConfig | null {
+        const option = FIELD_OPTION_LIST.find((x) => x.key === key);
         if (!option) return null;
         return option;
+    }
+
+    getFormlyFields(row: FormRow) {
+        let formlyRow: FormlyFieldConfig = {};
+        formlyRow.fieldGroupClassName = row.fieldGroupClassName;
+        formlyRow.fieldGroup = [];
+        row.fieldGroup.forEach((field) => {
+            if (field.ffw_key) {
+                const option = this.getFieldConfiguration(field.ffw_key);
+                if (option) formlyRow.fieldGroup?.push(option);
+            }
+        });
+
+        return [formlyRow];
     }
 }
