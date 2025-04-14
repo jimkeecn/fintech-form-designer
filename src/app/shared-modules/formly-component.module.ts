@@ -10,6 +10,12 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { FormlyDatepickerModule } from '@ngx-formly/primeng/datepicker';
+import { FormlyInputModule } from '@ngx-formly/primeng/input';
+import { FormlySelectModule } from '@ngx-formly/primeng/select';
+import { FormlyTextAreaModule } from '@ngx-formly/primeng/textarea';
+import { FormlyCheckboxModule } from '@ngx-formly/primeng/checkbox';
+import { FormlyRadioModule } from '@ngx-formly/primeng/radio';
+import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
 @NgModule({
     declarations: [],
     imports: [CommonModule],
@@ -23,7 +29,13 @@ import { FormlyDatepickerModule } from '@ngx-formly/primeng/datepicker';
         SplitButtonModule,
         ConfirmDialogModule,
         ToastModule,
-        FormlyDatepickerModule
+        FormlyDatepickerModule,
+        FormlyInputModule,
+        FormlySelectModule,
+        FormlyTextAreaModule,
+        FormlyCheckboxModule,
+        FormlyRadioModule,
+        FormlyFormFieldModule
     ]
 })
 export class FormlyComponentModule {}

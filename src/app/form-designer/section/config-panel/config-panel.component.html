@@ -19,7 +19,10 @@
     <p-divider />
     @for(row of section.rows; track row.ffw_key; ){
     <div
-        class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center tw-relative"
+        class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center tw-relative tw-transition-all tw-duration-150 tw-ease-in"
+        [ngClass]="{
+            'tw-ring-2 tw-ring-blue-500 tw-bg-blue-50 tw-shadow-md': row.ffw_isDraggingOver
+        }"
         [id]="row.ffw_key"
         cdkDropList
         [cdkDropListData]="row"
@@ -48,9 +51,7 @@
                 <span class="pi pi-trash"></span>
             </button>
         </span>
-        <div>
-            <formly-form [fields]="formlyFieldsMap.get(row.ffw_key) || []"></formly-form>
-        </div>
+        <formly-form [fields]="formlyFieldsMap.get(row.ffw_key) || []"></formly-form>
         }@else {
 
         {{ !row.ffw_isDraggingOver ? 'Place new fields here' : 'Please release to create new field' }}

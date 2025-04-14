@@ -190,6 +190,7 @@ export class ConfigPanelComponent implements OnInit {
             });
             if (row) {
                 row.hasConfig = true;
+                row.ffw_isDraggingOver = false;
                 this.getFormlyFields(row);
             }
             if (section) this.formRootService.updateSection(section);
