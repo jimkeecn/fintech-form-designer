@@ -29,10 +29,6 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
         this.formService.swapSection(this.sectionList);
     }
 
-    updateSection(section: FormSection): void {
-        this.formService.updateSection(section);
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

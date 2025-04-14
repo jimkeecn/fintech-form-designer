@@ -3,13 +3,10 @@
     cdkDropList
     [cdkDropListData]="sectionList"
     (cdkDropListDropped)="swapSection($event)"
+    [cdkDropListDisabled]="sectionList.length === 1"
 >
     @for(section of sectionList;track section.ffw_key) {
-    <ffb-config-panel
-        [section]="section"
-        [sectionList]="sectionList"
-        (updateSection)="updateSection($event)"
-    ></ffb-config-panel>
+    <ffb-config-panel [section]="section" [sectionList]="sectionList" [isFirst]="$first"></ffb-config-panel>
     }
     <ffb-section-drop-area (dropped)="sectionEmit()"></ffb-section-drop-area>
 </div>

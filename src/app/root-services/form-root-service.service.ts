@@ -70,6 +70,18 @@ export class FormRootService {
         this._optionConnectTo.next(Array.from(currentIds));
     }
 
+    private removeOptionConenctToAsGroup(ids: string[]) {
+        if (!ids?.length) return;
+        const currentIds = this._optionConnectTo.value;
+        ids.forEach((id) => {
+            currentIds.splice(
+                currentIds.findIndex((x) => x === id),
+                1
+            );
+        });
+        this._optionConnectTo.next(currentIds);
+    }
+
     /**
      *
      * @param section
@@ -89,7 +101,23 @@ export class FormRootService {
             if (sec.ffw_key && sec.ffw_key.length > 0) ids.push(sec.ffw_key);
         });
         if (ids.length > 0) this.addOptionConenctToAsGroup(ids);
-        console.log('section updated', this._form.value, this._optionConnectTo.value);
+    }
+
+    deleteSection(sectionId: string): void {
+        if (!sectionId) return;
+        const form = cloneDeep(this._form.value);
+        const section = form.sections.find((x) => x.ffw_key === sectionId);
+        const ids: string[] = []; //ids that need to be removed
+        if (!section) return;
+        section.rows.forEach((sec) => {
+            if (sec.ffw_key && sec.ffw_key.length > 0) ids.push(sec.ffw_key);
+        });
+        form.sections.splice(
+            form.sections.findIndex((x) => x.ffw_key === sectionId),
+            1
+        );
+        this._form.next(form);
+        this.removeOptionConenctToAsGroup(ids);
     }
 
     get form$(): Observable<FormConfig> {

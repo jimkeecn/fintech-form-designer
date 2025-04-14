@@ -7,6 +7,8 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { EditorModule } from 'primeng/editor';
 import { InputTextModule } from 'primeng/inputtext';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
     declarations: [],
     imports: [CommonModule],
@@ -17,7 +19,9 @@ import { SplitButtonModule } from 'primeng/splitbutton';
         DynamicDialogModule,
         EditorModule,
         InputTextModule,
-        SplitButtonModule
+        SplitButtonModule,
+        ConfirmDialogModule,
+        ToastModule
     ]
 })
 export class FormlyComponentModule {}

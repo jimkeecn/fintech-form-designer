@@ -1,23 +1,23 @@
 <p-panel [toggleable]="true" [header]="section.title" cdkDrag cdkDragLockAxis="y">
     <ng-template pTemplate="icons">
-        <button class="p-panel-header-icon p-link mr-2 tw-text-red-700">
-            <span class="pi pi-trash"></span>
+        <button class="p-panel-header-icon p-link mr-2" (click)="openSectionSetting(section)">
+            <span class="pi pi-cog"></span>
+        </button>
+        <button class="p-panel-header-icon p-link mr-2">
+            <span class="pi pi-clone"></span>
         </button>
         @if(sectionList.length > 1){
         <button class="p-panel-header-icon p-link mr-2" cdkDragHandle>
             <span class="pi pi-arrows-v"></span>
         </button>
         }
-        <button class="p-panel-header-icon p-link mr-2">
-            <span class="pi pi-clone"></span>
-        </button>
-        <button class="p-panel-header-icon p-link mr-2" (click)="openSectionSetting(section)">
-            <span class="pi pi-cog"></span>
+        <button class="p-panel-header-icon p-link mr-2 tw-text-red-700" (click)="deleteSectionSetting(section.ffw_key)">
+            <span class="pi pi-trash"></span>
         </button>
     </ng-template>
     <p class="tw-text-xs" [innerHTML]="section.description"></p>
     <p-divider />
-    @for(row of section.rows; track row.ffw_key){
+    @for(row of section.rows; track row.ffw_key; ){
     <div
         class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center tw-relative"
         [id]="row.ffw_key"
@@ -27,12 +27,22 @@
         (cdkDropListEntered)="row.ffw_isDraggingOver = true"
         (cdkDropListExited)="row.ffw_isDraggingOver = false"
         (cdkDropListDropped)="fieldDropped($event, section, row.ffw_key)"
+        cdkDrag
     >
         @if(row.hasConfig){
         <span class="tw-absolute tw-top-0 tw-right-3 tw-flex tw-gap-3 tw-text-sm">
             <button class="p-panel-header-icon p-link">
                 <span class="pi pi-cog"></span>
             </button>
+            @if(!$first){
+            <button class="p-panel-header-icon p-link mr-2" (click)="moveRowUp(section, $index, $first)">
+                <span class="pi pi-chevron-up"></span>
+            </button>
+            } @if(!$last){
+            <button class="p-panel-header-icon p-link mr-2" (click)="moveRowDown(section, $index, $last)">
+                <span class="pi pi-chevron-down"></span>
+            </button>
+            }
             <button class="p-panel-header-icon p-link tw-text-red-700" (click)="deleteRow(section, row.ffw_key)">
                 <span class="pi pi-trash"></span>
             </button>
@@ -44,6 +54,7 @@
 
         {{ !row.ffw_isDraggingOver ? 'Place new fields here' : 'Please release to create new field' }}
         }
+        <ng-template cdkDragPlaceholder> </ng-template>
     </div>
     }
 

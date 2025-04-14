@@ -13,17 +13,16 @@ import {
     DragableItem,
     DragTitleEnum,
     FIELD_OPTION_LIST,
-    FormField,
     FormRow,
     FormSection
 } from '../../../models/dragable-list';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SectionConfigDialogComponent } from '../section-config-dialog/section-config-dialog.component';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { v4 as uuidv4 } from 'uuid';
 import { cloneDeep } from 'lodash';
-import { MenuItem } from 'primeng/api';
+import { FormRootService } from '../../../root-services/form-root-service.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'ffb-config-panel',
@@ -35,47 +34,24 @@ import { MenuItem } from 'primeng/api';
 export class ConfigPanelComponent implements OnInit {
     @Input() section!: FormSection;
     @Input() sectionList: any[] = [];
-    @Output() updateSection = new EventEmitter();
+    @Input() isFirst!: boolean;
 
     formlyFieldsMap = new Map<string, FormlyFieldConfig[]>();
     ref: DynamicDialogRef | undefined;
 
-    constructor(public dialogService: DialogService, private cRef: ChangeDetectorRef) {}
+    constructor(
+        public dialogService: DialogService,
+        private cRef: ChangeDetectorRef,
+        private formRootService: FormRootService,
+        private confirmationService: ConfirmationService,
+        private messageService: MessageService
+    ) {}
 
     ngOnInit(): void {}
 
-    rowEnterPredict = (drag: CdkDrag): boolean => {
-        const data = drag.data as DragableItem;
-        return data.ffw_key === DragTitleEnum.Row;
-    };
-
-    /*** When row dropped at [place new row here]
-     * conditional check if there is no row, add a new row
-     * if there are rows, check the previous row has fieldGroup or not
-     * if no field group, refuse to add new row.
+    /**
+     * Section
      */
-    rowDropped(section: FormSection, id?: string): void {
-        section.ffw_isDraggingOver = false;
-        const row = createNewRow(section.rows.length);
-        if (!this.checkPreviousRow(section.rows)) return;
-        section.rows.push(row);
-        this.updateSection.emit(section);
-    }
-
-    deleteRow(section: FormSection, rowId: string) {
-        section.rows.splice(
-            section.rows.findIndex((x) => x.ffw_key === rowId),
-            1
-        );
-        this.formlyFieldsMap.delete(rowId);
-        this.updateSection.emit(section);
-    }
-
-    private checkPreviousRow(rows: FormRow[]): boolean {
-        if (rows.length === 0) return true;
-        if (rows[rows.length - 1].fieldGroup.length === 0) return false;
-        return true;
-    }
 
     openSectionSetting(section: FormSection) {
         this.ref = this.dialogService.open(SectionConfigDialogComponent, {
@@ -97,6 +73,88 @@ export class ConfigPanelComponent implements OnInit {
             }
         });
     }
+
+    deleteSectionSetting(sectionId: string) {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to proceed?',
+            header: 'Confirmation',
+            icon: 'pi pi-info-circle',
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.formRootService.deleteSection(sectionId);
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Removed',
+                    detail: 'section removed',
+                    life: 1000
+                });
+            },
+            reject: () => {}
+        });
+    }
+
+    /***
+     * Row
+     *
+     * When row dropped at [place new row here]
+     * conditional check if there is no row, add a new row
+     * if there are rows, check the previous row has fieldGroup or not
+     * if no field group, refuse to add new row.
+     */
+    rowDropped(section: FormSection, id?: string): void {
+        section.ffw_isDraggingOver = false;
+        const row = createNewRow(section.rows.length);
+        if (!this.checkPreviousRow(section.rows)) return;
+        section.rows.push(row);
+        this.formRootService.updateSection(section);
+    }
+
+    deleteRow(section: FormSection, rowId: string) {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to proceed?',
+            header: 'Confirmation',
+            icon: 'pi pi-info-circle',
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                section.rows.splice(
+                    section.rows.findIndex((x) => x.ffw_key === rowId),
+                    1
+                );
+                this.formlyFieldsMap.delete(rowId);
+                this.formRootService.updateSection(section);
+                this.formRootService.removeOptionConnectTo(rowId);
+                this.messageService.add({ severity: 'info', summary: 'Removed', detail: 'row removed', life: 1000 });
+            },
+            reject: () => {}
+        });
+    }
+
+    rowEnterPredict = (drag: CdkDrag): boolean => {
+        const data = drag.data as DragableItem;
+        return data.ffw_key === DragTitleEnum.Row;
+    };
+
+    moveRowUp(section: FormSection, index: number, isFirst: boolean) {
+        if (isFirst) return;
+        moveItemInArray(section.rows, index, index - 1);
+    }
+
+    moveRowDown(section: FormSection, index: number, isLast: boolean) {
+        if (isLast) return;
+        moveItemInArray(section.rows, index, index + 1);
+    }
+
+    private checkPreviousRow(rows: FormRow[]): boolean {
+        if (rows.length === 0) return true;
+        if (rows[rows.length - 1].fieldGroup.length === 0) return false;
+        return true;
+    }
+
+    /**
+     * Field
+     */
 
     fieldEnterPredict = (drag: CdkDrag): boolean => {
         const data = drag.data as DragableItem;
@@ -126,7 +184,7 @@ export class ConfigPanelComponent implements OnInit {
                 row.hasConfig = true;
                 this.getFormlyFields(row);
             }
-            this.updateSection.emit(section);
+            if (section) this.formRootService.updateSection(section);
         }
     }
 

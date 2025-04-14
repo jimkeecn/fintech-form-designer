@@ -15,8 +15,7 @@ import { FormlyComponentModule } from './shared-modules/formly-component.module'
 import { FormRootService } from './root-services/form-root-service.service';
 import { ConfigPanelComponent } from './form-designer/section/config-panel/config-panel.component';
 import { SectionConfigDialogComponent } from './form-designer/section/section-config-dialog/section-config-dialog.component';
-import { DialogService } from 'primeng/dynamicdialog/dialogservice';
-
+import { ConfirmationService, MessageService } from 'primeng/api';
 @NgModule({
     declarations: [
         AppComponent,
@@ -36,7 +35,7 @@ import { DialogService } from 'primeng/dynamicdialog/dialogservice';
         DragDropModule,
         FormlyComponentModule
     ],
-    providers: [FormRootService],
+    providers: [FormRootService, ConfirmationService, MessageService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
