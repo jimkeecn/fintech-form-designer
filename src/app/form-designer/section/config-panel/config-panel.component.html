@@ -22,6 +22,7 @@
         class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center tw-relative"
         [id]="row.ffw_key"
         cdkDropList
+        [cdkDropListData]="row"
         [cdkDropListEnterPredicate]="fieldEnterPredict"
         [cdkDropListConnectedTo]="['ffb-report-builder-components']"
         (cdkDropListEntered)="row.ffw_isDraggingOver = true"

@@ -50,6 +50,7 @@ export const FIELD_OPTION_LIST: FormlyFieldConfig[] = [
     {
         key: 'text-input',
         type: 'input',
+        className: 'ffb-field-default',
         props: {
             label: 'Input',
             placeholder: 'Placeholder',
@@ -57,8 +58,47 @@ export const FIELD_OPTION_LIST: FormlyFieldConfig[] = [
         }
     },
     {
+        key: 'textarea',
+        type: 'textarea',
+        className: 'ffb-field-default',
+        props: {
+            label: 'TextArea',
+            placeholder: 'Placeholder',
+            description: 'Description'
+        }
+    },
+    {
+        key: 'checkbox',
+        type: 'checkbox',
+        className: 'ffb-field-checkbox',
+        props: { label: 'Checkbox Label' }
+    },
+    {
+        key: 'dropdown',
+        type: 'select',
+        className: 'ffb-field-default',
+        props: {
+            label: 'Select',
+            placeholder: 'Placeholder',
+            description: 'Description'
+        }
+    },
+    {
+        key: 'date-picker',
+        type: 'datepicker',
+        className: 'ffb-field-default',
+        props: {
+            label: 'Select Date',
+            placeholder: 'dd/mm/yyyy',
+            description: 'Pick a date for your record',
+            showIcon: true,
+            dateFormat: 'dd/mm/yy'
+        }
+    },
+    {
         key: 'ffb-name',
         type: 'input',
+        className: 'ffb-field-default',
         props: {
             label: 'First Name',
             placeholder: 'First Name',
@@ -69,6 +109,7 @@ export const FIELD_OPTION_LIST: FormlyFieldConfig[] = [
     {
         key: 'ffb-name',
         type: 'input',
+        className: 'ffb-field-default',
         props: {
             label: 'Middle Name',
             placeholder: 'Middle Name',
@@ -78,6 +119,7 @@ export const FIELD_OPTION_LIST: FormlyFieldConfig[] = [
     {
         key: 'ffb-name',
         type: 'input',
+        className: 'ffb-field-default',
         props: {
             label: 'Last Name',
             placeholder: 'Last Name',
@@ -90,7 +132,14 @@ export const FIELD_OPTION_LIST: FormlyFieldConfig[] = [
 export enum DragTitleEnum {
     Section = 'section',
     Row = 'row',
-    TEXT_INPUT = 'text-input'
+    TEXT_INPUT = 'text-input',
+    TEXTAREA = 'textarea',
+    CHECKBOX = 'checkbox',
+    DROPDOWN = 'dropdown',
+    DATE_PICKER = 'date-picker',
+    FILE_UPLOAD = 'file-upload',
+    FFB_NAME = 'ffb-name',
+    FFB_DATE = 'ffb-date'
 }
 
 export interface BaseConfig {

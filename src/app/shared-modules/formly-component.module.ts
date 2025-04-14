@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { FormlyDatepickerModule } from '@ngx-formly/primeng/datepicker';
 @NgModule({
     declarations: [],
     imports: [CommonModule],
@@ -21,7 +22,8 @@ import { ToastModule } from 'primeng/toast';
         InputTextModule,
         SplitButtonModule,
         ConfirmDialogModule,
-        ToastModule
+        ToastModule,
+        FormlyDatepickerModule
     ]
 })
 export class FormlyComponentModule {}

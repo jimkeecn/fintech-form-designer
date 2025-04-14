@@ -7,7 +7,7 @@ import {
     OnInit,
     Output
 } from '@angular/core';
-import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
     createNewRow,
     DragableItem,
@@ -154,12 +154,20 @@ export class ConfigPanelComponent implements OnInit {
 
     /**
      * Field
+     * Checkbox apply to whole role, if there is a checkbox in the row, cannot add anything else
+     * if there is anything else in the row, cannot add checkbox
      */
 
-    fieldEnterPredict = (drag: CdkDrag): boolean => {
+    fieldEnterPredict(drag: CdkDrag, drop: CdkDropList<FormRow>): boolean {
+        const dropList = drop.data;
         const data = drag.data as DragableItem;
-        return data.ffw_key !== DragTitleEnum.Row && data.ffw_key !== DragTitleEnum.Section;
-    };
+        if (data.ffw_key === DragTitleEnum.CHECKBOX) {
+            return dropList.fieldGroup.length === 0;
+        } else {
+            const index = dropList.fieldGroup.findIndex((x) => x.ffw_key === DragTitleEnum.CHECKBOX);
+            return data.ffw_key !== DragTitleEnum.Row && data.ffw_key !== DragTitleEnum.Section && index == -1;
+        }
+    }
 
     /*** When a new field dropped
      * conditional check if there is matching option

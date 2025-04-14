@@ -24,14 +24,35 @@ body {
     padding: 0;
     margin: 0;
 }
-.p-field {
+
+.ffb-field-checkbox .p-field {
+    display: flex;
+    min-height: 50px;
+    @apply tw-gap-3;
+    .p-component.p-element {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    label {
+        text-align: left;
+    }
+}
+
+.ffb-field-default .p-field {
     display: flex;
     flex-direction: column;
     @apply tw-gap-3;
 
-    .p-component.p-element {
+    .p-component.p-element,
+    .p-inputwrapper {
         width: 100%;
         box-sizing: border-box;
+        text-align: left;
+    }
+
+    .p-datepicker-trigger {
+        width: 50px !important;
     }
 
     label {
