@@ -177,7 +177,6 @@ export class ConfigPanelComponent implements OnInit {
 
         this.ref.onClose.subscribe((data: FormRow | undefined) => {
             if (data) {
-                debugger;
                 const index = this.section.rows.findIndex((row) => row.ffw_key === key);
                 if (index !== -1) {
                     this.section.rows[index] = data;

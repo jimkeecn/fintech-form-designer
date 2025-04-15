@@ -35,6 +35,7 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     removeField(index: number, key: string) {
         this.data.fieldGroup.splice(index, 1);
         this.formMap.delete(key);
+        this.tabIndex = 0;
     }
 
     update() {
