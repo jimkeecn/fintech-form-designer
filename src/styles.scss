@@ -40,19 +40,15 @@ body {
 }
 
 .ffb-field-default {
-    width: 100%;
+    @apply tw-w-full;
 }
 
 .ffb-field-default .p-field {
-    display: flex;
-    flex-direction: column;
-    @apply tw-gap-3;
+    @apply tw-flex tw-flex-col tw-gap-3;
 
     .p-component.p-element,
     .p-inputwrapper {
-        width: 100%;
-        box-sizing: border-box;
-        text-align: left;
+        @apply tw-w-full tw-box-border tw-text-left;
     }
 
     .p-datepicker-trigger {
@@ -60,13 +56,17 @@ body {
     }
 
     label {
-        text-align: left;
+        @apply tw-text-left;
     }
 }
 
 .ffb-section-row {
     //@apply tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-4;
     @apply tw-flex tw-flex-nowrap tw-gap-4;
+}
+
+.ffb-none-header-dialog .p-dialog-header {
+    @apply tw-hidden;
 }
 
 // [cdkDropList] {

@@ -16,6 +16,8 @@ import { FormlyTextAreaModule } from '@ngx-formly/primeng/textarea';
 import { FormlyCheckboxModule } from '@ngx-formly/primeng/checkbox';
 import { FormlyRadioModule } from '@ngx-formly/primeng/radio';
 import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
+import { TabViewModule } from 'primeng/tabview';
+import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
     declarations: [],
     imports: [CommonModule],
@@ -35,7 +37,9 @@ import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
         FormlyTextAreaModule,
         FormlyCheckboxModule,
         FormlyRadioModule,
-        FormlyFormFieldModule
+        FormlyFormFieldModule,
+        TabViewModule,
+        TooltipModule
     ]
 })
 export class FormlyComponentModule {}

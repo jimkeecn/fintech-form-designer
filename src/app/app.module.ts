@@ -16,6 +16,8 @@ import { FormRootService } from './root-services/form-root-service.service';
 import { ConfigPanelComponent } from './form-designer/section/config-panel/config-panel.component';
 import { SectionConfigDialogComponent } from './form-designer/section/section-config-dialog/section-config-dialog.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { RowConfigDialogComponent } from './form-designer/section/row-config-dialog/row-config-dialog.component';
+import { FieldConfigComponent } from './form-designer/section/row-config-dialog/field-config/field-config.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -23,7 +25,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
         FormDesignerComponent,
         DropAreaComponent,
         ConfigPanelComponent,
-        SectionConfigDialogComponent
+        SectionConfigDialogComponent,
+        RowConfigDialogComponent,
+        FieldConfigComponent
     ],
     imports: [
         BrowserModule,

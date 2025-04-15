@@ -37,7 +37,7 @@
         <span
             class="tw-absolute tw-top-0 tw-right-3 tw-flex tw-gap-3 tw-text-sm tw-opacity-20 tw-transition-opacity tw-duration-300 tw-ease-in-out hover:tw-opacity-100"
         >
-            <button class="p-panel-header-icon p-link">
+            <button class="p-panel-header-icon p-link" (click)="openRowSetting(row, row.ffw_key)">
                 <span class="pi pi-cog"></span>
             </button>
             @if(!$first){

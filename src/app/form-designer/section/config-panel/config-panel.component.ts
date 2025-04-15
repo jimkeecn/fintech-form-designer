@@ -23,7 +23,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { cloneDeep } from 'lodash';
 import { FormRootService } from '../../../root-services/form-root-service.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { RowConfigDialogComponent } from '../row-config-dialog/row-config-dialog.component';
 
+/**
+ * [Important to read]
+ * When configuration changed on the form. you not only need to call rootService.updateSection,
+ * you also need to update the formlyFieldsMap in order for the UI to react to the changes
+ */
 @Component({
     selector: 'ffb-config-panel',
     templateUrl: './config-panel.component.html',
@@ -139,17 +145,47 @@ export class ConfigPanelComponent implements OnInit {
     moveRowUp(section: FormSection, index: number, isFirst: boolean) {
         if (isFirst) return;
         moveItemInArray(section.rows, index, index - 1);
+        this.formRootService.updateSection(section);
     }
 
     moveRowDown(section: FormSection, index: number, isLast: boolean) {
         if (isLast) return;
         moveItemInArray(section.rows, index, index + 1);
+        this.formRootService.updateSection(section);
     }
 
     private checkPreviousRow(rows: FormRow[]): boolean {
         if (rows.length === 0) return true;
         if (rows[rows.length - 1].fieldGroup.length === 0) return false;
         return true;
+    }
+
+    /**
+     * This part of logic can be replace with better user experience by create a formly field wrapper to trigger field level setting.
+     */
+    openRowSetting(row: FormRow, key: string) {
+        this.ref = this.dialogService.open(RowConfigDialogComponent, {
+            data: row,
+            width: '50vw',
+            modal: true,
+            styleClass: 'ffb-none-header-dialog',
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            }
+        });
+
+        this.ref.onClose.subscribe((data: FormRow | undefined) => {
+            if (data) {
+                debugger;
+                const index = this.section.rows.findIndex((row) => row.ffw_key === key);
+                if (index !== -1) {
+                    this.section.rows[index] = data;
+                }
+                this.formRootService.updateSection(this.section);
+                this.getFormlyFields(data);
+            }
+        });
     }
 
     /**

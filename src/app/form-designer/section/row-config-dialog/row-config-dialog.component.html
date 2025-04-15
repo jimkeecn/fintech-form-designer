@@ -1,0 +1,27 @@
+<p-tabView [(activeIndex)]="tabIndex">
+    @for(field of data.fieldGroup;track field.ffw_key){
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="tw-flex tw-justify-between tw-items-center tw-w-[100px]">
+                <span>{{ 'Field ' + ($index + 1) }}</span>
+                <i
+                    class="pi pi-times tw-text-sm tw-cursor-pointer tw-opacity-50 tw-transition-all tw-duration-300 hover:tw-opacity-100"
+                    pTooltip="click to remove this field"
+                    (click)="removeField($index, field.ffw_key)"
+                ></i>
+            </div>
+        </ng-template>
+        <div [@fadeTab] *ngIf="tabIndex === $index">
+            <ffb-field-config
+                [form]="formMap.get(field.ffw_key + '_' + $index)"
+                [ffw_key]="field.ffw_key + '_' + $index"
+            ></ffb-field-config>
+        </div>
+    </p-tabPanel>
+    }
+</p-tabView>
+
+<div class="tw-flex tw-justify-end tw-gap-3 tw-w-full">
+    <p-button label="Cancel" severity="secondary" styleClass="p-button-sm" (onClick)="ref.close()" />
+    <p-button label="Save" styleClass="p-button-sm" (onClick)="update()" />
+</div>
