@@ -14,9 +14,13 @@ export interface DragableItem {
     ffw_key: string;
     properties?:
         | []
-        | [FormlyFieldConfig]
-        | [FormlyFieldConfig, FormlyFieldConfig]
-        | [FormlyFieldConfig, FormlyFieldConfig, FormlyFieldConfig];
+        | [DragableItemProperty]
+        | [DragableItemProperty, DragableItemProperty]
+        | [DragableItemProperty, DragableItemProperty, DragableItemProperty];
+}
+
+export interface DragableItemProperty extends FormlyFieldConfig {
+    isMetaData?: boolean;
 }
 
 export const DRAGABLE_LIST: DragableCategory[] = [
@@ -38,6 +42,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                 ffw_key: 'text-input',
                 properties: [
                     {
+                        isMetaData: true,
                         key: 'text-input',
                         type: 'input',
                         className: 'ffb-field-default',
@@ -55,6 +60,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                 ffw_key: 'textarea',
                 properties: [
                     {
+                        isMetaData: true,
                         key: 'textarea',
                         type: 'textarea',
                         className: 'ffb-field-default',
@@ -72,6 +78,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                 ffw_key: 'checkbox',
                 properties: [
                     {
+                        isMetaData: true,
                         key: 'checkbox',
                         type: 'checkbox',
                         className: 'ffb-field-checkbox',
@@ -85,6 +92,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                 ffw_key: 'dropdown',
                 properties: [
                     {
+                        isMetaData: true,
                         key: 'dropdown',
                         type: 'select',
                         className: 'ffb-field-default',
@@ -102,6 +110,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                 ffw_key: 'date-picker',
                 properties: [
                     {
+                        isMetaData: true,
                         key: 'date-picker',
                         type: 'datepicker',
                         className: 'ffb-field-default',
@@ -128,6 +137,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                 ffw_key: 'ffb-name',
                 properties: [
                     {
+                        isMetaData: false,
                         key: 'ffb-name',
                         type: 'input',
                         className: 'ffb-field-default',
@@ -139,6 +149,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                         }
                     },
                     {
+                        isMetaData: false,
                         key: 'ffb-name',
                         type: 'input',
                         className: 'ffb-field-default',
@@ -149,6 +160,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                         }
                     },
                     {
+                        isMetaData: false,
                         key: 'ffb-name',
                         type: 'input',
                         className: 'ffb-field-default',

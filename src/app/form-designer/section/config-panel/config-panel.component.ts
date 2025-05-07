@@ -8,7 +8,14 @@ import {
     Output
 } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { createNewRow, DragableItem, DragTitleEnum, FormRow, FormSection } from '../../../models/dragable-list';
+import {
+    createNewRow,
+    DragableItem,
+    DragableItemProperty,
+    DragTitleEnum,
+    FormRow,
+    FormSection
+} from '../../../models/dragable-list';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SectionConfigDialogComponent } from '../section-config-dialog/section-config-dialog.component';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -212,13 +219,16 @@ export class ConfigPanelComponent implements OnInit {
     fieldDropped($event: any, section?: FormSection, rowId?: string): void {
         const item = $event.item.data;
         const row = section?.rows.find((x) => x.ffw_key === rowId);
-        const options: FormlyFieldConfig[] = cloneDeep(item.properties);
+        const options: DragableItemProperty[] = cloneDeep(item.properties);
         if (row?.fieldGroup && row?.fieldGroup?.length + options.length > 3) return;
 
         if (options && options.length > 0) {
             options.forEach((option) => {
                 option.key = uuidv4();
+                const metadataKey = option.isMetaData ? item.ffw_key : null;
+                delete option.isMetaData;
                 row?.fieldGroup?.push({
+                    metadataKey,
                     ffw_key: item.ffw_key,
                     option
                 });

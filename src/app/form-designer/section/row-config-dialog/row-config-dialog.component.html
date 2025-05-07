@@ -1,5 +1,5 @@
 <p-tabView [(activeIndex)]="tabIndex">
-    @for(field of data.fieldGroup;track field.ffw_key){
+    @for(field of row.fieldGroup;track field.ffw_key){
     <p-tabPanel>
         <ng-template pTemplate="header">
             <div class="tw-flex tw-justify-between tw-items-center tw-w-[100px]">
@@ -16,6 +16,7 @@
             <ffb-field-config
                 [form]="formMap.get(field.ffw_key + '_' + $index)"
                 [ffw_key]="field.ffw_key + '_' + $index"
+                [isMeta]="field.metadataKey ? true : false"
             ></ffb-field-config>
         </div>
     </p-tabPanel>

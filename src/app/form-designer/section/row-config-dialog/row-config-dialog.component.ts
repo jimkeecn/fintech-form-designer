@@ -18,23 +18,24 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class RowConfigDialogComponent implements OnInit, OnDestroy {
     tabIndex: number = 0;
-    data!: FormRow;
+    row!: FormRow;
     result!: IRowConfigDialogClose;
     formMap = new Map<string, FormGroup>();
     constructor(public config: DynamicDialogConfig, public ref: DynamicDialogRef, private fb: FormBuilder) {
         console.log(config);
-        this.data = cloneDeep(this.config.data);
-        this.data.fieldGroup.forEach((field, i) => {
+        this.row = cloneDeep(this.config.data);
+        this.row.fieldGroup.forEach((field, i) => {
             const form = this.fb.group({
                 label: [field.option.props?.label, Validators.required],
-                placeholder: [field.option.props?.placeholder]
+                placeholder: [field.option.props?.placeholder],
+                key: [field.metadataKey, Validators.required]
             });
             this.formMap.set(`${field.ffw_key}_${i}`, form);
         });
     }
 
     removeField(index: number, key: string) {
-        this.data.fieldGroup.splice(index, 1);
+        this.row.fieldGroup.splice(index, 1);
         this.formMap.delete(key);
         this.tabIndex = 0;
     }
@@ -50,18 +51,19 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
         });
         if (allValid) {
             this.formMapper();
-            this.ref.close(this.data);
+            this.ref.close(this.row);
         }
     }
 
     formMapper() {
-        this.data.fieldGroup.forEach((field, i) => {
+        this.row.fieldGroup.forEach((field, i) => {
             const formValue = this.formMap.get(`${field.ffw_key}_${i}`)?.value;
             field.option.props = {
                 ...field.option.props,
                 label: formValue.label,
                 placeholder: formValue.placeholder
             };
+            field.metadataKey = formValue.key;
         });
     }
 
