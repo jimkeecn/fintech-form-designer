@@ -1,0 +1,7 @@
+@if(section && section.rows.length > 0){
+<p-panel [toggleable]="true" [header]="section.title" cdkDrag cdkDragLockAxis="y">
+    <p class="tw-text-xs" [innerHTML]="section.description"></p>
+    <p-divider />
+    <formly-form [fields]="formgroup"></formly-form>
+</p-panel>
+}

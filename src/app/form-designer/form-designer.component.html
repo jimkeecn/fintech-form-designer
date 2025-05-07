@@ -7,8 +7,9 @@
 >
     <p-menubar [model]="designer_menu" styleClass="tw-border-none" aria-label="Form designer action menu"> </p-menubar>
 
-    @for(section of sectionList;track section.ffw_key) {
+    @if((this.formService.isPreview$ | async)){
+    <ffw-form-review [setForm]="this.formService.form$ | async"></ffw-form-review>
+    }@else { @for(section of sectionList;track section.ffw_key) {
     <ffb-config-panel [section]="section" [sectionList]="sectionList" [isFirst]="$first"></ffb-config-panel>
-    }
-    <ffb-section-drop-area (dropped)="sectionEmit()"></ffb-section-drop-area>
+    } <ffb-section-drop-area (dropped)="sectionEmit()"></ffb-section-drop-area>}
 </div>

@@ -19,7 +19,10 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
         },
         {
             label: 'Preview',
-            icon: PrimeIcons.EYE
+            icon: PrimeIcons.EYE,
+            command: () => {
+                this.formService.isPreview$.next(!this.formService.isPreview$.value);
+            }
         },
         {
             label: 'Publish',

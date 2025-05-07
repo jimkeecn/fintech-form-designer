@@ -18,6 +18,9 @@ import { SectionConfigDialogComponent } from './form-designer/section/section-co
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { RowConfigDialogComponent } from './form-designer/section/row-config-dialog/row-config-dialog.component';
 import { FieldConfigComponent } from './form-designer/section/row-config-dialog/field-config/field-config.component';
+import { FormReviewComponent } from './form-review/form-review.component';
+import { FormSectionComponent } from './form-review/form-section/form-section.component';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -27,7 +30,9 @@ import { FieldConfigComponent } from './form-designer/section/row-config-dialog/
         ConfigPanelComponent,
         SectionConfigDialogComponent,
         RowConfigDialogComponent,
-        FieldConfigComponent
+        FieldConfigComponent,
+        FormReviewComponent,
+        FormSectionComponent
     ],
     imports: [
         BrowserModule,

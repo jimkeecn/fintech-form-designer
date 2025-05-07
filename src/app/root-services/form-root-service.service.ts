@@ -8,11 +8,13 @@ import { cloneDeep } from 'lodash';
     providedIn: 'root'
 })
 export class FormRootService {
-    private _form = new BehaviorSubject<FormConfig>(this.initForm());
-    private _optionConnectTo = new BehaviorSubject<string[]>([
+    private _form$ = new BehaviorSubject<FormConfig>(this.initForm());
+    private _optionConnectTo$ = new BehaviorSubject<string[]>([
         'ffb-default-section-drop-area',
         'ffb-default-section-row-drop-area'
     ]);
+
+    isPreview$ = new BehaviorSubject<boolean>(false);
 
     constructor() {}
 
@@ -24,62 +26,62 @@ export class FormRootService {
     }
 
     addNewSection() {
-        const form = cloneDeep(this._form.value);
+        const form = cloneDeep(this._form$.value);
         const newSection = createNewFormSection(form.sections.length);
         form.sections?.push(newSection);
-        this._form.next(form);
+        this._form$.next(form);
         if (newSection.ffw_key) this.addOptionConenctTo(newSection.ffw_key);
     }
 
     swapSection(sections: any[]) {
         if (sections.length == 0) return;
-        const form = cloneDeep(this._form.value);
+        const form = cloneDeep(this._form$.value);
         sections.forEach((section, index) => {
             section.index = index;
         });
         form.sections = sections;
-        this._form.next(form);
+        this._form$.next(form);
     }
 
     addOptionConenctTo(id: string) {
         if (!id) return;
-        const values = [...this._optionConnectTo.value];
+        const values = [...this._optionConnectTo$.value];
         values.push(id);
-        this._optionConnectTo.next(values);
+        this._optionConnectTo$.next(values);
     }
 
     removeOptionConnectTo(id: string) {
         if (!id) return;
 
-        const values = [...this._optionConnectTo.value];
+        const values = [...this._optionConnectTo$.value];
         const index = values.findIndex((v) => v === id);
 
         if (index > -1) {
             values.splice(index, 1);
-            this._optionConnectTo.next(values);
+            this._optionConnectTo$.next(values);
         }
     }
 
     private addOptionConenctToAsGroup(ids: string[]) {
         if (!ids?.length) return;
 
-        const currentIds = new Set(this._optionConnectTo.value);
+        const currentIds = new Set(this._optionConnectTo$.value);
 
         ids.forEach((id) => currentIds.add(id));
 
-        this._optionConnectTo.next(Array.from(currentIds));
+        this._optionConnectTo$.next(Array.from(currentIds));
     }
 
     private removeOptionConenctToAsGroup(ids: string[]) {
         if (!ids?.length) return;
-        const currentIds = this._optionConnectTo.value;
+        const currentIds = this._optionConnectTo$.value;
         ids.forEach((id) => {
             currentIds.splice(
                 currentIds.findIndex((x) => x === id),
                 1
             );
         });
-        this._optionConnectTo.next(currentIds);
+        this._optionConnectTo$.next(currentIds);
     }
 
     /**
@@ -91,22 +93,22 @@ export class FormRootService {
      */
     updateSection(section: FormSection): void {
         if (!section) return;
-        const form = cloneDeep(this._form.value);
+        const form = cloneDeep(this._form$.value);
         form.sections.forEach((sec, i) => {
             if (sec.ffw_key == section.ffw_key) sec = section;
         });
-        this._form.next(form);
+        this._form$.next(form);
         const ids: string[] = [];
         section.rows.forEach((sec) => {
             if (sec.ffw_key && sec.ffw_key.length > 0) ids.push(sec.ffw_key);
         });
         if (ids.length > 0) this.addOptionConenctToAsGroup(ids);
-        console.log('update section', this._form.value);
+        console.log('update section', this._form$.value);
     }
 
     deleteSection(sectionId: string): void {
         if (!sectionId) return;
-        const form = cloneDeep(this._form.value);
+        const form = cloneDeep(this._form$.value);
         const section = form.sections.find((x) => x.ffw_key === sectionId);
         const ids: string[] = []; //ids that need to be removed
         if (!section) return;
@@ -117,15 +119,15 @@ export class FormRootService {
             form.sections.findIndex((x) => x.ffw_key === sectionId),
             1
         );
-        this._form.next(form);
+        this._form$.next(form);
         this.removeOptionConenctToAsGroup(ids);
     }
 
     get form$(): Observable<FormConfig> {
-        return this._form.asObservable();
+        return this._form$.asObservable();
     }
 
     get optionConnectTo(): Observable<string[]> {
-        return this._optionConnectTo.asObservable();
+        return this._optionConnectTo$.asObservable();
     }
 }
