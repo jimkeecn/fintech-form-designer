@@ -5,6 +5,8 @@
     (cdkDropListDropped)="swapSection($event)"
     [cdkDropListDisabled]="sectionList.length === 1"
 >
+    <p-menubar [model]="designer_menu" styleClass="tw-border-none" aria-label="Form designer action menu"> </p-menubar>
+
     @for(section of sectionList;track section.ffw_key) {
     <ffb-config-panel [section]="section" [sectionList]="sectionList" [isFirst]="$first"></ffb-config-panel>
     }

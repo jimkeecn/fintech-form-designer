@@ -1,9 +1,18 @@
 <p-panel [toggleable]="true" [header]="section.title" cdkDrag cdkDragLockAxis="y">
     <ng-template pTemplate="icons">
-        <button class="p-panel-header-icon p-link mr-2" (click)="openSectionSetting(section)">
+        <button
+            class="p-panel-header-icon p-link mr-2"
+            (click)="openSectionSetting(section)"
+            aria-label="open section"
+            data-testid="ConfigPanelComponent.openSectionSetting"
+        >
             <span class="pi pi-cog"></span>
         </button>
-        <button class="p-panel-header-icon p-link mr-2">
+        <button
+            class="p-panel-header-icon p-link mr-2"
+            aria-label="clone section"
+            data-testid="ConfigPanelComponent.cloneSection"
+        >
             <span class="pi pi-clone"></span>
         </button>
         @if(sectionList.length > 1){
@@ -11,7 +20,12 @@
             <span class="pi pi-arrows-v"></span>
         </button>
         }
-        <button class="p-panel-header-icon p-link mr-2 tw-text-red-700" (click)="deleteSectionSetting(section.ffw_key)">
+        <button
+            class="p-panel-header-icon p-link mr-2 tw-text-red-700"
+            (click)="deleteSectionSetting(section.ffw_key)"
+            aria-label="delete section"
+            data-testid="ConfigPanelComponent.deleteSectionSetting"
+        >
             <span class="pi pi-trash"></span>
         </button>
     </ng-template>
@@ -31,25 +45,46 @@
         (cdkDropListEntered)="row.ffw_isDraggingOver = true"
         (cdkDropListExited)="row.ffw_isDraggingOver = false"
         (cdkDropListDropped)="fieldDropped($event, section, row.ffw_key)"
+        aria-label="Section drop zone"
         cdkDrag
     >
         @if(row.hasConfig){
         <span
             class="tw-absolute tw-top-0 tw-right-3 tw-flex tw-gap-3 tw-text-sm tw-opacity-20 tw-transition-opacity tw-duration-300 tw-ease-in-out hover:tw-opacity-100"
         >
-            <button class="p-panel-header-icon p-link" (click)="openRowSetting(row, row.ffw_key)">
+            <button
+                class="p-panel-header-icon p-link"
+                (click)="openRowSetting(row, row.ffw_key)"
+                aria-label="open setting"
+                data-testid="ConfigPanelComponent.openRowSetting"
+            >
                 <span class="pi pi-cog"></span>
             </button>
             @if(!$first){
-            <button class="p-panel-header-icon p-link mr-2" (click)="moveRowUp(section, $index, $first)">
+            <button
+                class="p-panel-header-icon p-link mr-2"
+                (click)="moveRowUp(section, $index, $first)"
+                aria-label="move up"
+                data-testid="ConfigPanelComponent.moveRowUp"
+            >
                 <span class="pi pi-chevron-up"></span>
             </button>
             } @if(!$last){
-            <button class="p-panel-header-icon p-link mr-2" (click)="moveRowDown(section, $index, $last)">
+            <button
+                class="p-panel-header-icon p-link mr-2"
+                (click)="moveRowDown(section, $index, $last)"
+                aria-label="move down"
+                data-testid="ConfigPanelComponent.moveRowDown"
+            >
                 <span class="pi pi-chevron-down"></span>
             </button>
             }
-            <button class="p-panel-header-icon p-link tw-text-red-700" (click)="deleteRow(section, row.ffw_key)">
+            <button
+                class="p-panel-header-icon p-link tw-text-red-700"
+                (click)="deleteRow(section, row.ffw_key)"
+                aria-label="delete row"
+                data-testid="ConfigPanelComponent.deleteRow"
+            >
                 <span class="pi pi-trash"></span>
             </button>
         </span>
@@ -64,6 +99,7 @@
 
     <div
         class="tw-w-full tw-p-4 tw-box-border"
+        aria-label="Row drop zone"
         [ngClass]="{
             'tw-border-blue-400 tw-border-solid': section.ffw_isDraggingOver,
             'tw-border-dotted': !section.ffw_isDraggingOver

@@ -1,0 +1,6 @@
+.color-override-menubar-danger {
+
+    .p-menuitem-text, .p-menuitem-icon{
+        @apply tw-text-red-500
+    }
+}

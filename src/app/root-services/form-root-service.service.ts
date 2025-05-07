@@ -101,6 +101,7 @@ export class FormRootService {
             if (sec.ffw_key && sec.ffw_key.length > 0) ids.push(sec.ffw_key);
         });
         if (ids.length > 0) this.addOptionConenctToAsGroup(ids);
+        console.log('update section', this._form.value);
     }
 
     deleteSection(sectionId: string): void {

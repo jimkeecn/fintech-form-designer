@@ -166,6 +166,7 @@ export interface FormRow extends BaseConfig {
     fieldGroupClassName: string;
 }
 
+//should rework this interface into a class or create a common function to turn formField into formlyFieldConfig
 export interface FormField extends BaseConfig {
     option: FormlyFieldConfig;
 }

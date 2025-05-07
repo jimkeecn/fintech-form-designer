@@ -3,6 +3,7 @@ import { FormRootService } from '../root-services/form-root-service.service';
 import { DragableItem, DragTitleEnum, FormSection } from '../models/dragable-list';
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { MenuItem, PrimeIcons } from 'primeng/api';
 
 @Component({
     selector: 'ffb-form-designer',
@@ -11,6 +12,33 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 })
 export class FormDesignerComponent implements OnInit, OnDestroy {
     sectionList: any[] = [];
+    designer_menu: MenuItem[] = [
+        {
+            label: 'Save',
+            icon: PrimeIcons.SAVE
+        },
+        {
+            label: 'Preview',
+            icon: PrimeIcons.EYE
+        },
+        {
+            label: 'Publish',
+            icon: PrimeIcons.UPLOAD
+        },
+        {
+            label: 'Export',
+            icon: PrimeIcons.FILE_EXPORT
+        },
+        {
+            label: 'Import',
+            icon: PrimeIcons.FILE_IMPORT
+        },
+        {
+            label: 'Delete',
+            icon: PrimeIcons.TRASH,
+            styleClass: 'color-override-menubar-danger'
+        }
+    ];
     private destroy$ = new Subject<void>();
     sectionEmit() {
         this.formService.addNewSection();

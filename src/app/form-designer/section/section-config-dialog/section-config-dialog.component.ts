@@ -11,17 +11,34 @@ import { Title } from '@angular/platform-browser';
     template: `
         <form class="tw-flex tw-flex-col tw-gap-4" [formGroup]="form" (ngSubmit)="submit()">
             <div class="tw-flex tw-flex-col tw-gap-2">
-                <label for="ffb-section-title">Section Title *</label>
-                <input pInputText formControlName="title" id="ffb-section-title" aria-describedby="section-title" />
+                <label for="section-title">Section Title *</label>
+                <input
+                    pInputText
+                    formControlName="title"
+                    id="section-title"
+                    aria-label="Section Title"
+                    data-testid="sectionconfigdialog.title"
+                />
             </div>
             <div class="tw-flex tw-flex-col tw-gap-2">
-                <label for="ffb-section-title">Section Description *</label>
-                <p-editor formControlName="description" [modules]="modules" [style]="{ height: '320px' }"
+                <label for="section-description">Section Description *</label>
+                <p-editor
+                    formControlName="description"
+                    id="section-description"
+                    [modules]="modules"
+                    [style]="{ height: '320px' }"
+                    aria-label="Section Description"
+                    data-testid="sectionconfigdialog.description"
                     ><ng-template pTemplate="header"> </ng-template
                 ></p-editor>
             </div>
             <div class="tw-flex tw-flex-col tw-gap-2">
-                <p-button label="Submit" type="submit" />
+                <p-button
+                    label="Submit"
+                    type="submit"
+                    data-testid="sectionconfigdialog.submit"
+                    aria-label="Section Submit"
+                />
             </div>
         </form>
     `,

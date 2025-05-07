@@ -3,11 +3,12 @@
     <p-tabPanel>
         <ng-template pTemplate="header">
             <div class="tw-flex tw-justify-between tw-items-center tw-w-[100px]">
-                <span>{{ 'Field ' + ($index + 1) }}</span>
+                <span>{{ field.ffw_key }}</span>
                 <i
                     class="pi pi-times tw-text-sm tw-cursor-pointer tw-opacity-50 tw-transition-all tw-duration-300 hover:tw-opacity-100"
                     pTooltip="click to remove this field"
                     (click)="removeField($index, field.ffw_key)"
+                    data-testid="RowConfigDialogComponent.removefield"
                 ></i>
             </div>
         </ng-template>
@@ -22,6 +23,12 @@
 </p-tabView>
 
 <div class="tw-flex tw-justify-end tw-gap-3 tw-w-full">
-    <p-button label="Cancel" severity="secondary" styleClass="p-button-sm" (onClick)="ref.close()" />
-    <p-button label="Save" styleClass="p-button-sm" (onClick)="update()" />
+    <p-button
+        label="Cancel"
+        severity="secondary"
+        styleClass="p-button-sm"
+        (onClick)="ref.close()"
+        data-testid="RowConfigDialogComponent.cancel"
+    />
+    <p-button label="Save" styleClass="p-button-sm" (onClick)="update()" data-testid="RowConfigDialogComponent.save" />
 </div>

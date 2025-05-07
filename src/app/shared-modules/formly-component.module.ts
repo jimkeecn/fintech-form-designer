@@ -18,6 +18,9 @@ import { FormlyRadioModule } from '@ngx-formly/primeng/radio';
 import { FormlyFormFieldModule } from '@ngx-formly/primeng/form-field';
 import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
+import { MenubarModule } from 'primeng/menubar';
+import { DockModule } from 'primeng/dock';
+
 @NgModule({
     declarations: [],
     imports: [CommonModule],
@@ -39,7 +42,9 @@ import { TooltipModule } from 'primeng/tooltip';
         FormlyRadioModule,
         FormlyFormFieldModule,
         TabViewModule,
-        TooltipModule
+        TooltipModule,
+        MenubarModule,
+        DockModule
     ]
 })
 export class FormlyComponentModule {}

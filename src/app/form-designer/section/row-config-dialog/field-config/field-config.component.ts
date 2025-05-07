@@ -17,6 +17,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
                     [id]="'placeholder_' + ffw_key"
                     aria-describedby="placeholder"
                     formControlName="placeholder"
+                    data-testid="FieldConfigComponent.placeholder"
                 />
             </div>
         </form>

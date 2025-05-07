@@ -22,6 +22,7 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     result!: IRowConfigDialogClose;
     formMap = new Map<string, FormGroup>();
     constructor(public config: DynamicDialogConfig, public ref: DynamicDialogRef, private fb: FormBuilder) {
+        console.log(config);
         this.data = cloneDeep(this.config.data);
         this.data.fieldGroup.forEach((field, i) => {
             const form = this.fb.group({
