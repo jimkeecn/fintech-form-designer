@@ -53,7 +53,14 @@ export class ConfigPanelComponent implements OnInit {
         private messageService: MessageService
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log('config panel', this.section);
+        if (this.section) {
+            this.section.rows.forEach((row) => {
+                this.getFormlyFields(row);
+            });
+        }
+    }
 
     /**
      * Section
