@@ -12,6 +12,7 @@ export interface DragableItem {
     title: string;
     icon: string;
     ffw_key: string;
+    group?: string;
     properties?:
         | []
         | [DragableItemProperty]
@@ -33,8 +34,8 @@ export const DRAGABLE_LIST: DragableCategory[] = [
         ]
     },
     {
-        ffw_key: 'basic',
-        title: 'Basic Fields',
+        ffw_key: 'custom',
+        title: 'Custom Fields',
         child: [
             {
                 title: 'Text Input',
@@ -128,8 +129,8 @@ export const DRAGABLE_LIST: DragableCategory[] = [
         ]
     },
     {
-        ffw_key: 'advanced',
-        title: 'Advanced Fields',
+        ffw_key: 'locked',
+        title: 'Preset Fields',
         child: [
             {
                 title: 'Name Row',
