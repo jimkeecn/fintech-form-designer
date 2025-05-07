@@ -12,7 +12,19 @@ import { MenuItem, PrimeIcons } from 'primeng/api';
 })
 export class FormDesignerComponent implements OnInit, OnDestroy {
     sectionList: any[] = [];
-    designer_menu: MenuItem[] = [
+    designer_menu!: MenuItem[];
+
+    private _menu_on_preview: MenuItem[] = [
+        {
+            label: 'Go Back',
+            icon: PrimeIcons.ARROW_LEFT,
+            command: () => {
+                this.formService.isPreview$.next(false);
+            }
+        }
+    ];
+
+    private _menu_not_on_preview: MenuItem[] = [
         {
             label: 'Save',
             icon: PrimeIcons.SAVE
@@ -21,7 +33,7 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
             label: 'Preview',
             icon: PrimeIcons.EYE,
             command: () => {
-                this.formService.isPreview$.next(!this.formService.isPreview$.value);
+                this.formService.isPreview$.next(true);
             }
         },
         {
@@ -29,12 +41,18 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
             icon: PrimeIcons.UPLOAD
         },
         {
-            label: 'Export',
-            icon: PrimeIcons.FILE_EXPORT
-        },
-        {
-            label: 'Import',
-            icon: PrimeIcons.FILE_IMPORT
+            label: 'Sync',
+            icon: PrimeIcons.CLOUD,
+            items: [
+                {
+                    label: 'Export',
+                    icon: PrimeIcons.CLOUD_DOWNLOAD
+                },
+                {
+                    label: 'Import',
+                    icon: PrimeIcons.CLOUD_UPLOAD
+                }
+            ]
         },
         {
             label: 'Delete',
@@ -47,11 +65,21 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
         this.formService.addNewSection();
     }
 
-    constructor(public formService: FormRootService) {}
+    constructor(public formService: FormRootService) {
+        this.designer_menu = this._menu_not_on_preview;
+    }
 
     ngOnInit(): void {
         this.formService.form$.pipe(takeUntil(this.destroy$), distinctUntilChanged()).subscribe((x) => {
             this.sectionList = x.sections;
+        });
+
+        this.formService.isPreview$.subscribe((x) => {
+            if (x) {
+                this.designer_menu = this._menu_on_preview;
+            } else {
+                this.designer_menu = this._menu_not_on_preview;
+            }
         });
     }
 

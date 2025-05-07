@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FIELD_OPTION_LIST, FormRow, FormSection } from '../../models/dragable-list';
+import { FormRow, FormSection } from '../../models/dragable-list';
 import { cloneDeep } from 'lodash';
 
 @Component({
@@ -41,23 +41,4 @@ export class FormSectionComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {}
-
-    private getFieldConfiguration(key: string): FormlyFieldConfig[] {
-        const options = FIELD_OPTION_LIST.filter((x) => x.key === key);
-        if (!options) return [];
-        return cloneDeep(options);
-    }
-
-    private getFormlyFields(row: FormRow) {
-        if (!row.ffw_key) return;
-        const formlyRow: FormlyFieldConfig = {
-            fieldGroupClassName: row.fieldGroupClassName,
-            fieldGroup: row.fieldGroup.map((field, index) => {
-                return {
-                    ...field.option,
-                    key: field.option?.key ?? `field_${row.ffw_key}_${index}`
-                };
-            })
-        };
-    }
 }

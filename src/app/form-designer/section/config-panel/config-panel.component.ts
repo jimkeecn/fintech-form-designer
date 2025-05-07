@@ -8,14 +8,7 @@ import {
     Output
 } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import {
-    createNewRow,
-    DragableItem,
-    DragTitleEnum,
-    FIELD_OPTION_LIST,
-    FormRow,
-    FormSection
-} from '../../../models/dragable-list';
+import { createNewRow, DragableItem, DragTitleEnum, FormRow, FormSection } from '../../../models/dragable-list';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SectionConfigDialogComponent } from '../section-config-dialog/section-config-dialog.component';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -219,7 +212,7 @@ export class ConfigPanelComponent implements OnInit {
     fieldDropped($event: any, section?: FormSection, rowId?: string): void {
         const item = $event.item.data;
         const row = section?.rows.find((x) => x.ffw_key === rowId);
-        const options = this.getFieldConfiguration(item.ffw_key);
+        const options: FormlyFieldConfig[] = cloneDeep(item.properties);
         if (row?.fieldGroup && row?.fieldGroup?.length + options.length > 3) return;
 
         if (options && options.length > 0) {
@@ -237,13 +230,6 @@ export class ConfigPanelComponent implements OnInit {
             }
             if (section) this.formRootService.updateSection(section);
         }
-    }
-
-    /** per option from left panel can sometime contains multiple fields. */
-    private getFieldConfiguration(key: string): FormlyFieldConfig[] {
-        const options = FIELD_OPTION_LIST.filter((x) => x.key === key);
-        if (!options) return [];
-        return cloneDeep(options);
     }
 
     private getFormlyFields(row: FormRow) {
