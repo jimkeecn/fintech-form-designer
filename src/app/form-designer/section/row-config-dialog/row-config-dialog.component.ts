@@ -20,36 +20,25 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     tabIndex: number = 0;
     row!: FormRow;
     result!: IRowConfigDialogClose;
-    formMap = new Map<string, FormGroup>();
+    form: any;
+    fieldIndex: number = 0;
+    field: any;
     constructor(public config: DynamicDialogConfig, public ref: DynamicDialogRef, private fb: FormBuilder) {
         console.log(config);
-        this.row = cloneDeep(this.config.data);
-        this.row.fieldGroup.forEach((field, i) => {
-            const form = this.fb.group({
-                label: [field.option.props?.label, Validators.required],
-                placeholder: [field.option.props?.placeholder],
-                key: [field.option.key, Validators.required]
-            });
-            this.formMap.set(`${field.ffw_key}_${i}`, form);
+        this.row = cloneDeep(this.config.data.row);
+        this.fieldIndex = this.config.data.index;
+        this.field = this.row.fieldGroup[this.fieldIndex];
+        this.form = this.fb.group({
+            label: [this.field.option.props?.label, Validators.required],
+            placeholder: [this.field.option.props?.placeholder],
+            key: [this.field.option.key, Validators.required]
         });
-    }
-
-    removeField(index: number, key: string) {
-        this.row.fieldGroup.splice(index, 1);
-        this.formMap.delete(key);
-        this.tabIndex = 0;
     }
 
     update() {
-        let allValid = true;
-        this.formMap.forEach((formGroup, key) => {
-            formGroup.markAllAsTouched();
-            formGroup.markAsDirty();
-            if (formGroup.invalid) {
-                allValid = false;
-            }
-        });
-        if (allValid) {
+        this.form.markAllAsTouched();
+        this.form.markAsDirty();
+        if (this.form.valid) {
             this.formMapper();
             this.ref.close(this.row);
         }
@@ -57,12 +46,16 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
 
     formMapper() {
         this.row.fieldGroup.forEach((field, i) => {
-            const formValue = this.formMap.get(`${field.ffw_key}_${i}`)?.value;
-            field.option.props = {
-                ...field.option.props,
-                label: formValue.label,
-                placeholder: formValue.placeholder
-            };
+            if (i === this.fieldIndex) {
+                const { label, key, placeholder } = this.form.value;
+                field.option.props = {
+                    ...field.option.props,
+                    label,
+                    placeholder,
+                    key
+                };
+                field.option.key = key;
+            }
         });
     }
 

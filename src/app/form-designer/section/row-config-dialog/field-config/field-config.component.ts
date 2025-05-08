@@ -15,6 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
                     formControlName="key"
                     data-testid="FieldConfigComponent.key"
                 />
+                <small [id]="'key_' + ffw_key + '_help'"> Change to your corresponding json attribute </small>
             </div>
 
             <div class="tw-flex tw-flex-col tw-gap-2">

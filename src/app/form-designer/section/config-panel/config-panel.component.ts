@@ -123,27 +123,6 @@ export class ConfigPanelComponent implements OnInit {
         this.formRootService.updateSection(section);
     }
 
-    deleteRow(section: FormSection, rowId: string) {
-        this.confirmationService.confirm({
-            message: 'Are you sure you want to proceed?',
-            header: 'Confirmation',
-            icon: 'pi pi-info-circle',
-            acceptButtonStyleClass: 'p-button-danger',
-            rejectButtonStyleClass: 'p-button-text',
-            accept: () => {
-                section.rows.splice(
-                    section.rows.findIndex((x) => x.ffw_key === rowId),
-                    1
-                );
-                this.formlyFieldsMap.delete(rowId);
-                this.formRootService.updateSection(section);
-                this.formRootService.removeOptionConnectTo(rowId);
-                this.messageService.add({ severity: 'info', summary: 'Removed', detail: 'row removed', life: 1000 });
-            },
-            reject: () => {}
-        });
-    }
-
     rowEnterPredict = (drag: CdkDrag): boolean => {
         const data = drag.data as DragableItem;
         return data.ffw_key === DragTitleEnum.Row;
@@ -169,10 +148,11 @@ export class ConfigPanelComponent implements OnInit {
 
     /**
      * This part of logic can be replace with better user experience by create a formly field wrapper to trigger field level setting.
+     * [Name to do rename since it's targeting field instead of row]
      */
-    openRowSetting(row: FormRow, key: string) {
+    openFieldSetting(row: FormRow, key: string, index: number) {
         this.ref = this.dialogService.open(RowConfigDialogComponent, {
-            data: row,
+            data: { row, index },
             width: '50vw',
             modal: true,
             styleClass: 'ffb-none-header-dialog',
@@ -184,6 +164,7 @@ export class ConfigPanelComponent implements OnInit {
 
         this.ref.onClose.subscribe((data: FormRow | undefined) => {
             if (data) {
+                console.log(data);
                 const index = this.section.rows.findIndex((row) => row.ffw_key === key);
                 if (index !== -1) {
                     this.section.rows[index] = data;
@@ -191,6 +172,43 @@ export class ConfigPanelComponent implements OnInit {
                 this.formRootService.updateSection(this.section);
                 this.getFormlyFields(data);
             }
+        });
+    }
+
+    deleteField(section: FormSection, rowId: string, index: number) {
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to proceed?',
+            header: 'Confirmation',
+            icon: 'pi pi-info-circle',
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                let formMapValue = this.formlyFieldsMap.get(rowId);
+                if (formMapValue && formMapValue.length > 0) {
+                    console.log(formMapValue);
+                    if (formMapValue[0].fieldGroup?.length === 1) {
+                        //remove the whole row if last field is removed
+                        section.rows.splice(
+                            section.rows.findIndex((x) => x.ffw_key === rowId),
+                            1
+                        );
+                        this.formlyFieldsMap.delete(rowId);
+                        this.formRootService.updateSection(section);
+                        this.formRootService.removeOptionConnectTo(rowId);
+                    } else {
+                        formMapValue[0].fieldGroup?.splice(index, 1);
+                        section.rows[section.rows.findIndex((x) => x.ffw_key === rowId)].fieldGroup.splice(index, 1);
+                        this.formRootService.updateSection(section);
+                    }
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Removed',
+                        detail: 'field removed',
+                        life: 1000
+                    });
+                }
+            },
+            reject: () => {}
         });
     }
 
@@ -251,5 +269,14 @@ export class ConfigPanelComponent implements OnInit {
             })
         };
         this.formlyFieldsMap.set(row.ffw_key, [formlyRow]);
+        console.log(this.formlyFieldsMap);
+    }
+
+    splitFormlyFields(ffwKey: string) {
+        const array = this.formlyFieldsMap.get(ffwKey);
+        if (array && array.length > 0) {
+            return array[0].fieldGroup;
+        }
+        return [];
     }
 }

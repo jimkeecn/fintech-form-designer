@@ -33,7 +33,7 @@
     <p-divider />
     @for(row of section.rows; track row.ffw_key; ){
     <div
-        class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center tw-relative tw-transition-all tw-duration-150 tw-ease-in"
+        class="tw-w-full tw-box-border tw-border tw-mb-4 tw-text-center tw-relative tw-transition-all tw-duration-150 tw-ease-in tw-flex tw-gap-2"
         [ngClass]="{
             'tw-ring-2 tw-ring-blue-500 tw-bg-blue-50 tw-shadow-md': row.ffw_isDraggingOver
         }"
@@ -48,18 +48,30 @@
         aria-label="Section drop zone"
         cdkDrag
     >
-        @if(row.hasConfig){
-        <span
-            class="tw-absolute tw-top-0 tw-right-3 tw-flex tw-gap-3 tw-text-sm tw-opacity-20 tw-transition-opacity tw-duration-300 tw-ease-in-out hover:tw-opacity-100"
-        >
+        @if(row.hasConfig){ @for(field of splitFormlyFields(row.ffw_key);track field.key){
+        <div class="tw-relative tw-w-full">
             <button
-                class="p-panel-header-icon p-link"
-                (click)="openRowSetting(row, row.ffw_key)"
-                aria-label="open setting"
-                data-testid="ConfigPanelComponent.openRowSetting"
+                class="p-link tw-absolute tw-top-1 tw-right-2"
+                (click)="openFieldSetting(row, row.ffw_key, $index)"
+                aria-label="open field setting"
+                data-testid="ConfigPanelComponent.openFieldSetting"
             >
                 <span class="pi pi-cog"></span>
             </button>
+            <button
+                class="p-link tw-text-red-700 tw-absolute tw-top-1 tw-right-8"
+                (click)="deleteField(section, row.ffw_key, $index)"
+                aria-label="delete field"
+                data-testid="ConfigPanelComponent.deleteField"
+            >
+                <span class="pi pi-trash"></span>
+            </button>
+            <formly-form [fields]="[field]"></formly-form>
+        </div>
+        }
+        <div
+            class="tw-flex tw-flex-col tw-gap-3 tw-justify-center tw-text-sm tw-opacity-20 tw-transition-opacity tw-duration-300 tw-ease-in-out hover:tw-opacity-100"
+        >
             @if(!$first){
             <button
                 class="p-panel-header-icon p-link mr-2"
@@ -79,16 +91,7 @@
                 <span class="pi pi-chevron-down"></span>
             </button>
             }
-            <button
-                class="p-panel-header-icon p-link tw-text-red-700"
-                (click)="deleteRow(section, row.ffw_key)"
-                aria-label="delete row"
-                data-testid="ConfigPanelComponent.deleteRow"
-            >
-                <span class="pi pi-trash"></span>
-            </button>
-        </span>
-        <formly-form [fields]="formlyFieldsMap.get(row.ffw_key) || []"></formly-form>
+        </div>
         }@else {
 
         {{ !row.ffw_isDraggingOver ? 'Place new fields here' : 'Please release to create new field' }}
