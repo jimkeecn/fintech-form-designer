@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ExternalExpr } from '@angular/compiler';
+import { PrimeIcons } from 'primeng/api';
 
 export interface DragableCategory {
     title: string;
@@ -20,17 +21,15 @@ export interface DragableItem {
         | [DragableItemProperty, DragableItemProperty, DragableItemProperty];
 }
 
-export interface DragableItemProperty extends FormlyFieldConfig {
-    isMetaData?: boolean;
-}
+export interface DragableItemProperty extends FormlyFieldConfig {}
 
 export const DRAGABLE_LIST: DragableCategory[] = [
     {
         ffw_key: 'section',
         title: 'Layout',
         child: [
-            { title: 'Section', icon: 'pi pi-th-large', ffw_key: 'section' },
-            { title: 'Row', icon: 'pi pi-minus', ffw_key: 'row' }
+            { title: 'Section', icon: PrimeIcons.TH_LARGE, ffw_key: 'section' },
+            { title: 'Row', icon: PrimeIcons.MINUS_CIRCLE, ffw_key: 'row' }
         ]
     },
     {
@@ -39,11 +38,10 @@ export const DRAGABLE_LIST: DragableCategory[] = [
         child: [
             {
                 title: 'Text Input',
-                icon: 'pi pi-pencil',
+                icon: PrimeIcons.PENCIL,
                 ffw_key: 'text-input',
                 properties: [
                     {
-                        isMetaData: true,
                         key: 'text-input',
                         type: 'input',
                         className: 'ffb-field-default',
@@ -57,11 +55,10 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             },
             {
                 title: 'Textarea',
-                icon: 'pi pi-align-left',
+                icon: PrimeIcons.ALIGN_LEFT,
                 ffw_key: 'textarea',
                 properties: [
                     {
-                        isMetaData: true,
                         key: 'textarea',
                         type: 'textarea',
                         className: 'ffb-field-default',
@@ -75,11 +72,10 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             },
             {
                 title: 'Checkbox',
-                icon: 'pi pi-check-square',
+                icon: PrimeIcons.CHECK_SQUARE,
                 ffw_key: 'checkbox',
                 properties: [
                     {
-                        isMetaData: true,
                         key: 'checkbox',
                         type: 'checkbox',
                         className: 'ffb-field-checkbox',
@@ -89,11 +85,10 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             },
             {
                 title: 'Dropdown',
-                icon: 'pi pi-chevron-down',
+                icon: PrimeIcons.CHEVRON_DOWN,
                 ffw_key: 'dropdown',
                 properties: [
                     {
-                        isMetaData: true,
                         key: 'dropdown',
                         type: 'select',
                         className: 'ffb-field-default',
@@ -107,11 +102,10 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             },
             {
                 title: 'Date Picker',
-                icon: 'pi pi-calendar',
+                icon: PrimeIcons.CALENDAR,
                 ffw_key: 'date-picker',
                 properties: [
                     {
-                        isMetaData: true,
                         key: 'date-picker',
                         type: 'datepicker',
                         className: 'ffb-field-default',
@@ -125,7 +119,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                     }
                 ]
             },
-            { title: 'File Upload', icon: 'pi pi-upload', ffw_key: 'file-upload' }
+            { title: 'File Upload', icon: PrimeIcons.UPLOAD, ffw_key: 'file-upload' }
         ]
     },
     {
@@ -133,13 +127,30 @@ export const DRAGABLE_LIST: DragableCategory[] = [
         title: 'Preset Fields',
         child: [
             {
-                title: 'Name Row',
-                icon: 'pi pi-users',
-                ffw_key: 'ffb-name',
+                title: 'Investor Title',
+                icon: PrimeIcons.USER,
+                ffw_key: 'ffb-investor-title',
                 properties: [
                     {
-                        isMetaData: false,
-                        key: 'ffb-name',
+                        key: 'title',
+                        type: 'select',
+                        className: 'ffb-field-default',
+                        props: {
+                            label: 'Title',
+                            placeholder: 'e.g. Mr,Mrs,Miss',
+                            description: "Person's title",
+                            required: true
+                        }
+                    }
+                ]
+            },
+            {
+                title: 'Investor Names',
+                icon: PrimeIcons.USER,
+                ffw_key: 'name',
+                properties: [
+                    {
+                        key: 'first_name',
                         type: 'input',
                         className: 'ffb-field-default',
                         props: {
@@ -150,8 +161,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                         }
                     },
                     {
-                        isMetaData: false,
-                        key: 'ffb-name',
+                        key: 'middle_name',
                         type: 'input',
                         className: 'ffb-field-default',
                         props: {
@@ -161,8 +171,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                         }
                     },
                     {
-                        isMetaData: false,
-                        key: 'ffb-name',
+                        key: 'last_name',
                         type: 'input',
                         className: 'ffb-field-default',
                         props: {
@@ -174,7 +183,65 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                     }
                 ]
             },
-            { title: 'Date Row', icon: 'pi pi-calendar', ffw_key: 'ffb-date' }
+
+            {
+                title: 'Res.FullAdr',
+                icon: PrimeIcons.HOME,
+                ffw_key: 'ffb-investor-country',
+                properties: [
+                    {
+                        key: 'country',
+                        type: 'select',
+                        className: 'ffb-field-default',
+                        props: {
+                            label: 'Country',
+                            placeholder: 'e.g. Australia',
+                            description: '',
+                            required: true
+                        }
+                    },
+                    {
+                        key: 'long_address',
+                        type: 'input',
+                        className: 'ffb-field-default',
+                        props: {
+                            label: 'Residential Address',
+                            placeholder: 'e.g. 112 Collins Street',
+                            description: '',
+                            required: true
+                        }
+                    }
+                ]
+            },
+            {
+                title: 'Res.AdrLine',
+                icon: PrimeIcons.HOME,
+                ffw_key: 'ffb-investor-adrline',
+                properties: [
+                    {
+                        key: 'address_line_one',
+                        type: 'input',
+                        className: 'ffb-field-default',
+                        props: {
+                            label: 'Address Line 1',
+                            placeholder: 'e.g. Unit 131/55 Collins St',
+                            description: '',
+                            required: false
+                        }
+                    },
+                    {
+                        key: 'address_line_two',
+                        type: 'input',
+                        className: 'ffb-field-default',
+                        props: {
+                            label: 'Address Line 2',
+                            placeholder: 'e.g. Melbourne VIC 3000',
+                            description: '',
+                            required: false
+                        }
+                    }
+                ]
+            }
         ]
     }
 ];
@@ -218,7 +285,6 @@ export interface FormRow extends BaseConfig {
 
 //should rework this interface into a class or create a common function to turn formField into formlyFieldConfig
 export interface FormField extends BaseConfig {
-    metadataKey?: string;
     option: FormlyFieldConfig;
 }
 

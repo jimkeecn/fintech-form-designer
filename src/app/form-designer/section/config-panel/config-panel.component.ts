@@ -225,10 +225,7 @@ export class ConfigPanelComponent implements OnInit {
         if (options && options.length > 0) {
             options.forEach((option) => {
                 option.key = uuidv4();
-                const metadataKey = option.isMetaData ? item.ffw_key : null;
-                delete option.isMetaData;
                 row?.fieldGroup?.push({
-                    metadataKey,
                     ffw_key: item.ffw_key,
                     option
                 });

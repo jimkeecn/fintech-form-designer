@@ -28,7 +28,7 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
             const form = this.fb.group({
                 label: [field.option.props?.label, Validators.required],
                 placeholder: [field.option.props?.placeholder],
-                key: [field.metadataKey, Validators.required]
+                key: [field.option.key, Validators.required]
             });
             this.formMap.set(`${field.ffw_key}_${i}`, form);
         });
@@ -63,7 +63,6 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
                 label: formValue.label,
                 placeholder: formValue.placeholder
             };
-            field.metadataKey = formValue.key;
         });
     }
 
