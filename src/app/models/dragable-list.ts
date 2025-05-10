@@ -14,6 +14,7 @@ export interface DragableItem {
     icon: string;
     ffw_key: string;
     group?: string;
+    actionable?: boolean; //maybe needs a rename
     properties?:
         | []
         | [DragableItemProperty]

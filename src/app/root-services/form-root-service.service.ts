@@ -102,7 +102,10 @@ export class FormRootService {
         section.rows.forEach((sec) => {
             if (sec.ffw_key && sec.ffw_key.length > 0) ids.push(sec.ffw_key);
         });
-        if (ids.length > 0) this.addOptionConenctToAsGroup(ids);
+        if (ids.length > 0) {
+            this.addOptionConenctToAsGroup(ids);
+            this.flattenFields();
+        }
         console.log('update section', this._form$.value);
     }
 
@@ -129,5 +132,29 @@ export class FormRootService {
 
     get optionConnectTo(): Observable<string[]> {
         return this._optionConnectTo$.asObservable();
+    }
+
+    /** Flatten Fields */
+    private _flatten_fields = new Map<string, any>();
+
+    private flattenFields() {
+        const form = cloneDeep(this._form$.value);
+
+        const allFields = form.sections.flatMap((section) =>
+            section.rows.flatMap((row) =>
+                row.fieldGroup.map((field) => ({
+                    key: field.option.key as string,
+                    option: field.option
+                }))
+            )
+        );
+
+        // Only assign if the key doesn't already exist
+        for (const field of allFields) {
+            if (!this._flatten_fields.has(field.key)) {
+                this._flatten_fields.set(field.key, field.option);
+            }
+        }
+        console.log('flatten fields', this._flatten_fields);
     }
 }

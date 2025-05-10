@@ -40,7 +40,7 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
         this.form.markAsDirty();
         if (this.form.valid) {
             this.formMapper();
-            this.ref.close(this.row);
+            this.ref.close(cloneDeep(this.row));
         }
     }
 
