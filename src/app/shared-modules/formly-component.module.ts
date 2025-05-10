@@ -20,7 +20,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
 import { MenubarModule } from 'primeng/menubar';
 import { DockModule } from 'primeng/dock';
-
+import { AccordionModule } from 'primeng/accordion';
 @NgModule({
     declarations: [],
     imports: [CommonModule],
@@ -44,7 +44,8 @@ import { DockModule } from 'primeng/dock';
         TabViewModule,
         TooltipModule,
         MenubarModule,
-        DockModule
+        DockModule,
+        AccordionModule
     ]
 })
 export class FormlyComponentModule {}

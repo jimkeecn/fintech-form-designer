@@ -20,6 +20,7 @@ import { RowConfigDialogComponent } from './form-designer/section/row-config-dia
 import { FieldConfigComponent } from './form-designer/section/row-config-dialog/field-config/field-config.component';
 import { FormReviewComponent } from './form-review/form-review.component';
 import { FormSectionComponent } from './form-review/form-section/form-section.component';
+import { FormlyFieldSections } from './models/multiple-section.type';
 
 @NgModule({
     declarations: [
@@ -32,14 +33,17 @@ import { FormSectionComponent } from './form-review/form-section/form-section.co
         RowConfigDialogComponent,
         FieldConfigComponent,
         FormReviewComponent,
-        FormSectionComponent
+        FormSectionComponent,
+        FormlyFieldSections
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         FormlyPrimeNGModule,
-        FormlyModule.forRoot(),
+        FormlyModule.forRoot({
+            types: [{ name: 'sections', component: FormlyFieldSections, wrappers: [] }]
+        }),
         ReactiveFormsModule,
         DragDropModule,
         FormlyComponentModule

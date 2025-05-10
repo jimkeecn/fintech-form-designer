@@ -3,6 +3,9 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormRow, FormSection } from '../../models/dragable-list';
 import { cloneDeep } from 'lodash';
 
+/****
+ * This component will be deprecated in the future
+ */
 @Component({
     selector: 'ffw-form-section',
     templateUrl: './form-section.component.html',
