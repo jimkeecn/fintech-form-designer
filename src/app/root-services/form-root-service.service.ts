@@ -143,7 +143,7 @@ export class FormRootService {
         const allFields = form.sections.flatMap((section) =>
             section.rows.flatMap((row) =>
                 row.fieldGroup.map((field) => ({
-                    key: field.option.key as string,
+                    key: field.ffw_key as string,
                     option: field.option
                 }))
             )

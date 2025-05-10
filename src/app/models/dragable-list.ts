@@ -6,13 +6,13 @@ import { PrimeIcons } from 'primeng/api';
 export interface DragableCategory {
     title: string;
     child: DragableItem[];
-    ffw_key: string;
+    type: string;
 }
 
 export interface DragableItem {
     title: string;
     icon: string;
-    ffw_key: string;
+    type: string;
     group?: string;
     actionable?: boolean; //maybe needs a rename
     properties?:
@@ -26,21 +26,21 @@ export interface DragableItemProperty extends FormlyFieldConfig {}
 
 export const DRAGABLE_LIST: DragableCategory[] = [
     {
-        ffw_key: 'section',
+        type: 'section',
         title: 'Layout',
         child: [
-            { title: 'Section', icon: PrimeIcons.TH_LARGE, ffw_key: 'section' },
-            { title: 'Row', icon: PrimeIcons.MINUS_CIRCLE, ffw_key: 'row' }
+            { title: 'Section', icon: PrimeIcons.TH_LARGE, type: 'section' },
+            { title: 'Row', icon: PrimeIcons.MINUS_CIRCLE, type: 'row' }
         ]
     },
     {
-        ffw_key: 'custom',
+        type: 'custom',
         title: 'Custom Fields',
         child: [
             {
                 title: 'Text Input',
                 icon: PrimeIcons.PENCIL,
-                ffw_key: 'text-input',
+                type: 'text-input',
                 properties: [
                     {
                         key: 'text-input',
@@ -57,7 +57,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             {
                 title: 'Textarea',
                 icon: PrimeIcons.ALIGN_LEFT,
-                ffw_key: 'textarea',
+                type: 'textarea',
                 properties: [
                     {
                         key: 'textarea',
@@ -74,7 +74,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             {
                 title: 'Checkbox',
                 icon: PrimeIcons.CHECK_SQUARE,
-                ffw_key: 'checkbox',
+                type: 'checkbox',
                 properties: [
                     {
                         key: 'checkbox',
@@ -87,7 +87,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             {
                 title: 'Dropdown',
                 icon: PrimeIcons.CHEVRON_DOWN,
-                ffw_key: 'dropdown',
+                type: 'dropdown',
                 properties: [
                     {
                         key: 'dropdown',
@@ -104,7 +104,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             {
                 title: 'Date Picker',
                 icon: PrimeIcons.CALENDAR,
-                ffw_key: 'date-picker',
+                type: 'date-picker',
                 properties: [
                     {
                         key: 'date-picker',
@@ -120,17 +120,17 @@ export const DRAGABLE_LIST: DragableCategory[] = [
                     }
                 ]
             },
-            { title: 'File Upload', icon: PrimeIcons.UPLOAD, ffw_key: 'file-upload' }
+            { title: 'File Upload', icon: PrimeIcons.UPLOAD, type: 'file-upload' }
         ]
     },
     {
-        ffw_key: 'locked',
+        type: 'locked',
         title: 'Preset Fields',
         child: [
             {
                 title: 'Investor Title',
                 icon: PrimeIcons.USER,
-                ffw_key: 'ffb-investor-title',
+                type: 'ffb-investor-title',
                 properties: [
                     {
                         key: 'title',
@@ -148,7 +148,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             {
                 title: 'Investor Names',
                 icon: PrimeIcons.USER,
-                ffw_key: 'name',
+                type: 'name',
                 properties: [
                     {
                         key: 'first_name',
@@ -188,7 +188,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             {
                 title: 'Res.FullAdr',
                 icon: PrimeIcons.HOME,
-                ffw_key: 'ffb-investor-country',
+                type: 'ffb-investor-country',
                 properties: [
                     {
                         key: 'country',
@@ -217,7 +217,7 @@ export const DRAGABLE_LIST: DragableCategory[] = [
             {
                 title: 'Res.AdrLine',
                 icon: PrimeIcons.HOME,
-                ffw_key: 'ffb-investor-adrline',
+                type: 'ffb-investor-adrline',
                 properties: [
                     {
                         key: 'address_line_one',
@@ -286,6 +286,7 @@ export interface FormRow extends BaseConfig {
 
 //should rework this interface into a class or create a common function to turn formField into formlyFieldConfig
 export interface FormField extends BaseConfig {
+    type: any;
     option: FormlyFieldConfig;
 }
 

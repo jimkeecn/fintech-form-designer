@@ -125,7 +125,7 @@ export class ConfigPanelComponent implements OnInit {
 
     rowEnterPredict = (drag: CdkDrag): boolean => {
         const data = drag.data as DragableItem;
-        return data.ffw_key === DragTitleEnum.Row;
+        return data.type === DragTitleEnum.Row;
     };
 
     moveRowUp(section: FormSection, index: number, isFirst: boolean) {
@@ -221,11 +221,11 @@ export class ConfigPanelComponent implements OnInit {
     fieldEnterPredict(drag: CdkDrag, drop: CdkDropList<FormRow>): boolean {
         const dropList = drop.data;
         const data = drag.data as DragableItem;
-        if (data.ffw_key === DragTitleEnum.CHECKBOX) {
+        if (data.type === DragTitleEnum.CHECKBOX) {
             return dropList.fieldGroup.length === 0;
         } else {
             const index = dropList.fieldGroup.findIndex((x) => x.ffw_key === DragTitleEnum.CHECKBOX);
-            return data.ffw_key !== DragTitleEnum.Row && data.ffw_key !== DragTitleEnum.Section && index == -1;
+            return data.type !== DragTitleEnum.Row && data.type !== DragTitleEnum.Section && index == -1;
         }
     }
 
@@ -242,9 +242,11 @@ export class ConfigPanelComponent implements OnInit {
 
         if (options && options.length > 0) {
             options.forEach((option) => {
-                option.key = uuidv4();
+                const uniqueId = uuidv4();
+                option.key = '';
                 row?.fieldGroup?.push({
-                    ffw_key: item.ffw_key,
+                    ffw_key: uniqueId,
+                    type: item.type,
                     option
                 });
             });
