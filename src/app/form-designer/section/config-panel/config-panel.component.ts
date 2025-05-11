@@ -245,7 +245,16 @@ export class ConfigPanelComponent implements OnInit {
                 row?.fieldGroup?.push({
                     ffw_key: uniqueId,
                     type: item.type,
-                    option
+                    option,
+                    actions: {
+                        hide: [],
+                        show: [],
+                        required: [],
+                        clear: [],
+                        validator: [],
+                        group: [],
+                        filter: []
+                    }
                 });
             });
             if (row) {

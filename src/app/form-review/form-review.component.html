@@ -1,1 +1,4 @@
-<formly-form [fields]="fields"></formly-form>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <formly-form [fields]="fields" [form]="form"></formly-form>
+    <p-button label="Submit" type="submit"></p-button>
+</form>

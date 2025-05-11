@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormConfig } from '../models/dragable-list';
 import { cloneDeep } from 'lodash';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup } from '@angular/forms';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
     selector: 'ffw-form-review',
@@ -10,9 +12,40 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 })
 export class FormReviewComponent implements OnInit, OnDestroy {
     fields: FormlyFieldConfig[] = [];
+    form = new FormGroup({});
     @Input()
     set setForm(value: FormConfig | null) {
         if (value) {
+            const flatActions = value.sections.flatMap((section) => {
+                return section.rows.flatMap((row) => {
+                    return row.fieldGroup.flatMap((field) => {
+                        return Object.values(field.actions).flatMap((actionArray) => {
+                            return actionArray.map((action) => {
+                                return {
+                                    ...action,
+                                    parentKey: field.option.key
+                                };
+                            });
+                        });
+                    });
+                });
+            });
+
+            const getExpress = (key: any) => {
+                debugger;
+                const foundActions = flatActions.filter((action) => action.key === key);
+                const expression: any = {};
+                foundActions.forEach((action) => {
+                    if (action.group === 'hide') {
+                        expression['hide'] = `model.${action.parentKey}`;
+                    }
+                });
+                console.log('express', expression);
+                return expression;
+            };
+
+            console.log('flatActions', flatActions);
+
             let field: FormlyFieldConfig = {
                 type: 'sections',
                 className: 'section-class',
@@ -31,7 +64,8 @@ export class FormReviewComponent implements OnInit, OnDestroy {
                                 fieldGroupClassName: row.fieldGroupClassName,
                                 fieldGroup: row.fieldGroup.map((field, index) => ({
                                     ...field.option,
-                                    key: field.option?.key ?? `field_${row.ffw_key}_${index}`
+                                    key: field.option?.key ?? `field_${row.ffw_key}_${index}`,
+                                    expressions: getExpress(field.option?.key)
                                 }))
                             };
                             acc.push(formlyRow);
@@ -42,6 +76,7 @@ export class FormReviewComponent implements OnInit, OnDestroy {
             });
 
             this.fields.push(field);
+            console.log(this.fields);
         }
     }
     @Input() model!: any;
@@ -52,4 +87,8 @@ export class FormReviewComponent implements OnInit, OnDestroy {
 
     ngOnInit() {}
     ngOnDestroy(): void {}
+
+    submit() {
+        console.log(this.form.value);
+    }
 }

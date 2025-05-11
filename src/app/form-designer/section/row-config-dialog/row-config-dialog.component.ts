@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormRow, FormSection } from '../../../models/dragable-list';
+import { FormField, FormRow, FormSection } from '../../../models/dragable-list';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IRowConfigDialogClose, RowConfigDialogCloseEnum } from './row-config-dialog';
@@ -22,7 +22,7 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     result!: IRowConfigDialogClose;
     form: any;
     fieldIndex: number = 0;
-    field: any;
+    field: FormField;
     flattenFields: { key: string; value: any }[];
     constructor(public config: DynamicDialogConfig, public ref: DynamicDialogRef, private fb: FormBuilder) {
         this.row = cloneDeep(this.config.data.row);
@@ -82,7 +82,8 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     formMapper() {
         this.row.fieldGroup.forEach((field, i) => {
             if (i === this.fieldIndex) {
-                const { label, key, placeholder } = this.form.value;
+                const { label, key, placeholder, hide, show, required, clear, validator, group, filter } =
+                    this.form.value;
                 field.option.props = {
                     ...field.option.props,
                     label,
@@ -90,6 +91,13 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
                     key
                 };
                 field.option.key = key;
+                field.actions.hide = hide.actions;
+                field.actions.show = show.actions;
+                field.actions.required = required.actions;
+                field.actions.clear = clear.actions;
+                field.actions.validator = validator.actions;
+                field.actions.group = group.actions;
+                field.actions.filter = filter.actions;
             }
         });
     }

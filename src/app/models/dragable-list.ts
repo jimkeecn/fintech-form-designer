@@ -287,7 +287,7 @@ export interface FormRow extends BaseConfig {
 //should rework this interface into a class or create a common function to turn formField into formlyFieldConfig
 export interface FormField extends BaseConfig {
     type: any;
-    actions?: {
+    actions: {
         hide: FormFieldAction[];
         show: FormFieldAction[];
         required: FormFieldAction[];

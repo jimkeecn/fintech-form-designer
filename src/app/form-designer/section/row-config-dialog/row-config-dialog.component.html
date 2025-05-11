@@ -5,7 +5,12 @@
                 <span>{{ field.type }}</span>
             </div>
         </ng-template>
-        <ffb-field-config [form]="form" [ffw_key]="field.ffw_key" [allFields]="flattenFields"></ffb-field-config>
+        <ffb-field-config
+            [form]="form"
+            [ffw_key]="field.ffw_key"
+            [allFields]="flattenFields"
+            [fieldType]="field.option.type?.toString()"
+        ></ffb-field-config>
     </p-tabPanel>
 </p-tabView>
 

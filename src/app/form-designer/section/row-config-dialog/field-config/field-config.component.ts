@@ -13,11 +13,14 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
     @Input() ffw_key!: string;
     @Input() fields!: any[];
     @Input() allFields!: { key: string; value: any }[];
-
+    @Input() fieldType!: string | undefined;
     action_list = ['hide', 'show', 'required', 'clear', 'validator', 'group', 'filter'];
+    actionable_list = ['checkbox', 'select', 'toggle'];
     constructor(private fb: FormBuilder, private messageService: MessageService) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log(this.fieldType);
+    }
 
     ngOnDestroy(): void {}
 
@@ -76,6 +79,14 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
         const index = actionArray.controls.findIndex((ctrl) => ctrl.value.ffw_key === field.ffw_key);
         if (index !== -1) {
             actionArray.removeAt(index);
+        }
+    }
+
+    getActionable(type: string | undefined): boolean {
+        if (type) {
+            return this.actionable_list.includes(type);
+        } else {
+            return false;
         }
     }
 }

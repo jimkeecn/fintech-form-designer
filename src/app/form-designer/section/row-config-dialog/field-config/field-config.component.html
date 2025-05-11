@@ -40,6 +40,7 @@
                 </div>
             </div>
         </p-accordionTab>
+        @if(getActionable(fieldType)){
         <p-accordionTab header="Actions" class="ffb-accordion-no-padding">
             <p-tabView [scrollable]="true">
                 @for(action of action_list;track action){
@@ -92,6 +93,7 @@
                 }
             </p-tabView>
         </p-accordionTab>
+        }
     </p-accordion>
 </form>
 }
