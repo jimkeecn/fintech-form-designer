@@ -4,6 +4,7 @@ import { DragableItem, DragTitleEnum, FormSection } from '../models/dragable-lis
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { MenuItem, PrimeIcons } from 'primeng/api';
+import { FormExportService } from '../root-services/form-export.service';
 
 @Component({
     selector: 'ffb-form-designer',
@@ -46,7 +47,10 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
             items: [
                 {
                     label: 'Export',
-                    icon: PrimeIcons.CLOUD_DOWNLOAD
+                    icon: PrimeIcons.CLOUD_DOWNLOAD,
+                    command: () => {
+                        this.exportService.downloadJsonFile();
+                    }
                 },
                 {
                     label: 'Import',
@@ -65,7 +69,7 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
         this.formService.addNewSection();
     }
 
-    constructor(public formService: FormRootService) {
+    constructor(public formService: FormRootService, public exportService: FormExportService) {
         this.designer_menu = this._menu_not_on_preview;
     }
 

@@ -41,31 +41,31 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
             key: [this.field.option.key, Validators.required],
             hide: this.fb.group({
                 selectedField: [null],
-                actions: this.fb.array([])
+                actions: this.fb.array(this.field.actions.hide)
             }),
             show: this.fb.group({
                 selectedField: [null],
-                actions: this.fb.array([])
+                actions: this.fb.array(this.field.actions.show)
             }),
             required: this.fb.group({
                 selectedField: [null],
-                actions: this.fb.array([])
+                actions: this.fb.array(this.field.actions.required)
             }),
             clear: this.fb.group({
                 selectedField: [null],
-                actions: this.fb.array([])
+                actions: this.fb.array(this.field.actions.clear)
             }),
             validator: this.fb.group({
                 selectedField: [null],
-                actions: this.fb.array([])
+                actions: this.fb.array(this.field.actions.validator)
             }),
             group: this.fb.group({
                 selectedField: [null],
-                actions: this.fb.array([])
+                actions: this.fb.array(this.field.actions.group)
             }),
             filter: this.fb.group({
                 selectedField: [null],
-                actions: this.fb.array([])
+                actions: this.fb.array(this.field.actions.filter)
             })
         });
     }
