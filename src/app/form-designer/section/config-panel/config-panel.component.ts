@@ -54,7 +54,6 @@ export class ConfigPanelComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log('config panel', this.section);
         if (this.section) {
             this.section.rows.forEach((row) => {
                 this.getFormlyFields(row);
@@ -152,8 +151,9 @@ export class ConfigPanelComponent implements OnInit {
      */
     openFieldSetting(row: FormRow, key: string, index: number) {
         this.ref = this.dialogService.open(RowConfigDialogComponent, {
-            data: { row, index },
+            data: { row, index, flattenFields: this.formRootService.getFlattenFields() },
             width: '50vw',
+            height: '80vw',
             modal: true,
             styleClass: 'ffb-none-header-dialog',
             breakpoints: {
@@ -164,7 +164,6 @@ export class ConfigPanelComponent implements OnInit {
 
         this.ref.onClose.subscribe((data: FormRow | undefined) => {
             if (data) {
-                console.log(data);
                 const index = this.section.rows.findIndex((row) => row.ffw_key === key);
                 if (index !== -1) {
                     this.section.rows[index] = data;
@@ -185,7 +184,6 @@ export class ConfigPanelComponent implements OnInit {
             accept: () => {
                 let formMapValue = this.formlyFieldsMap.get(rowId);
                 if (formMapValue && formMapValue.length > 0) {
-                    console.log(formMapValue);
                     if (formMapValue[0].fieldGroup?.length === 1) {
                         //remove the whole row if last field is removed
                         section.rows.splice(
@@ -271,7 +269,6 @@ export class ConfigPanelComponent implements OnInit {
             })
         };
         this.formlyFieldsMap.set(row.ffw_key, [formlyRow]);
-        console.log(this.formlyFieldsMap);
     }
 
     splitFormlyFields(ffwKey: string) {

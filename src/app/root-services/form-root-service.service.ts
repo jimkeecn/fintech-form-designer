@@ -149,12 +149,14 @@ export class FormRootService {
             )
         );
 
+        this._flatten_fields = new Map<string, any>();
         // Only assign if the key doesn't already exist
         for (const field of allFields) {
-            if (!this._flatten_fields.has(field.key)) {
-                this._flatten_fields.set(field.key, field.option);
-            }
+            this._flatten_fields.set(field.key, cloneDeep(field.option));
         }
-        console.log('flatten fields', this._flatten_fields);
+    }
+
+    getFlattenFields() {
+        return cloneDeep(this._flatten_fields);
     }
 }

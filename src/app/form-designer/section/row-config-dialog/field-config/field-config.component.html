@@ -1,0 +1,97 @@
+@if(form){
+<form [formGroup]="form">
+    <p-accordion [activeIndex]="0">
+        <p-accordionTab header="Basic Configuration">
+            <div class="tw-flex tw-flex-col tw-gap-2">
+                <div class="tw-flex tw-flex-col tw-gap-2 tw-mb-4">
+                    <label [for]="'key_' + ffw_key">Key</label>
+                    <input
+                        pInputText
+                        [id]="'key_' + ffw_key"
+                        aria-describedby="label"
+                        formControlName="key"
+                        data-testid="FieldConfigComponent.key"
+                    />
+                    <small [id]="'key_' + ffw_key + '_help'">
+                        Change to your corresponding data key, please use smallcase, nospace and english only with
+                        meaningful name e.g inv_name
+                    </small>
+                </div>
+
+                <div class="tw-flex tw-flex-col tw-gap-2">
+                    <label [for]="'label_' + ffw_key">Label</label>
+                    <input
+                        pInputText
+                        [id]="'label_' + ffw_key"
+                        aria-describedby="label"
+                        formControlName="label"
+                        data-testid="FieldConfigComponent.label"
+                    />
+                </div>
+                <div class="tw-flex tw-flex-col tw-gap-2">
+                    <label [for]="'placeholder_' + ffw_key">Placeholder</label>
+                    <input
+                        pInputText
+                        [id]="'placeholder_' + ffw_key"
+                        aria-describedby="placeholder"
+                        formControlName="placeholder"
+                        data-testid="FieldConfigComponent.placeholder"
+                    />
+                </div>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="Actions" class="ffb-accordion-no-padding">
+            <p-tabView [scrollable]="true">
+                @for(action of action_list;track action){
+                <p-tabPanel [header]="action.toUpperCase()" [formGroupName]="action">
+                    <div class="tw-flex tw-flex-col tw-gap-2">
+                        <p-dropdown
+                            [options]="allFields"
+                            placeholder="Select a field"
+                            formControlName="selectedField"
+                            optionLabel="value.key"
+                            [showClear]="true"
+                            class="tw-flex tw-flex-col"
+                        >
+                            <ng-template let-field pTemplate="item">
+                                <div class="tw-flex tw-justify-between tw-items-center">
+                                    <div class="tw-text-base">{{ field.value.key }}</div>
+                                    <div
+                                        class="tw-border-none tw-bg-slate-700 tw-text-white tw-p-2 tw-w-[100px] tw-text-xs tw-text-center tw-rounded-md"
+                                    >
+                                        {{ fieldTypeMapper(field.value.type) }}
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                        <p-button
+                            label="Add"
+                            size="small"
+                            (onClick)="addAction(form.get(action)?.get('selectedField')?.value, action)"
+                        />
+                    </div>
+                    <p-divider></p-divider>
+                    <div class="tw-flex tw-flex-col tw-gap-3">
+                        @for(field of form.get(action)?.get('actions')?.value;track field.key){ @if(field.group ===
+                        'hide'){
+                        <div class="tw-flex tw-justify-between tw-items-center">
+                            <div class="tw-flex tw-flex-col tw-gap-1">
+                                <label class="tw-text-xs">Field Key</label>
+                                <p>{{ field.key }}</p>
+                            </div>
+                            <p-button
+                                icon="pi pi-times"
+                                severity="danger"
+                                size="small"
+                                (onClick)="removeAction(field, action)"
+                            />
+                        </div>
+                        } }
+                    </div>
+                </p-tabPanel>
+                }
+            </p-tabView>
+        </p-accordionTab>
+    </p-accordion>
+</form>
+}

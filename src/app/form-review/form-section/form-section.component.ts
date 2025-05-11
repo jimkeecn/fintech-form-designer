@@ -16,7 +16,6 @@ export class FormSectionComponent implements OnInit {
     @Input()
     set section(section: FormSection) {
         if (section && section.rows.length > 0) {
-            console.log('preview section change:', section);
             this._section = section;
             this._section.rows.forEach((row) => {
                 if (row.fieldGroup.length > 0) {
@@ -30,7 +29,6 @@ export class FormSectionComponent implements OnInit {
                         })
                     };
                     this.formgroup.push(formlyRow);
-                    console.log(this.formgroup);
                 }
             });
         }

@@ -1,11 +1,11 @@
-<p-tabView [(activeIndex)]="tabIndex">
+<p-tabView [(activeIndex)]="tabIndex" class="ffb-tab-view-recent-no-leftright-padding">
     <p-tabPanel>
         <ng-template pTemplate="header">
             <div class="tw-flex tw-justify-between tw-items-center tw-w-[100px]">
                 <span>{{ field.type }}</span>
             </div>
         </ng-template>
-        <ffb-field-config [form]="form" [ffw_key]="field.ffw_key"></ffb-field-config>
+        <ffb-field-config [form]="form" [ffw_key]="field.ffw_key" [allFields]="flattenFields"></ffb-field-config>
     </p-tabPanel>
 </p-tabView>
 

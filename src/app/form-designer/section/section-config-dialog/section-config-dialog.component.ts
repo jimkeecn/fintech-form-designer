@@ -70,7 +70,6 @@ export class SectionConfigDialogComponent implements OnInit, OnDestroy {
         toolbar: this.quillFormats
     };
     constructor(public config: DynamicDialogConfig, public ref: DynamicDialogRef, private fb: FormBuilder) {
-        console.log(this.config.data);
         this.data = this.config.data;
         this.form = this.fb.group({
             title: [this.data.title || '', Validators.required],

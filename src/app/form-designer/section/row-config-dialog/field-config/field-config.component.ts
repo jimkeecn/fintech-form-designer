@@ -1,51 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'ffb-field-config',
-    template: `
-        @if(form){
-        <form [formGroup]="form">
-            <p-accordion [activeIndex]="0">
-                <p-accordionTab header="Basic Configuration">
-                    <div class="tw-flex tw-flex-col tw-gap-2">
-                        <label [for]="'key_' + ffw_key">Key</label>
-                        <input
-                            pInputText
-                            [id]="'key_' + ffw_key"
-                            aria-describedby="label"
-                            formControlName="key"
-                            data-testid="FieldConfigComponent.key"
-                        />
-                        <small [id]="'key_' + ffw_key + '_help'"> Change to your corresponding json attribute </small>
-                    </div>
-
-                    <div class="tw-flex tw-flex-col tw-gap-2">
-                        <label [for]="'label_' + ffw_key">Label</label>
-                        <input
-                            pInputText
-                            [id]="'label_' + ffw_key"
-                            aria-describedby="label"
-                            formControlName="label"
-                            data-testid="FieldConfigComponent.label"
-                        />
-                    </div>
-                    <div class="tw-flex tw-flex-col tw-gap-2">
-                        <label [for]="'placeholder_' + ffw_key">Placeholder</label>
-                        <input
-                            pInputText
-                            [id]="'placeholder_' + ffw_key"
-                            aria-describedby="placeholder"
-                            formControlName="placeholder"
-                            data-testid="FieldConfigComponent.placeholder"
-                        />
-                    </div>
-                </p-accordionTab>
-                <p-accordionTab header="Advanced Configuration"> </p-accordionTab>
-            </p-accordion>
-        </form>
-        }
-    `,
+    templateUrl: './field-config.component.html',
     styleUrl: './field-config.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -53,9 +12,70 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
     @Input() form!: FormGroup | undefined;
     @Input() ffw_key!: string;
     @Input() fields!: any[];
-    constructor() {}
+    @Input() allFields!: { key: string; value: any }[];
+
+    action_list = ['hide', 'show', 'required', 'clear', 'validator', 'group', 'filter'];
+    constructor(private fb: FormBuilder, private messageService: MessageService) {}
 
     ngOnInit(): void {}
 
     ngOnDestroy(): void {}
+
+    fieldTypeMapper(type: string): string {
+        switch (type) {
+            case 'input':
+                return 'Text';
+            case 'textarea':
+                return 'Multiline';
+            case 'checkbox':
+                return 'Checkbox';
+            case 'radio':
+                return 'Radio Buttons';
+            case 'select':
+                return 'Dropdown';
+            case 'date':
+                return 'Date Picker';
+            case 'number':
+                return 'Number';
+            case 'toggle':
+                return 'Toggle Switch';
+            case 'password':
+                return 'Password';
+            default:
+                return type;
+        }
+    }
+
+    addAction(field: any, action: string) {
+        if (!this.form) return;
+        const actionArray = this.form.get([action, 'actions']) as FormArray;
+        if (actionArray.value.find((x: any) => x.ffw_key === field.key)) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Duplicate',
+                detail: 'This field is already in the list.'
+            });
+            return;
+        }
+        const form = this.fb.group({
+            type: [field.value.type],
+            ffw_key: [field.key],
+            key: [field.value.key],
+            group: [action],
+            value: []
+        });
+        actionArray.push(form);
+    }
+
+    removeAction(field: any, action: string) {
+        if (!this.form) return;
+
+        const actionArray = this.form.get([action, 'actions']) as FormArray;
+        if (!actionArray) return;
+
+        const index = actionArray.controls.findIndex((ctrl) => ctrl.value.ffw_key === field.ffw_key);
+        if (index !== -1) {
+            actionArray.removeAt(index);
+        }
+    }
 }

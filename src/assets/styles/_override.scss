@@ -10,3 +10,11 @@
         align-items: center;
     }
 }
+
+.ffb-accordion-no-padding .p-accordion-content {
+    padding: 0;
+}
+
+.ffb-tab-view-recent-no-leftright-padding > .p-tabview > .p-tabview-panels{
+    padding: 20px 0;
+}

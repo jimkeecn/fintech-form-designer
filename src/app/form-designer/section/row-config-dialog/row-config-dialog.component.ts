@@ -23,15 +23,50 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     form: any;
     fieldIndex: number = 0;
     field: any;
+    flattenFields: { key: string; value: any }[];
     constructor(public config: DynamicDialogConfig, public ref: DynamicDialogRef, private fb: FormBuilder) {
-        console.log(config);
         this.row = cloneDeep(this.config.data.row);
         this.fieldIndex = this.config.data.index;
         this.field = this.row.fieldGroup[this.fieldIndex];
+        const allFields = Array.from(this.config.data.flattenFields as Map<any, any>).map(([key, value]) => ({
+            key,
+            value
+        }));
+
+        this.flattenFields = allFields.filter((f) => f.key !== this.field.ffw_key && f.value.key !== '');
+
         this.form = this.fb.group({
             label: [this.field.option.props?.label, Validators.required],
             placeholder: [this.field.option.props?.placeholder],
-            key: [this.field.option.key, Validators.required]
+            key: [this.field.option.key, Validators.required],
+            hide: this.fb.group({
+                selectedField: [null],
+                actions: this.fb.array([])
+            }),
+            show: this.fb.group({
+                selectedField: [null],
+                actions: this.fb.array([])
+            }),
+            required: this.fb.group({
+                selectedField: [null],
+                actions: this.fb.array([])
+            }),
+            clear: this.fb.group({
+                selectedField: [null],
+                actions: this.fb.array([])
+            }),
+            validator: this.fb.group({
+                selectedField: [null],
+                actions: this.fb.array([])
+            }),
+            group: this.fb.group({
+                selectedField: [null],
+                actions: this.fb.array([])
+            }),
+            filter: this.fb.group({
+                selectedField: [null],
+                actions: this.fb.array([])
+            })
         });
     }
 

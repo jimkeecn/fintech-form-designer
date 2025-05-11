@@ -287,7 +287,24 @@ export interface FormRow extends BaseConfig {
 //should rework this interface into a class or create a common function to turn formField into formlyFieldConfig
 export interface FormField extends BaseConfig {
     type: any;
+    actions?: {
+        hide: FormFieldAction[];
+        show: FormFieldAction[];
+        required: FormFieldAction[];
+        clear: FormFieldAction[];
+        validator: FormFieldAction[];
+        group: FormFieldAction[];
+        filter: FormFieldAction[];
+    };
     option: FormlyFieldConfig;
+}
+
+export interface FormFieldAction {
+    ffw_key: string;
+    key: string;
+    type: string;
+    value?: any;
+    group: string;
 }
 
 export function createNewFormSection(index: number): FormSection {

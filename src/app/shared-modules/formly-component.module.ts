@@ -21,6 +21,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { MenubarModule } from 'primeng/menubar';
 import { DockModule } from 'primeng/dock';
 import { AccordionModule } from 'primeng/accordion';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
     declarations: [],
     imports: [CommonModule],
@@ -45,7 +46,8 @@ import { AccordionModule } from 'primeng/accordion';
         TooltipModule,
         MenubarModule,
         DockModule,
-        AccordionModule
+        AccordionModule,
+        DropdownModule
     ]
 })
 export class FormlyComponentModule {}

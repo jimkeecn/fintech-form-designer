@@ -18,7 +18,6 @@ export class FormReviewComponent implements OnInit, OnDestroy {
                 className: 'section-class',
                 fieldGroup: []
             };
-            console.log('preview change', value);
             //this.form = cloneDeep(value);
             value.sections.forEach((section) => {
                 field.fieldGroup?.push({
