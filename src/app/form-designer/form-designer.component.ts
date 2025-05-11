@@ -49,7 +49,7 @@ export class FormDesignerComponent implements OnInit, OnDestroy {
                     label: 'Export',
                     icon: PrimeIcons.CLOUD_DOWNLOAD,
                     command: () => {
-                        this.exportService.downloadJsonFile();
+                        //this.exportService.downloadJsonFile();
                     }
                 },
                 {
