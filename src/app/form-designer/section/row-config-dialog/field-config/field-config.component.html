@@ -4,22 +4,45 @@
         <p-accordionTab header="Basic Configuration">
             <div class="tw-flex tw-flex-col tw-gap-2">
                 <div class="tw-flex tw-flex-col tw-gap-2 tw-mb-4">
-                    <label [for]="'key_' + ffw_key">Key</label>
+                    <label [for]="'key_' + ffw_key">Key *</label>
                     <input
                         pInputText
                         [id]="'key_' + ffw_key"
-                        aria-describedby="label"
+                        aria-describedby="key"
                         formControlName="key"
                         data-testid="FieldConfigComponent.key"
                     />
-                    <small [id]="'key_' + ffw_key + '_help'">
+                    <small [id]="'key_' + ffw_key + '_key_help'">
                         Change to your corresponding data key, please use smallcase, nospace and english only with
                         meaningful name e.g inv_name
                     </small>
                 </div>
+                <div class="tw-flex tw-flex-col tw-gap-2 tw-mb-4">
+                    <p-dropdown
+                        [options]="example_mapping"
+                        placeholder="Select a mapping"
+                        formControlName="map"
+                        [showClear]="true"
+                        [filter]="true"
+                        class="tw-flex tw-flex-col"
+                        aria-describedby="mapping"
+                        [id]="'map_' + ffw_key"
+                        data-testid="FieldConfigComponent.map"
+                    >
+                        <ng-template let-field pTemplate="item">
+                            <div class="tw-flex tw-justify-between tw-items-center">
+                                {{ field }}
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <small [id]="'key_' + ffw_key + '_map_help'">
+                        Mapping this field helps the system understand how to use it in key operations. If not mapped,
+                        it will still be saved but only as extra info, not used in main processing.
+                    </small>
+                </div>
 
                 <div class="tw-flex tw-flex-col tw-gap-2">
-                    <label [for]="'label_' + ffw_key">Label</label>
+                    <label [for]="'label_' + ffw_key">Label *</label>
                     <input
                         pInputText
                         [id]="'label_' + ffw_key"

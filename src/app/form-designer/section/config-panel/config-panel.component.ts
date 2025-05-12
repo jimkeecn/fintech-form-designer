@@ -69,7 +69,7 @@ export class ConfigPanelComponent implements OnInit {
         this.ref = this.dialogService.open(SectionConfigDialogComponent, {
             header: 'Section Setting',
             data: section,
-            width: '50vw',
+            width: '70vw',
             modal: true,
             breakpoints: {
                 '960px': '75vw',
@@ -81,6 +81,8 @@ export class ConfigPanelComponent implements OnInit {
             if (data) {
                 section.description = data.description;
                 section.title = data.title;
+                section.key = data.key;
+                this.formRootService.updateSection(section);
                 this.cRef.markForCheck();
             }
         });
@@ -152,7 +154,7 @@ export class ConfigPanelComponent implements OnInit {
     openFieldSetting(row: FormRow, key: string, index: number) {
         this.ref = this.dialogService.open(RowConfigDialogComponent, {
             data: { row, index },
-            width: '50vw',
+            width: '70vw',
             height: '80vw',
             modal: true,
             styleClass: 'ffb-none-header-dialog',

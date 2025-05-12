@@ -16,6 +16,7 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
     @Input() fieldType!: string | undefined;
     action_list = ['hide', 'show', 'required', 'clear', 'validator', 'group', 'filter'];
     actionable_list = ['checkbox', 'select', 'toggle'];
+    example_mapping = ['Investor FirstName', 'Investor Last', 'Investor DOB', 'Investor Mobile'];
     constructor(private fb: FormBuilder, private messageService: MessageService) {}
 
     ngOnInit(): void {

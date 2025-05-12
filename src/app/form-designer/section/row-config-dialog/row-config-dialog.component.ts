@@ -39,13 +39,14 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
             value
         }));
 
-        this.flattenFields = allFields.filter((f) => f.key !== this.field.ffw_key && f.value.option.key !== '');
+        this.flattenFields = allFields.filter((f) => f.key !== this.field.ffw_key && f.value.key !== '');
         console.log('get flatten', this.flattenFields);
 
         this.form = this.fb.group({
             label: [this.field.option.props?.label, Validators.required],
             placeholder: [this.field.option.props?.placeholder],
             key: [this.field.option.key, Validators.required],
+            map: [this.field.map],
             hide: this.fb.group({
                 selectedField: [null],
                 actions: this.fb.array(this.field.actions.hide)

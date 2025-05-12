@@ -11,6 +11,20 @@ import { Title } from '@angular/platform-browser';
     template: `
         <form class="tw-flex tw-flex-col tw-gap-4" [formGroup]="form" (ngSubmit)="submit()">
             <div class="tw-flex tw-flex-col tw-gap-2">
+                <label for="section-key">Section Key *</label>
+                <input
+                    pInputText
+                    formControlName="key"
+                    id="section-key"
+                    aria-label="Section Key"
+                    data-testid="sectionconfigdialog.key"
+                />
+                <small>
+                    Change to your corresponding data key, please use smallcase, nospace and english only with
+                    meaningful name e.g inv_section
+                </small>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-2">
                 <label for="section-title">Section Title *</label>
                 <input
                     pInputText
@@ -72,6 +86,7 @@ export class SectionConfigDialogComponent implements OnInit, OnDestroy {
     constructor(public config: DynamicDialogConfig, public ref: DynamicDialogRef, private fb: FormBuilder) {
         this.data = this.config.data;
         this.form = this.fb.group({
+            key: [this.data.key, Validators.required],
             title: [this.data.title || '', Validators.required],
             description: [this.data.description || '', Validators.required]
         });
