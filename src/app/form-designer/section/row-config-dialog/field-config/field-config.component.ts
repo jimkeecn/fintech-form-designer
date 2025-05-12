@@ -45,8 +45,10 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
                 return 'Toggle Switch';
             case 'password':
                 return 'Password';
+            case 'section':
+                return 'Section';
             default:
-                return type;
+                return 'N/A';
         }
     }
 

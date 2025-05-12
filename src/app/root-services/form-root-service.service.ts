@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { createNewFormSection, FormConfig, FormSection } from '../models/dragable-list';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { createNewFormSection, DragTitleEnum, FormConfig, FormSection } from '../models/dragable-list';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Observable, tap } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, values } from 'lodash';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FormRootService {
-    private _form$ = new BehaviorSubject<FormConfig>(this.initForm());
+    fields: FormlyFieldConfig[] = [];
+    private _formConfig$ = new BehaviorSubject<FormConfig>(this.initForm());
     private _optionConnectTo$ = new BehaviorSubject<string[]>([
         'ffb-default-section-drop-area',
         'ffb-default-section-row-drop-area'
@@ -16,7 +18,24 @@ export class FormRootService {
 
     isPreview$ = new BehaviorSubject<boolean>(false);
 
-    constructor() {}
+    constructor() {
+        /**
+         * Consider this approach if it hits any performance issue in review so we construct the fields for formly while designing
+         * Otherwise, do not use the following flow.
+         * deprecated soon
+         */
+        // this._formConfig$
+        //     .asObservable()
+        //     .pipe(
+        //         debounceTime(200),
+        //         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        //         tap((value) => {
+        //             this.fields = []; // Clear previous field config to prevent duplication
+        //             this.buildFields(value);
+        //         })
+        //     )
+        //     .subscribe(); // side-effect only, no need to store
+    }
 
     initForm() {
         return {
@@ -26,21 +45,21 @@ export class FormRootService {
     }
 
     addNewSection() {
-        const form = cloneDeep(this._form$.value);
+        const form = cloneDeep(this._formConfig$.value);
         const newSection = createNewFormSection(form.sections.length);
         form.sections?.push(newSection);
-        this._form$.next(form);
+        this._formConfig$.next(form);
         if (newSection.ffw_key) this.addOptionConenctTo(newSection.ffw_key);
     }
 
     swapSection(sections: any[]) {
         if (sections.length == 0) return;
-        const form = cloneDeep(this._form$.value);
+        const form = cloneDeep(this._formConfig$.value);
         sections.forEach((section, index) => {
             section.index = index;
         });
         form.sections = sections;
-        this._form$.next(form);
+        this._formConfig$.next(form);
     }
 
     addOptionConenctTo(id: string) {
@@ -93,11 +112,11 @@ export class FormRootService {
      */
     updateSection(section: FormSection): void {
         if (!section) return;
-        const form = cloneDeep(this._form$.value);
+        const form = cloneDeep(this._formConfig$.value);
         form.sections.forEach((sec, i) => {
             if (sec.ffw_key == section.ffw_key) sec = section;
         });
-        this._form$.next(form);
+        this._formConfig$.next(form);
         const ids: string[] = [];
         section.rows.forEach((sec) => {
             if (sec.ffw_key && sec.ffw_key.length > 0) ids.push(sec.ffw_key);
@@ -106,12 +125,12 @@ export class FormRootService {
             this.addOptionConenctToAsGroup(ids);
             this.flattenFields();
         }
-        console.log('update section', this._form$.value);
+        console.log('update section', this._formConfig$.value);
     }
 
     deleteSection(sectionId: string): void {
         if (!sectionId) return;
-        const form = cloneDeep(this._form$.value);
+        const form = cloneDeep(this._formConfig$.value);
         const section = form.sections.find((x) => x.ffw_key === sectionId);
         const ids: string[] = []; //ids that need to be removed
         if (!section) return;
@@ -122,12 +141,12 @@ export class FormRootService {
             form.sections.findIndex((x) => x.ffw_key === sectionId),
             1
         );
-        this._form$.next(form);
+        this._formConfig$.next(form);
         this.removeOptionConenctToAsGroup(ids);
     }
 
     get form$(): Observable<FormConfig> {
-        return this._form$.asObservable();
+        return this._formConfig$.asObservable();
     }
 
     get optionConnectTo(): Observable<string[]> {
@@ -138,25 +157,99 @@ export class FormRootService {
     private _flatten_fields = new Map<string, any>();
 
     private flattenFields() {
-        const form = cloneDeep(this._form$.value);
+        const form = cloneDeep(this._formConfig$.value);
 
-        const allFields = form.sections.flatMap((section) =>
-            section.rows.flatMap((row) =>
+        const allFields = form.sections.flatMap((section) => {
+            const sectionItem = {
+                key: section.ffw_key,
+                option: {
+                    key: section.key,
+                    type: DragTitleEnum.Section
+                }
+            };
+            const fieldItem = section.rows.flatMap((row) =>
                 row.fieldGroup.map((field) => ({
                     key: field.ffw_key as string,
                     option: field.option
                 }))
-            )
-        );
+            );
+            return [sectionItem, ...fieldItem];
+        });
 
         this._flatten_fields = new Map<string, any>();
         // Only assign if the key doesn't already exist
         for (const field of allFields) {
-            this._flatten_fields.set(field.key, cloneDeep(field.option));
+            if (field.key) {
+                this._flatten_fields.set(field.key, field.option);
+            }
         }
     }
 
     getFlattenFields() {
         return cloneDeep(this._flatten_fields);
+    }
+
+    //Build Flieds
+    buildFields(value: FormConfig) {
+        const flatActions = value.sections.flatMap((section) => {
+            return section.rows.flatMap((row) => {
+                return row.fieldGroup.flatMap((field) => {
+                    return Object.values(field.actions).flatMap((actionArray) => {
+                        return actionArray.map((action) => {
+                            return {
+                                ...action,
+                                parentKey: field.option.key
+                            };
+                        });
+                    });
+                });
+            });
+        });
+
+        const getExpress = (key: any) => {
+            const foundActions = flatActions.filter((action) => action.key === key);
+            const expression: any = {};
+            foundActions.forEach((action) => {
+                if (action.group === 'hide') {
+                    expression['hide'] = `model.${action.parentKey}`;
+                }
+            });
+            console.log('express', expression);
+            return expression;
+        };
+
+        console.log('flatActions', flatActions);
+
+        let field: FormlyFieldConfig = {
+            type: 'sections',
+            className: 'section-class',
+            fieldGroup: []
+        };
+        //this.form = cloneDeep(value);
+        value.sections.forEach((section) => {
+            field.fieldGroup?.push({
+                props: {
+                    label: section.title,
+                    description: section.description
+                },
+                fieldGroup: section.rows.reduce((acc, row) => {
+                    if (row.fieldGroup.length > 0) {
+                        const formlyRow: FormlyFieldConfig = {
+                            fieldGroupClassName: row.fieldGroupClassName,
+                            fieldGroup: row.fieldGroup.map((field, index) => ({
+                                ...field.option,
+                                key: field.option?.key ?? `field_${row.ffw_key}_${index}`,
+                                expressions: getExpress(field.option?.key)
+                            }))
+                        };
+                        acc.push(formlyRow);
+                    }
+                    return acc;
+                }, [] as FormlyFieldConfig[])
+            });
+        });
+
+        this.fields.push(field);
+        console.log(this.fields);
     }
 }

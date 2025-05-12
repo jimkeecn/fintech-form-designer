@@ -40,7 +40,6 @@
                         it will still be saved but only as extra info, not used in main processing.
                     </small>
                 </div>
-
                 <div class="tw-flex tw-flex-col tw-gap-2">
                     <label [for]="'label_' + ffw_key">Label *</label>
                     <input
@@ -83,7 +82,7 @@
                                     <div
                                         class="tw-border-none tw-bg-slate-700 tw-text-white tw-p-2 tw-w-[100px] tw-text-xs tw-text-center tw-rounded-md"
                                     >
-                                        {{ fieldTypeMapper(field.value.type) }}
+                                        {{ fieldTypeMapper(field.value ? field.value.type : '') }}
                                     </div>
                                 </div>
                             </ng-template>
