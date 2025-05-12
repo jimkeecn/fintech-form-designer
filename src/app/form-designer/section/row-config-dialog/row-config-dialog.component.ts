@@ -5,6 +5,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IRowConfigDialogClose, RowConfigDialogCloseEnum } from './row-config-dialog';
 import { cloneDeep } from 'lodash';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { FormRootService } from '../../../root-services/form-root-service.service';
 
 @Component({
     selector: 'app-row-config-dialog',
@@ -24,16 +25,22 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     fieldIndex: number = 0;
     field: FormField;
     flattenFields: { key: string; value: any }[];
-    constructor(public config: DynamicDialogConfig, public ref: DynamicDialogRef, private fb: FormBuilder) {
+    constructor(
+        public config: DynamicDialogConfig,
+        public ref: DynamicDialogRef,
+        private fb: FormBuilder,
+        private rootService: FormRootService
+    ) {
         this.row = cloneDeep(this.config.data.row);
         this.fieldIndex = this.config.data.index;
         this.field = this.row.fieldGroup[this.fieldIndex];
-        const allFields = Array.from(this.config.data.flattenFields as Map<any, any>).map(([key, value]) => ({
+        const allFields = Array.from(this.rootService.getFlattenFields() as Map<any, any>).map(([key, value]) => ({
             key,
             value
         }));
 
-        this.flattenFields = allFields.filter((f) => f.key !== this.field.ffw_key && f.value.key !== '');
+        this.flattenFields = allFields.filter((f) => f.key !== this.field.ffw_key && f.value.option.key !== '');
+        console.log('get flatten', this.flattenFields);
 
         this.form = this.fb.group({
             label: [this.field.option.props?.label, Validators.required],

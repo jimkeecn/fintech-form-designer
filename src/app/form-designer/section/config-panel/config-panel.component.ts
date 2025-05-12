@@ -151,7 +151,7 @@ export class ConfigPanelComponent implements OnInit {
      */
     openFieldSetting(row: FormRow, key: string, index: number) {
         this.ref = this.dialogService.open(RowConfigDialogComponent, {
-            data: { row, index, flattenFields: this.formRootService.getFlattenFields() },
+            data: { row, index },
             width: '50vw',
             height: '80vw',
             modal: true,
