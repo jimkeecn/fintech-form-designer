@@ -307,6 +307,7 @@ export interface FormFieldAction {
     type: string;
     value?: any;
     group: string;
+    parentSection: string;
 }
 
 export function createNewFormSection(index: number): FormSection {

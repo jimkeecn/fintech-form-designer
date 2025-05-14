@@ -151,9 +151,9 @@ export class ConfigPanelComponent implements OnInit {
      * This part of logic can be replace with better user experience by create a formly field wrapper to trigger field level setting.
      * [Name to do rename since it's targeting field instead of row]
      */
-    openFieldSetting(row: FormRow, key: string, index: number) {
+    openFieldSetting(row: FormRow, key: string, index: number, section: FormSection) {
         this.ref = this.dialogService.open(RowConfigDialogComponent, {
-            data: { row, index },
+            data: { row, index, section },
             width: '70vw',
             height: '80vw',
             modal: true,

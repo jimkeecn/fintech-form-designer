@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { FormSection } from '../../../../models/dragable-list';
 
 @Component({
     selector: 'ffb-field-config',
@@ -14,6 +15,7 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
     @Input() fields!: any[];
     @Input() allFields!: { key: string; value: any }[];
     @Input() fieldType!: string | undefined;
+    @Input() currentSection!: FormSection;
     action_list = ['hide', 'show', 'required', 'clear', 'validator', 'group', 'filter'];
     actionable_list = ['checkbox', 'select', 'toggle'];
     example_mapping = ['Investor FirstName', 'Investor Last', 'Investor DOB', 'Investor Mobile'];
@@ -68,7 +70,8 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
             ffw_key: [field.key],
             key: [field.value.key],
             group: [action],
-            value: []
+            value: [],
+            parentSection: this.currentSection.key
         });
         actionArray.push(form);
     }

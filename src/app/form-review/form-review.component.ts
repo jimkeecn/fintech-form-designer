@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormConfig } from '../models/dragable-list';
 import { cloneDeep } from 'lodash';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
@@ -14,6 +14,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 export class FormReviewComponent implements OnInit, OnDestroy {
     fields: FormlyFieldConfig[] = [];
     form = new FormGroup({});
+    option!: FormlyFormOptions;
     @Input()
     set setForm(value: FormConfig | null) {
         if (value) {
@@ -32,20 +33,23 @@ export class FormReviewComponent implements OnInit, OnDestroy {
                 });
             });
 
-            const getExpress = (key: any, sectionKey: any) => {
-                console.log('express key', key);
+            const getExpress = (key: any) => {
                 const foundActions = flatActions.filter((action) => action.key === key);
+                console.log('found key', foundActions);
                 const expression: any = {};
                 foundActions.forEach((action) => {
                     if (action.group === 'hide') {
-                        expression['hide'] = `!!model?.${sectionKey}?.${action.parentKey}`;
+                        expression['hide'] = (field: FormlyFieldConfig) => {
+                            const parentModel = field.options?.formState?.model;
+                            if (typeof action.parentKey === 'string' || typeof action.parentKey === 'number') {
+                                return parentModel?.[action.parentSection]?.[action.parentKey];
+                            }
+                        };
                     }
                 });
                 console.log('express', expression);
                 return expression;
             };
-
-            console.log('flatActions', flatActions);
 
             let field: FormlyFieldConfig = {
                 type: 'sections',
@@ -62,7 +66,7 @@ export class FormReviewComponent implements OnInit, OnDestroy {
                         label: section.title,
                         description: section.description
                     },
-                    expressions: getExpress(section.key, section.key),
+                    expressions: getExpress(section.key),
                     fieldGroup: section.rows.reduce((acc, row) => {
                         if (row.fieldGroup.length > 0) {
                             const formlyRow: FormlyFieldConfig = {
@@ -76,7 +80,7 @@ export class FormReviewComponent implements OnInit, OnDestroy {
                                     return {
                                         ...field.option,
                                         key: fieldKey,
-                                        expressions: getExpress(fieldKey, section.key)
+                                        expressions: getExpress(fieldKey)
                                     };
                                 })
                             };
@@ -88,14 +92,21 @@ export class FormReviewComponent implements OnInit, OnDestroy {
             });
 
             this.fields.push(field);
-            console.log(this.fields, this.model);
+            console.log(this.fields);
         }
     }
     @Input() model: any = {};
 
     @Output() model_emit = new EventEmitter();
 
-    constructor() {}
+    constructor() {
+        this.option = {
+            formState: {
+                disable: false,
+                model: this.model
+            }
+        };
+    }
 
     ngOnInit() {}
     ngOnDestroy(): void {}

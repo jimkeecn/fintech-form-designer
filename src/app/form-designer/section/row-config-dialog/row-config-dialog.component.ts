@@ -25,6 +25,7 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     fieldIndex: number = 0;
     field: FormField;
     flattenFields: { key: string; value: any }[];
+    section!: FormSection;
     constructor(
         public config: DynamicDialogConfig,
         public ref: DynamicDialogRef,
@@ -32,6 +33,7 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
         private rootService: FormRootService
     ) {
         this.row = cloneDeep(this.config.data.row);
+        this.section = cloneDeep(this.config.data.section);
         this.fieldIndex = this.config.data.index;
         this.field = this.row.fieldGroup[this.fieldIndex];
         const allFields = Array.from(this.rootService.getFlattenFields() as Map<any, any>).map(([key, value]) => ({
