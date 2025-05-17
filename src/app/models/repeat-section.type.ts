@@ -11,7 +11,7 @@ import { FieldArrayType, FieldType } from '@ngx-formly/core';
         <p-divider />
         }
 
-        <button (click)="add()">Add New</button>
+        <button (click)="add()">{{ field.props['addText'] }}</button>
     `
 })
 export class RepeatFormlyFieldSections extends FieldArrayType {

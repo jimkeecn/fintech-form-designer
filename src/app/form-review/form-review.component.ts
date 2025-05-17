@@ -65,9 +65,7 @@ export class FormReviewComponent implements OnInit, OnDestroy {
                         type: section.isRepeatable ? 'repeat-section' : '', //will need to implement the 'repeat-section' wrapper
                         props: {
                             label: section.title,
-                            description: section.description
-                        },
-                        templateOptions: {
+                            description: section.description,
                             addText: 'Add New Section'
                         },
                         expressions: getExpress(section.key),
