@@ -9,6 +9,7 @@ import { Title } from '@angular/platform-browser';
 @Component({
     selector: 'app-section-config-dialog',
     template: `
+        @if(form){
         <form class="tw-flex tw-flex-col tw-gap-4" [formGroup]="form" (ngSubmit)="submit()">
             <div class="tw-flex tw-flex-col tw-gap-2">
                 <label for="section-key">Section Key *</label>
@@ -23,6 +24,10 @@ import { Title } from '@angular/platform-browser';
                     Change to your corresponding data key, please use smallcase, nospace and english only with
                     meaningful name e.g inv_section
                 </small>
+            </div>
+            <div class="tw-flex tw-flex-col tw-gap-2">
+                <p-checkbox formControlName="isRepeatable" [binary]="true" inputId="ffw_isrepeatable" />
+                <label for="ffw_isrepeatable">Is this section allow repeatition.</label>
             </div>
             <div class="tw-flex tw-flex-col tw-gap-2">
                 <label for="section-title">Section Title *</label>
@@ -55,6 +60,7 @@ import { Title } from '@angular/platform-browser';
                 />
             </div>
         </form>
+        }
     `,
     styleUrl: './section-config-dialog.component.scss'
 })
@@ -88,7 +94,8 @@ export class SectionConfigDialogComponent implements OnInit, OnDestroy {
         this.form = this.fb.group({
             key: [this.data.key, Validators.required],
             title: [this.data.title || '', Validators.required],
-            description: [this.data.description || '', Validators.required]
+            description: [this.data.description || '', Validators.required],
+            isRepeatable: [this.data.isRepeatable || false]
         });
     }
 

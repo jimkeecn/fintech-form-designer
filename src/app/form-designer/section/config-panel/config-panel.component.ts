@@ -82,6 +82,7 @@ export class ConfigPanelComponent implements OnInit {
                 section.description = data.description;
                 section.title = data.title;
                 section.key = data.key;
+                section.isRepeatable = data.isRepeatable;
                 this.formRootService.updateSection(section);
                 this.cRef.markForCheck();
             }

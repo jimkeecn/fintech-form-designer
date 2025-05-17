@@ -35,7 +35,6 @@ export class FormReviewComponent implements OnInit, OnDestroy {
 
             const getExpress = (key: any) => {
                 const foundActions = flatActions.filter((action) => action.key === key);
-                console.log('found key', foundActions);
                 const expression: any = {};
                 foundActions.forEach((action) => {
                     if (action.group === 'hide') {
@@ -47,52 +46,92 @@ export class FormReviewComponent implements OnInit, OnDestroy {
                         };
                     }
                 });
-                console.log('express', expression);
                 return expression;
             };
 
-            let field: FormlyFieldConfig = {
-                type: 'sections',
-                className: 'section-class',
-                fieldGroup: []
-            };
             //this.form = cloneDeep(value);
             value.sections.forEach((section) => {
-                if (section.key) this.model[section.key] = {};
-                field.fieldGroup?.push({
-                    key: section.key,
-                    type: '', //will need to implement the 'repeat-section' wrapper
-                    props: {
-                        label: section.title,
-                        description: section.description
-                    },
-                    expressions: getExpress(section.key),
-                    fieldGroup: section.rows.reduce((acc, row) => {
-                        if (row.fieldGroup.length > 0) {
-                            const formlyRow: FormlyFieldConfig = {
-                                fieldGroupClassName: row.fieldGroupClassName,
-                                fieldGroup: row.fieldGroup.map((field, index) => {
-                                    const fieldKey = field.option?.key;
-                                    if (section.key) {
-                                        if (fieldKey && typeof fieldKey === 'string')
-                                            this.model[section.key][fieldKey] = null;
-                                    }
-                                    return {
-                                        ...field.option,
-                                        key: fieldKey,
-                                        expressions: getExpress(fieldKey)
+                let field: FormlyFieldConfig = {
+                    type: 'sections',
+                    className: 'section-class',
+                    fieldGroup: [],
+                    fieldArray: {}
+                };
+                if (section.key) this.model[section.key] = section.isRepeatable ? [] : {};
+
+                if (section.isRepeatable) {
+                    field.fieldGroup?.push({
+                        key: section.key,
+                        type: section.isRepeatable ? 'repeat-section' : '', //will need to implement the 'repeat-section' wrapper
+                        props: {
+                            label: section.title,
+                            description: section.description
+                        },
+                        templateOptions: {
+                            addText: 'Add New Section'
+                        },
+                        expressions: getExpress(section.key),
+                        fieldArray: {
+                            fieldGroup: section.rows.reduce((acc, row) => {
+                                if (row.fieldGroup.length > 0) {
+                                    const formlyRow: FormlyFieldConfig = {
+                                        fieldGroupClassName: row.fieldGroupClassName,
+                                        fieldGroup: row.fieldGroup.map((field, index) => {
+                                            const fieldKey = field.option?.key;
+                                            if (section.key) {
+                                                if (fieldKey && typeof fieldKey === 'string')
+                                                    this.model[section.key][fieldKey] = null;
+                                            }
+                                            return {
+                                                ...field.option,
+                                                key: fieldKey,
+                                                expressions: getExpress(fieldKey)
+                                            };
+                                        })
                                     };
-                                })
-                            };
-                            acc.push(formlyRow);
+                                    acc.push(formlyRow);
+                                }
+                                return acc;
+                            }, [] as FormlyFieldConfig[])
                         }
-                        return acc;
-                    }, [] as FormlyFieldConfig[])
-                });
+                    });
+                } else {
+                    field.fieldGroup?.push({
+                        key: section.key,
+                        type: '', //will need to implement the 'repeat-section' wrapper
+                        props: {
+                            label: section.title,
+                            description: section.description
+                        },
+                        expressions: getExpress(section.key),
+                        fieldGroup: section.rows.reduce((acc, row) => {
+                            if (row.fieldGroup.length > 0) {
+                                const formlyRow: FormlyFieldConfig = {
+                                    fieldGroupClassName: row.fieldGroupClassName,
+                                    fieldGroup: row.fieldGroup.map((field, index) => {
+                                        const fieldKey = field.option?.key;
+                                        if (section.key) {
+                                            if (fieldKey && typeof fieldKey === 'string')
+                                                this.model[section.key][fieldKey] = null;
+                                        }
+                                        return {
+                                            ...field.option,
+                                            key: fieldKey,
+                                            expressions: getExpress(fieldKey)
+                                        };
+                                    })
+                                };
+                                acc.push(formlyRow);
+                            }
+                            return acc;
+                        }, [] as FormlyFieldConfig[])
+                    });
+                }
+
+                this.fields.push(field);
             });
 
-            this.fields.push(field);
-            console.log(this.fields);
+            console.log(this.fields, this.model);
         }
     }
     @Input() model: any = {};

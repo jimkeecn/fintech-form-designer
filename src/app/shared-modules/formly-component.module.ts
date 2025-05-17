@@ -22,6 +22,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { DockModule } from 'primeng/dock';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
 @NgModule({
     declarations: [],
     imports: [CommonModule],
@@ -47,7 +48,8 @@ import { DropdownModule } from 'primeng/dropdown';
         MenubarModule,
         DockModule,
         AccordionModule,
-        DropdownModule
+        DropdownModule,
+        CheckboxModule
     ]
 })
 export class FormlyComponentModule {}

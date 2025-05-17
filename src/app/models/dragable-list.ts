@@ -276,6 +276,10 @@ export interface FormSection extends BaseConfig {
     index: number;
     title: string;
     description: string;
+    /**
+     * Is to control whether this section is repeatable
+     */
+    isRepeatable?: boolean;
     rows: FormRow[];
 }
 
@@ -315,6 +319,7 @@ export function createNewFormSection(index: number): FormSection {
         ffw_key: uuidv4(),
         index: index,
         title: `Please add a title`,
+        isRepeatable: false,
         description: `<p class="tw-text-gray-700 tw-text-sm">
                     <strong>Tip:</strong> Add a brief description of this section to help users understand its purpose. You can include instructions, context, or any notes that clarify what information should be provided here.
                     </p>`,
