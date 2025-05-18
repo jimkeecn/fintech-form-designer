@@ -22,6 +22,7 @@ import { FormReviewComponent } from './form-review/form-review.component';
 import { FormSectionComponent } from './form-review/form-section/form-section.component';
 import { FormlyFieldSections } from './models/multiple-section.type';
 import { RepeatFormlyFieldSections } from './models/repeat-section.type';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { RepeatFormlyFieldSections } from './models/repeat-section.type';
                 { name: 'repeat-section', component: RepeatFormlyFieldSections }
             ]
         }),
+        HttpClientModule,
         ReactiveFormsModule,
         DragDropModule,
         FormlyComponentModule
