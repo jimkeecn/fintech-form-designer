@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { SchemaObject } from '../models/dragable-list';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class FormVariablesService {
         this.setVariablesSchema(value);
     }
 
-    private _variablesSchema$ = new BehaviorSubject<any>([]);
+    private _variablesSchema$ = new BehaviorSubject<any[]>([]);
     get variablesSchema$(): Observable<any> {
         return this._variablesSchema$.asObservable();
     }
@@ -22,7 +23,7 @@ export class FormVariablesService {
     private setVariablesSchema(variables: any) {
         if (!variables) return;
 
-        const schemaList = [];
+        const schemaList: SchemaObject[] = [];
 
         for (let key in variables) {
             const arr = variables[key];
@@ -30,11 +31,14 @@ export class FormVariablesService {
             if (!Array.isArray(arr) || arr.length === 0) continue;
 
             const sample = arr[0]; // assume all items have same structure
-            const properties: Record<string, any> = {};
+            const properties: Array<{ name: string; type: string }> = [];
 
             for (let prop in sample) {
                 const value = sample[prop];
-                properties[prop] = { type: this.inferType(value) };
+                properties.push({
+                    name: prop,
+                    type: this.inferType(value)
+                });
             }
 
             schemaList.push({

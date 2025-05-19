@@ -60,6 +60,36 @@
                         data-testid="FieldConfigComponent.placeholder"
                     />
                 </div>
+                <div class="tw-flex tw-flex-col tw-gap-2">
+                    <label [for]="'select_' + ffw_key">Dropdown Scheme</label>
+                    <p-dropdown
+                        [options]="schemes"
+                        optionLabel="name"
+                        formControlName="selectedScheme"
+                        data-testid="FieldConfigComponent.selectedScheme"
+                        class="tw-flex tw-flex-col"
+                        placeholder="Select a dropdown scheme"
+                        [showClear]="true"
+                    >
+                        <ng-template pTemplate="selectedItem">
+                            <div class="tw-flex tw-gap-3">
+                                <span>{{ form.get('selectedScheme')?.value?.name }} </span>
+                                @for(prop of form.get('selectedScheme')?.value?.items.properties;track prop){
+                                <span>[{{ prop.name }}]</span>
+                                }
+                            </div>
+                        </ng-template>
+                        <ng-template let-scheme pTemplate="scheme">
+                            <div class="tw-flex tw-flex-col">
+                                <div class="tw-text-lg">{{ scheme.name }}</div>
+                                <div class="tw-text-sm tw-mt-2 tw-pl-2">Type: {{ scheme.type }}</div>
+                                @for(prop of scheme.items.properties;track prop){
+                                <div class="tw-text-sm tw-mt-2 tw-pl-4">[ {{ prop.name }} | {{ prop.type }}]</div>
+                                }
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
             </div>
         </p-accordionTab>
         @if(getActionable(fieldType)){

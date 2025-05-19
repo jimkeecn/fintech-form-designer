@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnI
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { FormSection } from '../../../../models/dragable-list';
+import { FormVariablesService } from '../../../../root-services/form-variables.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'ffb-field-config',
@@ -19,13 +21,26 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
     action_list = ['hide', 'show', 'required', 'clear', 'validator', 'group', 'filter'];
     actionable_list = ['checkbox', 'select', 'toggle'];
     example_mapping = ['Investor FirstName', 'Investor Last', 'Investor DOB', 'Investor Mobile'];
-    constructor(private fb: FormBuilder, private messageService: MessageService) {}
+
+    private _destory$ = new Subject<any>();
+
+    schemes: any[] = [];
+    constructor(
+        private fb: FormBuilder,
+        private messageService: MessageService,
+        private formVarService: FormVariablesService
+    ) {}
 
     ngOnInit(): void {
         console.log(this.fieldType);
+        this.formVarService.variablesSchema$.pipe(takeUntil(this._destory$)).subscribe((schemes) => {
+            this.schemes = schemes;
+        });
     }
 
-    ngOnDestroy(): void {}
+    ngOnDestroy(): void {
+        this._destory$.unsubscribe();
+    }
 
     fieldTypeMapper(type: string): string {
         switch (type) {

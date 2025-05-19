@@ -49,6 +49,7 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
             placeholder: [this.field.option.props?.placeholder],
             key: [this.field.option.key, Validators.required],
             map: [this.field.map],
+            selectedScheme: [this.field.selectedScheme],
             hide: this.fb.group({
                 selectedField: [null],
                 actions: this.fb.array(this.field.actions.hide)

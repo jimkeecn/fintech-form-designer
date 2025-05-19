@@ -293,6 +293,7 @@ export interface FormRow extends BaseConfig {
 export interface FormField extends BaseConfig {
     type: any;
     map?: string;
+    selectedScheme?: string;
     actions: {
         hide: FormFieldAction[];
         show: FormFieldAction[];
@@ -312,6 +313,15 @@ export interface FormFieldAction {
     value?: any;
     group: string;
     parentSection: string;
+}
+
+export interface SchemaObject {
+    name: string;
+    type: string;
+    items: {
+        type: string;
+        properties: any[];
+    };
 }
 
 export function createNewFormSection(index: number): FormSection {
