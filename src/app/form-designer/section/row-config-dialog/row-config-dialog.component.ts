@@ -93,14 +93,26 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
     formMapper() {
         this.row.fieldGroup.forEach((field, i) => {
             if (i === this.fieldIndex) {
-                const { label, key, placeholder, hide, show, required, clear, validator, group, filter } =
-                    this.form.value;
+                const {
+                    label,
+                    key,
+                    placeholder,
+                    hide,
+                    show,
+                    required,
+                    clear,
+                    validator,
+                    group,
+                    filter,
+                    selectedScheme
+                } = this.form.value;
                 field.option.props = {
                     ...field.option.props,
                     label,
                     placeholder,
                     key
                 };
+                field.selectedScheme = selectedScheme;
                 field.option.key = key;
                 field.actions.hide = hide.actions;
                 field.actions.show = show.actions;

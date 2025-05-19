@@ -40,26 +40,7 @@
                         it will still be saved but only as extra info, not used in main processing.
                     </small>
                 </div>
-                <div class="tw-flex tw-flex-col tw-gap-2">
-                    <label [for]="'label_' + ffw_key">Label *</label>
-                    <input
-                        pInputText
-                        [id]="'label_' + ffw_key"
-                        aria-describedby="label"
-                        formControlName="label"
-                        data-testid="FieldConfigComponent.label"
-                    />
-                </div>
-                <div class="tw-flex tw-flex-col tw-gap-2">
-                    <label [for]="'placeholder_' + ffw_key">Placeholder</label>
-                    <input
-                        pInputText
-                        [id]="'placeholder_' + ffw_key"
-                        aria-describedby="placeholder"
-                        formControlName="placeholder"
-                        data-testid="FieldConfigComponent.placeholder"
-                    />
-                </div>
+                @if(fieldType === 'select'){
                 <div class="tw-flex tw-flex-col tw-gap-2">
                     <label [for]="'select_' + ffw_key">Dropdown Scheme</label>
                     <p-dropdown
@@ -89,6 +70,27 @@
                             </div>
                         </ng-template>
                     </p-dropdown>
+                </div>
+                }
+                <div class="tw-flex tw-flex-col tw-gap-2">
+                    <label [for]="'label_' + ffw_key">Label *</label>
+                    <input
+                        pInputText
+                        [id]="'label_' + ffw_key"
+                        aria-describedby="label"
+                        formControlName="label"
+                        data-testid="FieldConfigComponent.label"
+                    />
+                </div>
+                <div class="tw-flex tw-flex-col tw-gap-2">
+                    <label [for]="'placeholder_' + ffw_key">Placeholder</label>
+                    <input
+                        pInputText
+                        [id]="'placeholder_' + ffw_key"
+                        aria-describedby="placeholder"
+                        formControlName="placeholder"
+                        data-testid="FieldConfigComponent.placeholder"
+                    />
                 </div>
             </div>
         </p-accordionTab>

@@ -293,7 +293,7 @@ export interface FormRow extends BaseConfig {
 export interface FormField extends BaseConfig {
     type: any;
     map?: string;
-    selectedScheme?: string;
+    selectedScheme?: any;
     actions: {
         hide: FormFieldAction[];
         show: FormFieldAction[];
@@ -301,7 +301,7 @@ export interface FormField extends BaseConfig {
         clear: FormFieldAction[];
         validator: FormFieldAction[];
         group: FormFieldAction[];
-        filter: FormFieldAction[];
+        filter: FormFieldFilterAction[];
     };
     option: FormlyFieldConfig;
 }
@@ -313,6 +313,15 @@ export interface FormFieldAction {
     value?: any;
     group: string;
     parentSection: string;
+}
+
+export interface FormFieldFilterAction extends FormFieldAction {
+    filter?: {
+        condition?: 'in' | 'not in';
+        values?: any[];
+        action?: string;
+        targetValues?: any[];
+    };
 }
 
 export interface SchemaObject {
