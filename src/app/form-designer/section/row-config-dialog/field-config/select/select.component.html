@@ -1,0 +1,10 @@
+@if(form){
+<ffb-base-field-config-shell
+    [form]="form"
+    [action]="action"
+    [allFields]="allFields"
+    (add)="addAction($event)"
+    (remove)="removeAction($event)"
+>
+</ffb-base-field-config-shell>
+}

@@ -42,7 +42,7 @@
                 </div>
                 @if(fieldType === 'select'){
                 <div class="tw-flex tw-flex-col tw-gap-2">
-                    <label [for]="'select_' + ffw_key">Dropdown Scheme</label>
+                    <label [for]="'select_' + ffw_key">Data Source</label>
                     <p-dropdown
                         [options]="schemes"
                         optionLabel="name"
@@ -54,7 +54,9 @@
                     >
                         <ng-template pTemplate="selectedItem">
                             <div class="tw-flex tw-gap-3">
-                                <span>{{ form.get('selectedScheme')?.value?.name }} </span>
+                                <span
+                                    >{{ form.get('selectedScheme')?.value?.name ?? 'Please select a data source' }}
+                                </span>
                                 @for(prop of form.get('selectedScheme')?.value?.items.properties;track prop){
                                 <span>[{{ prop.name }}]</span>
                                 }
@@ -98,52 +100,16 @@
         <p-accordionTab header="Actions" class="ffb-accordion-no-padding">
             <p-tabView [scrollable]="true">
                 @for(action of action_list;track action){
-                <p-tabPanel [header]="action.toUpperCase()" [formGroupName]="action">
-                    <div class="tw-flex tw-flex-col tw-gap-2">
-                        <p-dropdown
-                            [options]="allFields"
-                            placeholder="Select a field"
-                            formControlName="selectedField"
-                            optionLabel="value.key"
-                            [showClear]="true"
-                            class="tw-flex tw-flex-col"
-                        >
-                            <ng-template let-field pTemplate="item">
-                                <div class="tw-flex tw-justify-between tw-items-center">
-                                    <div class="tw-text-base">{{ field.value.key }}</div>
-                                    <div
-                                        class="tw-border-none tw-bg-slate-700 tw-text-white tw-p-2 tw-w-[100px] tw-text-xs tw-text-center tw-rounded-md"
-                                    >
-                                        {{ fieldTypeMapper(field.value ? field.value.type : '') }}
-                                    </div>
-                                </div>
-                            </ng-template>
-                        </p-dropdown>
-                        <p-button
-                            label="Add"
-                            size="small"
-                            (onClick)="addAction(form.get(action)?.get('selectedField')?.value, action)"
-                        />
-                    </div>
-                    <p-divider></p-divider>
-                    <div class="tw-flex tw-flex-col tw-gap-3">
-                        @for(field of form.get(action)?.get('actions')?.value;track field.key){ @if(field.group ===
-                        'hide'){
-                        <div class="tw-flex tw-justify-between tw-items-center">
-                            <div class="tw-flex tw-flex-col tw-gap-1">
-                                <label class="tw-text-xs">Field Key</label>
-                                <p>{{ field.key }}</p>
-                            </div>
-                            <p-button
-                                icon="pi pi-times"
-                                severity="danger"
-                                size="small"
-                                (onClick)="removeAction(field, action)"
-                            />
-                        </div>
-                        } }
-                    </div>
+                <p-tabPanel [header]="action">
+                    <ffw-select-config
+                        [form]="returnHideForm(action)"
+                        [action]="action"
+                        [allFields]="allFields"
+                        (add)="addAction($event)"
+                        (remove)="removeAction($event)"
+                    ></ffw-select-config>
                 </p-tabPanel>
+
                 }
             </p-tabView>
         </p-accordionTab>

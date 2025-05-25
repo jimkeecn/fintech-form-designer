@@ -23,6 +23,8 @@ import { FormSectionComponent } from './form-review/form-section/form-section.co
 import { FormlyFieldSections } from './models/multiple-section.type';
 import { RepeatFormlyFieldSections } from './models/repeat-section.type';
 import { HttpClientModule } from '@angular/common/http';
+import { BaseFieldConfigShellComponent } from './form-designer/section/row-config-dialog/field-config/shared/base-field-config-shell/base-field-config-shell.component';
+import { SelectComponent } from './form-designer/section/row-config-dialog/field-config/select/select.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +39,9 @@ import { HttpClientModule } from '@angular/common/http';
         FormReviewComponent,
         FormSectionComponent,
         FormlyFieldSections,
-        RepeatFormlyFieldSections
+        RepeatFormlyFieldSections,
+        BaseFieldConfigShellComponent,
+        SelectComponent
     ],
     imports: [
         BrowserModule,

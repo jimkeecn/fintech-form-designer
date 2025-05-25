@@ -1,9 +1,25 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { FormSection } from '../../../../models/dragable-list';
 import { FormVariablesService } from '../../../../root-services/form-variables.service';
 import { Subject, takeUntil } from 'rxjs';
+
+enum ActionableEnum {
+    CheckBox = 'checkbox',
+    Select = 'select',
+    Toggle = 'toggle'
+}
+
+enum ActionEnum {
+    Hide = 'hide',
+    Show = 'show',
+    Required = 'required',
+    Clear = 'clear',
+    Validator = 'validator',
+    Group = 'group',
+    Filter = 'filter'
+}
 
 @Component({
     selector: 'ffb-field-config',
@@ -18,13 +34,30 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
     @Input() allFields!: { key: string; value: any }[];
     @Input() fieldType!: string | undefined;
     @Input() currentSection!: FormSection;
-    action_list = ['hide', 'show', 'required', 'clear', 'validator', 'group', 'filter'];
-    actionable_list = ['checkbox', 'select', 'toggle'];
+    action_list = [
+        ActionEnum.Hide,
+        ActionEnum.Show,
+        ActionEnum.Required,
+        ActionEnum.Clear,
+        ActionEnum.Validator,
+        ActionEnum.Group,
+        ActionEnum.Filter
+    ] as string[];
+    actionable_list = [ActionableEnum.CheckBox, ActionableEnum.Select, ActionableEnum.Toggle];
     example_mapping = ['Investor FirstName', 'Investor Last', 'Investor DOB', 'Investor Mobile'];
+    actionEnum = ActionEnum;
+    /**
+     *  dropdown values after user select the data source.
+     */
+    datasource: any[] = [];
 
     private _destory$ = new Subject<any>();
 
     schemes: any[] = [];
+
+    returnHideForm(action: string): FormGroup {
+        return this.form?.get(action) as FormGroup;
+    }
     constructor(
         private fb: FormBuilder,
         private messageService: MessageService,
@@ -36,40 +69,21 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
         this.formVarService.variablesSchema$.pipe(takeUntil(this._destory$)).subscribe((schemes) => {
             this.schemes = schemes;
         });
+        (this.form?.get('selectedScheme') as FormControl).valueChanges
+            .pipe(takeUntil(this._destory$))
+            .subscribe((value) => {
+                console.log(value);
+                console.log(this.formVarService.retrieveVariableValue(value?.name));
+            });
     }
 
     ngOnDestroy(): void {
         this._destory$.unsubscribe();
     }
 
-    fieldTypeMapper(type: string): string {
-        switch (type) {
-            case 'input':
-                return 'Text';
-            case 'textarea':
-                return 'Multiline';
-            case 'checkbox':
-                return 'Checkbox';
-            case 'radio':
-                return 'Radio Buttons';
-            case 'select':
-                return 'Dropdown';
-            case 'date':
-                return 'Date Picker';
-            case 'number':
-                return 'Number';
-            case 'toggle':
-                return 'Toggle Switch';
-            case 'password':
-                return 'Password';
-            case 'section':
-                return 'Section';
-            default:
-                return 'N/A';
-        }
-    }
-
-    addAction(field: any, action: string) {
+    addAction(data: [any, string]) {
+        const field = data[0];
+        const action = data[1];
         if (!this.form) return;
         const actionArray = this.form.get([action, 'actions']) as FormArray;
         if (actionArray.value.find((x: any) => x.ffw_key === field.key)) {
@@ -91,7 +105,9 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
         actionArray.push(form);
     }
 
-    removeAction(field: any, action: string) {
+    removeAction(data: [any, string]) {
+        const field = data[0];
+        const action = data[1];
         if (!this.form) return;
 
         const actionArray = this.form.get([action, 'actions']) as FormArray;
@@ -105,7 +121,21 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
 
     getActionable(type: string | undefined): boolean {
         if (type) {
-            return this.actionable_list.includes(type);
+            const typed = type as ActionableEnum;
+            if (this.actionable_list.includes(typed)) {
+                if (typed === ActionableEnum.Select) {
+                    if ((this.form?.get('selectedScheme') as FormControl).value) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (typed === ActionableEnum.CheckBox) {
+                    return true;
+                } else if (typed === ActionableEnum.Toggle) {
+                    return true;
+                }
+            }
+            return false;
         } else {
             return false;
         }
