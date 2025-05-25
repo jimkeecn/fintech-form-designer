@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MessageService } from 'primeng/api';
 import { FormSection } from '../../../../models/dragable-list';
 import { FormVariablesService } from '../../../../root-services/form-variables.service';
-import { Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 enum ActionableEnum {
     CheckBox = 'checkbox',
@@ -50,6 +50,7 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
      *  dropdown values after user select the data source.
      */
     datasource: any[] = [];
+    dataScheme: any;
 
     private _destory$ = new Subject<any>();
 
@@ -70,10 +71,14 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
             this.schemes = schemes;
         });
         (this.form?.get('selectedScheme') as FormControl).valueChanges
-            .pipe(takeUntil(this._destory$))
+            .pipe(takeUntil(this._destory$), distinctUntilChanged())
             .subscribe((value) => {
-                console.log(value);
-                console.log(this.formVarService.retrieveVariableValue(value?.name));
+                if (value) {
+                    this.datasource = this.formVarService.retrieveVariableValue(value?.name);
+                    this.dataScheme = value;
+                    console.log(this.dataScheme);
+                }
+                //Need to add logic to check action, if there are actions already. changing selectedScheme will remove all the actions.
             });
     }
 

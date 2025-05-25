@@ -6,5 +6,63 @@
     (add)="addAction($event)"
     (remove)="removeAction($event)"
 >
+    <ng-container base-field-config-form-start>
+        <p-dropdown
+            [options]="conditions"
+            placeholder="Select a condition"
+            [(ngModel)]="selectCondition"
+            [ngModelOptions]="{ standalone: true }"
+            [showClear]="true"
+            optionLabel="label"
+            class="tw-flex tw-flex-col"
+        >
+        </p-dropdown>
+        @if(dataScheme){
+        <p-multiSelect
+            [options]="datasource"
+            placeholder="Select values"
+            [(ngModel)]="filteredDataSource"
+            [ngModelOptions]="{ standalone: true }"
+            [showClear]="true"
+            class="tw-flex tw-flex-col"
+        >
+            <ng-template let-value pTemplate="selectedItems">
+                @if(value && value.length > 0){
+                <div>Selected {{ value.length }} data</div>
+                } @else{
+                <div>Selected 0 data</div>
+                }
+            </ng-template>
+            <ng-template let-field pTemplate="item">
+                <div class="tw-flex tw-flex-col tw-mb-3">
+                    @for(scheme of dataScheme.items.properties;track scheme){
+                    <span>{{ scheme.name }} : {{ field[scheme.name] }}</span>
+                    }
+                </div>
+            </ng-template>
+            <ng-template let-country pTemplate="footer">
+                <div class="tw-p-4">
+                    <b>
+                        {{ filteredDataSource ? filteredDataSource.length : 0 }}
+                    </b>
+                    item selected.
+                </div>
+            </ng-template>
+        </p-multiSelect>
+        }
+    </ng-container>
+    <ng-container base-field-config-list>
+        <div class="tw-flex tw-flex-col tw-gap-3">
+            @for(field of form.get('actions')?.value;track field.key){
+            <div class="tw-flex tw-justify-between tw-items-center">
+                <div class="tw-flex tw-flex-col tw-gap-1">
+                    <label class="tw-text-xs">Target Field</label>
+                    <p>{{ field.key }}</p>
+                </div>
+                <p-button icon="pi pi-times" severity="danger" size="small" (onClick)="removeAction([field, action])" />
+            </div>
+            }
+        </div>
+    </ng-container>
 </ffb-base-field-config-shell>
 }

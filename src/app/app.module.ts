@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormlyModule } from '@ngx-formly/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormOptionsComponent } from './form-options/form-options.component';
@@ -57,7 +57,8 @@ import { SelectComponent } from './form-designer/section/row-config-dialog/field
         HttpClientModule,
         ReactiveFormsModule,
         DragDropModule,
-        FormlyComponentModule
+        FormlyComponentModule,
+        FormsModule
     ],
     providers: [FormRootService, ConfirmationService, MessageService],
     bootstrap: [AppComponent]

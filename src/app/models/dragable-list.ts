@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ExternalExpr } from '@angular/compiler';
 import { PrimeIcons } from 'primeng/api';
+import { ActionCondition } from '../form-designer/section/row-config-dialog/field-config/select/select.component';
 
 export interface DragableCategory {
     title: string;
@@ -301,7 +302,7 @@ export interface FormField extends BaseConfig {
         clear: FormFieldAction[];
         validator: FormFieldAction[];
         group: FormFieldAction[];
-        filter: FormFieldFilterAction[];
+        filter: FormFieldAction[];
     };
     option: FormlyFieldConfig;
 }
@@ -310,25 +311,18 @@ export interface FormFieldAction {
     ffw_key: string;
     key: string;
     type: string;
-    value?: any;
+    condition?: ActionCondition;
+    value?: any | any[];
+    targetValue?: any | any[];
     group: string;
     parentSection: string;
-}
-
-export interface FormFieldFilterAction extends FormFieldAction {
-    filter?: {
-        condition?: 'in' | 'not in';
-        values?: any[];
-        action?: string;
-        targetValues?: any[];
-    };
 }
 
 export interface SchemaObject {
     name: string;
     type: string;
     items: {
-        type: string;
+        type: 'object' | 'string' | 'number';
         properties: any[];
     };
 }

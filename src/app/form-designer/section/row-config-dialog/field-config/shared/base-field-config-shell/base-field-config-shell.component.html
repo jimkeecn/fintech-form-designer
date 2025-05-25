@@ -1,7 +1,8 @@
 @if(form){
 <ng-container [formGroup]="form">
-    <ng-content select="[description]"></ng-content>
+    <ng-content select="[base-field-config-description]"></ng-content>
     <div class="tw-flex tw-flex-col tw-gap-2">
+        <ng-content select="[base-field-config-form-start]"></ng-content>
         <p-dropdown
             [options]="allFields"
             placeholder="Select a field"
@@ -21,21 +22,10 @@
                 </div>
             </ng-template>
         </p-dropdown>
-        <ng-content select="[form]"></ng-content>
+        <ng-content select="[base-field-config-form-end]"></ng-content>
         <p-button label="Add" size="small" (onClick)="addAction([form.get('selectedField')?.value, action])" />
     </div>
     <p-divider></p-divider>
-    <div class="tw-flex tw-flex-col tw-gap-3">
-        @for(field of form.get('actions')?.value;track field.key){
-        <div class="tw-flex tw-justify-between tw-items-center">
-            <div class="tw-flex tw-flex-col tw-gap-1">
-                <label class="tw-text-xs">Target Field</label>
-                <p>{{ field.key }}</p>
-            </div>
-            <ng-content select="[actions]"></ng-content>
-            <p-button icon="pi pi-times" severity="danger" size="small" (onClick)="removeAction([field, action])" />
-        </div>
-        }
-    </div>
+    <ng-content select="[base-field-config-list]"></ng-content>
 </ng-container>
 }

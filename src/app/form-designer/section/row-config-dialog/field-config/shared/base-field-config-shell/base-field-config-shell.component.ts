@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { extend } from 'lodash';
 import { BaseFieldConfig } from '../base-field-config';
-
+/***
+ * accept customize conten injection to
+ * [base-field-config-description]
+ * [base-field-config-form-start]
+ * [base-field-config-form-end]
+ * [base-field-config-list]
+ */
 @Component({
     selector: 'ffb-base-field-config-shell',
     templateUrl: './base-field-config-shell.component.html',

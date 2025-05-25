@@ -42,7 +42,6 @@ export class RowConfigDialogComponent implements OnInit, OnDestroy {
         }));
 
         this.flattenFields = allFields.filter((f) => f.key !== this.field.ffw_key && f.value.key !== '');
-        console.log('get flatten', this.flattenFields);
 
         this.form = this.fb.group({
             label: [this.field.option.props?.label, Validators.required],
