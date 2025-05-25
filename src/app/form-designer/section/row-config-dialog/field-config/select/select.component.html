@@ -11,9 +11,11 @@
             [options]="conditions"
             placeholder="Select a condition"
             [(ngModel)]="selectCondition"
+            (ngModelChange)="onConditionChange($event)"
             [ngModelOptions]="{ standalone: true }"
             [showClear]="true"
             optionLabel="label"
+            optionValue="key"
             class="tw-flex tw-flex-col"
         >
         </p-dropdown>
@@ -21,14 +23,16 @@
         <p-multiSelect
             [options]="datasource"
             placeholder="Select values"
+            [optionValue]="undefined"
             [(ngModel)]="filteredDataSource"
+            (ngModelChange)="onMultipleSelectChange($event)"
             [ngModelOptions]="{ standalone: true }"
             [showClear]="true"
             class="tw-flex tw-flex-col"
         >
-            <ng-template let-value pTemplate="selectedItems">
-                @if(value && value.length > 0){
-                <div>Selected {{ value.length }} data</div>
+            <ng-template pTemplate="selectedItems">
+                @if(filteredDataSource && filteredDataSource.length > 0){
+                <div>Selected {{ filteredDataSource.length }} data</div>
                 } @else{
                 <div>Selected 0 data</div>
                 }
@@ -40,7 +44,7 @@
                     }
                 </div>
             </ng-template>
-            <ng-template let-country pTemplate="footer">
+            <ng-template pTemplate="footer">
                 <div class="tw-p-4">
                     <b>
                         {{ filteredDataSource ? filteredDataSource.length : 0 }}
@@ -54,11 +58,32 @@
     <ng-container base-field-config-list>
         <div class="tw-flex tw-flex-col tw-gap-3">
             @for(field of form.get('actions')?.value;track field.key){
-            <div class="tw-flex tw-justify-between tw-items-center">
+            <div class="tw-flex tw-justify-between">
+                <div class="tw-flex tw-flex-col tw-gap-1">
+                    <label class="tw-text-xs">Condition</label>
+                    <p-divider></p-divider>
+                    <p>{{ getConditionLabel(field.condition) }}</p>
+                </div>
+                <div class="tw-flex tw-flex-col tw-gap-1">
+                    <label class="tw-text-xs">Source Values</label>
+                    <p-divider></p-divider>
+                    @for(value of field.sourceValue;track value){ @for(scheme of dataScheme.items.properties;track
+                    scheme){
+                    <span class="tw-text-xs">{{ scheme.name }} : {{ value[scheme.name] }}</span>
+                    } }
+                </div>
                 <div class="tw-flex tw-flex-col tw-gap-1">
                     <label class="tw-text-xs">Target Field</label>
+                    <p-divider></p-divider>
                     <p>{{ field.key }}</p>
                 </div>
+                @if(field.targetValue && field.targetValue.length > 0){
+                <div class="tw-flex tw-flex-col tw-gap-1">
+                    <label class="tw-text-xs">Target Values</label>
+                    <p-divider></p-divider>
+                    <p></p>
+                </div>
+                }
                 <p-button icon="pi pi-times" severity="danger" size="small" (onClick)="removeAction([field, action])" />
             </div>
             }

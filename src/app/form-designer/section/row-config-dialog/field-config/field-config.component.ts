@@ -76,7 +76,6 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
                 if (value) {
                     this.datasource = this.formVarService.retrieveVariableValue(value?.name);
                     this.dataScheme = value;
-                    console.log(this.dataScheme);
                 }
                 //Need to add logic to check action, if there are actions already. changing selectedScheme will remove all the actions.
             });
@@ -104,8 +103,10 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
             ffw_key: [field.key],
             key: [field.value.key],
             group: [action],
-            value: [],
-            parentSection: this.currentSection.key
+            sourceValue: [field.sourceValue ?? []],
+            targetValue: [field.targetValue ?? []],
+            parentSection: this.currentSection.key,
+            condition: [field.condition ?? null]
         });
         actionArray.push(form);
     }

@@ -312,7 +312,7 @@ export interface FormFieldAction {
     key: string;
     type: string;
     condition?: ActionCondition;
-    value?: any | any[];
+    sourceValue?: any | any[];
     targetValue?: any | any[];
     group: string;
     parentSection: string;

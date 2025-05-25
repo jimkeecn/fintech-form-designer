@@ -2,27 +2,27 @@
     "example":[
         {
             "id":1,
-            "value":"Australian"
+            "data":"Australian"
         },
         {
             "id":2,
-            "value":"Unite States"
+            "data":"Unite States"
         },
         {
             "id":3,
-            "value":"China"
+            "data":"China"
         }
     ],
     "complex_example":[
         {
             "id":1,
-            "value":"TFN",
+            "data":"TFN",
             "min":0,
             "max":10
         },
         {
             "id":2,
-            "value":"TIIN",
+            "data":"TIIN",
             "min":5,
             "max":10
         }
