@@ -52,7 +52,7 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
     datasource: any[] = [];
     dataScheme: any;
 
-    private _destory$ = new Subject<any>();
+    private _destory$ = new Subject<void>();
 
     schemes: any[] = [];
 
@@ -82,7 +82,8 @@ export class FieldConfigComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this._destory$.unsubscribe();
+        this._destory$.next();
+        this._destory$.complete();
     }
 
     addAction(data: [any, string]) {

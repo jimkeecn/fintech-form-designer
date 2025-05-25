@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { BaseFieldConfig } from '../shared/base-field-config';
 import { SchemaObject } from '../../../../../models/dragable-list';
 import { cloneDeep } from 'lodash';
+import { takeUntil } from 'rxjs';
 
 export enum ActionCondition {
     In = 'in', // source includes any of target
@@ -61,7 +62,11 @@ export class SelectComponent extends BaseFieldConfig implements OnInit {
             : 'N/A';
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe((formValue) => {
+            console.log('form change', formValue.value);
+        });
+    }
 
     onConditionChange(value: any) {}
 
